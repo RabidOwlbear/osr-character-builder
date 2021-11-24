@@ -1,0 +1,28 @@
+{
+  "OSE-CharacterBuilder": {
+    "formAttrib": "Character Atributes",
+    "formStr": "STR",
+    "formInt": "INT",
+    "formWis": "WIS",
+    "formDex": "DEX",
+    "formCon": "CON",
+    "formCha": "CHA",
+    "formReRoll": "Reroll Stats:",
+    "formHeroCheck": "4d6 Drop Lowest:",
+    "formClassType": "Class Type:",
+    "classTypeSRD": "SRD",
+    "formAlignment": "Alignment:",
+    "formLaw": "Lawful:",
+    "formNeut": "Neutral:",
+    "formChaos": "Chaotic:",
+    "formGold": "Gold:",
+    "formClassSelect": "Select A Class:",
+    "formClassInfo": "Class Information:",
+    "formBtnClose": "Close",
+    "formBtnChoose": "Choose",
+    "classOptions": {
+      
+    }
+
+  }
+}
