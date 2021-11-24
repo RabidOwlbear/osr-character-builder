@@ -39,8 +39,8 @@
       "path": "languages/en.json"
     }
   ],
-  "url": "",
-  "manifest": "",
-  "download": "",
+  "url": "https://github.com/RabidOwlbear/OSE-CharacterBuilder",
+  "manifest": "https://raw.githubusercontent.com/RabidOwlbear/OSE-CharacterBuilder/main/module.json",
+  "download": "https://github.com/RabidOwlbear/OSE-CharacterBuilder/archive/refs/heads/main.zip",
   "readme": "README.md"
 }
