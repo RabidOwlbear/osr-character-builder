@@ -38,7 +38,18 @@
       "module": "OSE-CharacterBuilder"
     }
   ],
-  "dependencies": [],
+  "dependencies": [
+    {
+      "name": "compendium-folders",
+      "manifest": "https://raw.githubusercontent.com/earlSt1/vtt-compendium-folders/0.1.1/module.json",
+      "type": "module"
+    },
+    {
+      "name": "lib-wrapper",
+      "manifest": "https://github.com/ruipin/fvtt-lib-wrapper/releases/latest/download/module.json",
+      "type": "module"
+    }
+  ],
   "languages": [
     {
       "lang": "en",
