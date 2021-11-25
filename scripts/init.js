@@ -23,9 +23,10 @@ Hooks.once('ready', async () => {
       ]
     }
   };
-
+if(game.user.role >= 4){
   await game.settings.set('OSE-CharacterBuilder', 'characterClasses', srdObj);
   Hooks.callAll('OseCharacterClassAdded');
+}
 });
 
 //on actor sheet load, add helper buttons to sheet

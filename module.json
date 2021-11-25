@@ -3,7 +3,7 @@
   "title": "OSE Character Builder",
   "description": "A character builder for OSE",
   "author": "Grim",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "minimumCoreVersion": "0.8.8",
   "compatibleCoreVersion": "0.8.9",
   "styles": ["./styles/main.css"],
@@ -20,6 +20,13 @@
       "name": "OSE-SRD-items",
       "label": "OSE SRD items",
       "path": "packs/OSE-SRD-items.db",
+      "entity": "Item",
+      "module": "OSE-CharacterBuilder"
+    },
+    {
+      "name": "OSE-SRD-spells",
+      "label": "OSE SRD Spells",
+      "path": "packs/OSE-SRD-spells.db",
       "entity": "Item",
       "module": "OSE-CharacterBuilder"
     },
