@@ -46,15 +46,6 @@ async function renderCharacterBuilder(actor, dataObj) {
 
     static get defaultOptions() {
       return super.defaultOptions;
-      // return mergeObject(super.defaultOptions, {
-      //   classes: ['form', 'osr-cb'],
-      //   popOut: true,
-      //   template: `modules/OSE-CharacterBuilder/template/test-form.html`,
-      //   id: 'osrCharacterBuilder',
-      //   title: 'Character Builder',
-      //   width: 550,
-      //   height: 730
-      // });
     }
     getData(options = {}) {
       return super.getData().object; // the object from the constructor is where we are storing the data
@@ -96,13 +87,12 @@ async function renderCharacterBuilder(actor, dataObj) {
   //console.log(listContent);
   const newForm = new OSECharBuilder(templateData, formOptions, actor);
   await newForm.render(true);
-  //console.log('newform', newForm);
-  //renderClassOptions(newForm.html);
-  // renderClassTypes;
 }
 
 //compile html for class source selection
 function renderClassTypes(dataObj) {
+  //if dataObj has key of 'OSE' use basic as the default checked option, else use 'SRD'
+  const defaultCheck = dataObj.OSE ? 'Basic' : 'SRD';
   //output html content
   let retHTML = ``;
   //loop through the data object
@@ -116,7 +106,8 @@ function renderClassTypes(dataObj) {
     //add all class categories
     for (let option of current.options) {
       //if option is 'srd' add checked property, else add empty space
-      let checked = option.name == 'SRD' ? 'checked' : '';
+      console.log('cur op', current.options);
+      let checked = option.name == defaultCheck ? 'checked' : '';
       retHTML += `
       <div class="fx-sb cb-list">
         <label for="${option.name}">${option.name}</label>
@@ -374,13 +365,22 @@ async function oseUpdateSheet(formObj, actor) {
     // const shopActive = game.settings.get('osr-item-shop', 'charBuilderCheck');
 
     if (formObj.shopCheck) {
-      new osrItemShopForm(actor).render(true);
+      // old shop
+      // new osrItemShopForm(actor).render(true);
+      renderItemShop(actor)
     }
   }
 }
 
 async function shopCheck(html) {
-  const addShopCheck = await game.settings.get('osr-item-shop', 'charBuilderCheck');
+  let addShopCheck;
+  try {
+    addShopCheck = await game.settings.get('osr-item-shop', 'charBuilderCheck');
+  } catch {
+    console.log('OSR-Item-Shop not installed.');
+    addShopCheck = false;
+  }
+
   //check for shop
   console.log('shop check status', addShopCheck);
   if (addShopCheck) {
@@ -421,4 +421,18 @@ async function OseAddClassAbilities(className, actor, pack) {
       await actor.createEmbeddedDocuments('Item', [item.data]);
     }
   }
+}
+
+//capitalize first letter in string
+function capitalize(s) {
+  if (typeof s !== 'string') return '';
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+//working: bonus experience calculator.
+//needs: check for stats, object containing rules per class, logic to use class rule to compare specified stats then add appropriate bonus to the sheet.
+async function oseBonusXp(actor, reqObj) {
+  const scores = actor.data.data.scores;
+
+  console.log(scores);
 }

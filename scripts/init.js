@@ -9,8 +9,10 @@ Hooks.once('init', async () => {
 });
 
 Hooks.once('ready', async () => {
-  srdObj = {
-    SRD: {
+  const oseModName = 'Old-School-Essentials';
+  const srdObj = {};
+  if (!game.modules.get(oseModName).active) {
+    srdObj.SRD = {
       name: 'SRD',
       header: false,
       pack: 'OSE-CharacterBuilder.OSE-SRD-class-options',
@@ -21,12 +23,13 @@ Hooks.once('ready', async () => {
           pack: 'OSE-CharacterBuilder.OSE-SRD-class-options'
         }
       ]
-    }
-  };
-if(game.user.role >= 4){
-  await game.settings.set('OSE-CharacterBuilder', 'characterClasses', srdObj);
-  Hooks.callAll('OseCharacterClassAdded');
-}
+    };
+  }
+
+  if (game.user.role >= 4) {
+    await game.settings.set('OSE-CharacterBuilder', 'characterClasses', srdObj);
+    Hooks.callAll('OseCharacterClassAdded');
+  }
 });
 
 //on actor sheet load, add helper buttons to sheet
