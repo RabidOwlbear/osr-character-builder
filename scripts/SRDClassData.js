@@ -1,4 +1,3 @@
-console.log('data loaded 1111111');
 const SRDClassData = {
   cleric: {
     name: 'cleric',

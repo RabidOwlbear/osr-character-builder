@@ -9,7 +9,7 @@ Hooks.once('init', async () => {
 });
 
 Hooks.once('ready', async () => {
-  const oseModName = 'Old-School-Essentials';
+  const oseModName = 'old-school-essentials';
   const srdObj = {};
   if (!game.modules.get(oseModName).active) {
     srdObj.SRD = {
