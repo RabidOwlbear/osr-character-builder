@@ -1,4 +1,5 @@
 async function renderCharacterBuilder(actor, dataObj) {
+  console.log('render cb data obj', dataObj);
   //options for the forApplication window
   const formOptions = {
     id: 'charBuilderForm',
@@ -80,7 +81,21 @@ async function renderCharacterBuilder(actor, dataObj) {
 
     async _updateObject(event, formData) {
       this.render();
+      console.log('formData', formData, this.html[0]);
+
+    // dont know why this is ncessary, temp fix for the issue of formData not recieving the value of the selected radio button
+
+      const classTypeInp = this.html.find("[name='classType']");
+      console.log(typeof classTypeInp);
+      for (let i of classTypeInp){
+        if(i.checked){
+          formData.classType = i.value
+        }
+      }
       console.log(formData);
+
+    // end fix 
+    
       oseUpdateSheet(formData, this.actor);
     }
   }
@@ -92,13 +107,15 @@ async function renderCharacterBuilder(actor, dataObj) {
 //compile html for class source selection
 function renderClassTypes(dataObj) {
   //if dataObj has key of 'OSE' use basic as the default checked option, else use 'SRD'
+  console.log('renderclassoptions dataobj', dataObj);
   const defaultCheck = dataObj.OSE ? 'Basic' : 'SRD';
+  console.log('defCheck', defaultCheck);
   //output html content
   let retHTML = ``;
   //loop through the data object
   for (const source in dataObj) {
     current = dataObj[source];
-    console.log(source);
+    console.log('source dataobj', source, current);
     //if header = true create header before list entry
     if (current.header) {
       retHTML += `<div class="cb-list-cat">${current.name}</div>`;
@@ -106,7 +123,7 @@ function renderClassTypes(dataObj) {
     //add all class categories
     for (let option of current.options) {
       //if option is 'srd' add checked property, else add empty space
-      console.log('cur op', current.options);
+      console.log('cur op', current.options, option.name);
       let checked = option.name == defaultCheck ? 'checked' : '';
       retHTML += `
       <div class="fx-sb cb-list">
@@ -199,14 +216,15 @@ const oseRollStat = (hero = false) => {
 
 function renderClassOptions(html) {
   const classListDiv = html.find('#cb-class-list')[0];
-  const classType = html.find("input[type='radio'][name='classType']:checked")[0].value;
+  const classType = html.find("input[type='radio'][name='classType']:checked")[0]?.value;
+  console.log('classType', classType);
   const classInfoTop = html.find('#cb-info-head')[0];
   const classInfoBody = html.find('#cb-info-body')[0];
   let classListHtml = ``;
   //hacky swap between ose data object and carcass crawler object
   //const dataObj = classType == 'carcassCrawler' ? crawlerData.cc0 : oseClasses[classType];
   const dataObj = getClassOptionObj(classType).classes;
-  console.log('dataObj', dataObj);
+  console.log('dataObj', dataObj, classType);
   let length = Object.keys(dataObj).length;
   let pick = Math.floor(Math.random() * length + 1);
   let count = 1;
@@ -263,7 +281,7 @@ function getClassOptionObj(classType) {
 
 async function oseUpdateSheet(formObj, actor) {
   console.log('form obj', formObj);
-  const optionObj = game.settings.get('OSE-CharacterBuilder', 'characterClasses');
+  const optionObj = await game.settings.get('OSE-CharacterBuilder', 'characterClasses');
   const classType = formObj.classType;
   console.log(classType, optionObj);
   const className = formObj.classOption;
@@ -367,7 +385,7 @@ async function oseUpdateSheet(formObj, actor) {
     if (formObj.shopCheck) {
       // old shop
       // new osrItemShopForm(actor).render(true);
-      renderItemShop(actor)
+      renderItemShop(actor);
     }
   }
 }
