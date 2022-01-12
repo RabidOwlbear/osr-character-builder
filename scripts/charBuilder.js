@@ -1,5 +1,4 @@
 async function renderCharacterBuilder(actor, dataObj) {
-  console.log('render cb data obj', dataObj);
   //options for the forApplication window
   const formOptions = {
     id: 'charBuilderForm',
@@ -52,7 +51,7 @@ async function renderCharacterBuilder(actor, dataObj) {
       return super.getData().object; // the object from the constructor is where we are storing the data
     }
     activateListeners(html) {
-      console.log('html', html);
+      
       super.activateListeners(html);
       const closeBtn = html.find('#cb-close-btn')[0];
       const goldRerollBtn = html.find('#cb-reroll-gold')[0];
@@ -62,16 +61,16 @@ async function renderCharacterBuilder(actor, dataObj) {
         this.close();
       });
       goldRerollBtn.addEventListener('click', () => {
-        console.log('newGold');
+        
         renderGold(html, this.actor, true);
       });
       statRerollBtn.addEventListener('click', () => {
-        console.log('heroCheck', heroSelect.checked, 'newStats');
+        
         renderAbilScores(html, this.actor, true);
       });
       let classTypes = html.find("input[type='radio'][name='classType']");
       for (let type of classTypes) {
-        //console.log(type);
+        
         type.addEventListener('input', () => {
           renderClassOptions(html);
         });
@@ -81,25 +80,22 @@ async function renderCharacterBuilder(actor, dataObj) {
 
     async _updateObject(event, formData) {
       this.render();
-      console.log('formData', formData, this.html[0]);
+      
 
     // dont know why this is ncessary, temp fix for the issue of formData not recieving the value of the selected radio button
 
       const classTypeInp = this.html.find("[name='classType']");
-      console.log(typeof classTypeInp);
       for (let i of classTypeInp){
         if(i.checked){
           formData.classType = i.value
         }
       }
-      console.log(formData);
 
     // end fix 
     
       oseUpdateSheet(formData, this.actor);
     }
   }
-  //console.log(listContent);
   const newForm = new OSECharBuilder(templateData, formOptions, actor);
   await newForm.render(true);
 }
@@ -107,15 +103,12 @@ async function renderCharacterBuilder(actor, dataObj) {
 //compile html for class source selection
 function renderClassTypes(dataObj) {
   //if dataObj has key of 'OSE' use basic as the default checked option, else use 'SRD'
-  console.log('renderclassoptions dataobj', dataObj);
   const defaultCheck = dataObj.OSE ? 'Basic' : 'SRD';
-  console.log('defCheck', defaultCheck);
   //output html content
   let retHTML = ``;
   //loop through the data object
   for (const source in dataObj) {
     current = dataObj[source];
-    console.log('source dataobj', source, current);
     //if header = true create header before list entry
     if (current.header) {
       retHTML += `<div class="cb-list-cat">${current.name}</div>`;
@@ -123,7 +116,6 @@ function renderClassTypes(dataObj) {
     //add all class categories
     for (let option of current.options) {
       //if option is 'srd' add checked property, else add empty space
-      console.log('cur op', current.options, option.name);
       let checked = option.name == defaultCheck ? 'checked' : '';
       retHTML += `
       <div class="fx-sb cb-list">
@@ -138,16 +130,13 @@ function renderClassTypes(dataObj) {
 }
 
 function renderGold(html, actor, reroll = false) {
-  console.log(actor);
   const goldInp = html.find('#cb-gold-input')[0];
   const actorGold = actor.data.items.getName('GP')?.data?.data?.quantity?.value;
-  console.log('input', goldInp, 'aCTORgOLD', actorGold);
   if (actorGold == undefined && !reroll) {
     goldInp.value = 0;
     return;
   }
   if (reroll) {
-    console.log('reroll');
     goldInp.value = oseRollGold();
     return;
   }
@@ -167,12 +156,10 @@ function renderAbilScores(html, actor, reroll = false) {
   const heroCheck = html.find('#hero-check')[0].checked;
   const actorScores = actor.data.data.scores;
   const scoreObj = reroll == true ? oseRollStats(heroCheck) : actor.data.data.scores;
-  console.log(actorScores);
   const statInputs = html.find("input[type='number'][ class='cb-stat-inp']");
   for (let input of statInputs) {
     input.value = scoreObj[input.name].value;
   }
-  //console.log('statInpurts', statInputs, actorScores);
 }
 
 function oseRollStats(hero = false) {
@@ -203,7 +190,6 @@ const oseRollStat = (hero = false) => {
         retVal = prev;
         dropLowest.push(cur);
       }
-      //console.log(prev, cur);
       return retVal;
     });
     rollArr = dropLowest;
@@ -217,45 +203,34 @@ const oseRollStat = (hero = false) => {
 function renderClassOptions(html) {
   const classListDiv = html.find('#cb-class-list')[0];
   const classType = html.find("input[type='radio'][name='classType']:checked")[0]?.value;
-  console.log('classType', classType);
   const classInfoTop = html.find('#cb-info-head')[0];
   const classInfoBody = html.find('#cb-info-body')[0];
   let classListHtml = ``;
   //hacky swap between ose data object and carcass crawler object
   //const dataObj = classType == 'carcassCrawler' ? crawlerData.cc0 : oseClasses[classType];
   const dataObj = getClassOptionObj(classType).classes;
-  console.log('dataObj', dataObj, classType);
   let length = Object.keys(dataObj).length;
   let pick = Math.floor(Math.random() * length + 1);
   let count = 1;
-  //console.log(pick, count, length);
   for (let entry in dataObj) {
-    //console.log('count', count, 'pick', pick);
     let checked = pick == count ? 'checked' : '';
-
-    //console.log(entry);
     const obj = dataObj[entry];
     classListHtml += `<div class="fx-sb cb-list">
     <label for"${obj.name}">${obj.menu}</label>
     <input type="radio" name="classOption" id="${obj.name} - ${obj.req}" value="${obj.name}" + ${checked}>
     </div>`;
     if (checked === 'checked') {
-      console.log(classInfoTop);
       classInfoTop.innerHTML = obj.description;
       classInfoBody.innerHTML = obj.notes;
     }
     count++;
   }
-  //console.log(classListDiv, classListHtml, classType);
   classListDiv.innerHTML = classListHtml;
 
   const classRad = html.find("input[type='radio'][name='classOption']");
-  // console.log(classRad);
   for (let input of classRad) {
-    //console.log(input);
     input.addEventListener('input', () => {
       const classObj = dataObj[input.value];
-      // console.log(classInfoTop);
       classInfoTop.innerHTML = classObj.description;
       classInfoBody.innerHTML = classObj.notes;
     });
@@ -267,12 +242,10 @@ function getClassOptionObj(classType) {
   const optionObj = game.settings.get('OSE-CharacterBuilder', 'characterClasses');
 
   for (let key of Object.keys(optionObj)) {
-    console.log(key);
     let options = optionObj[key].options;
     for (let i = 0; i < options.length; i++) {
       let obj = options[i];
       if (obj.name == classType) {
-        console.log('found', obj);
         return obj;
       }
     }
@@ -280,18 +253,13 @@ function getClassOptionObj(classType) {
 }
 
 async function oseUpdateSheet(formObj, actor) {
-  console.log('form obj', formObj);
   const optionObj = await game.settings.get('OSE-CharacterBuilder', 'characterClasses');
   const classType = formObj.classType;
-  console.log(classType, optionObj);
   const className = formObj.classOption;
   const classData = getClassOptionObj(classType);
-  console.log('classdata', classData);
   const classObj = classData.classes[className];
   const packName = classData.pack;
-  console.log('packobj', packName, classData);
   let goldItem = actor.data.items.getName('GP');
-  // console.log('select data', className, type, classObj);
 
   if (className == 'default') {
     ui.notifications.warn('Please Choose A Class');
@@ -344,7 +312,6 @@ async function oseUpdateSheet(formObj, actor) {
     // if (rollHp) {
     //roll Hp
     let hd = classObj.hd;
-    console.log('<----------------', className, hd);
     let hp = Math.floor(Math.random() * hd + 1);
     updateData.data.hp = {
       hd: `1d${hd}`,
@@ -354,24 +321,20 @@ async function oseUpdateSheet(formObj, actor) {
     // }
 
     if (classObj.spellCaster) {
-      console.log('spell caster');
       updateData.data.spells = { enabled: true };
       //  console.log('after', updateData);
       if (classObj.spellSlot) {
         updateData.data.spells[1] = { max: classObj.spellSlot };
       }
     }
-    console.log('updata', updateData);
     await actor.update(updateData);
     //if no gold item exists create one then update, else update gold amount
     if (goldItem == undefined) {
       let pack = game.packs.get('OSE-CharacterBuilder.OSE-SRD-items');
       let gpId = pack.index.contents.find((a) => a.name == 'GP')._id;
-      console.log('pack', pack, 'blankGold', gpId);
       const blankGp = await pack.getDocument(gpId);
       await actor.createEmbeddedDocuments('Item', [blankGp.data]);
       goldItem = actor.data.items.getName('GP');
-      console.log('goldItem created', goldItem);
     }
     await goldItem.update({ data: { quantity: { value: formObj.goldAmount } } });
 
@@ -395,14 +358,11 @@ async function shopCheck(html) {
   try {
     addShopCheck = await game.settings.get('osr-item-shop', 'charBuilderCheck');
   } catch {
-    console.log('OSR-Item-Shop not installed.');
     addShopCheck = false;
   }
 
   //check for shop
-  console.log('shop check status', addShopCheck);
   if (addShopCheck) {
-    console.log('shop check enabled');
     const checkHtml = `<label for="cb-shop-check">Open Item Shop?</label>
     <input type="checkbox" name="shopCheck" id="cb-shop-check">`;
     const checkDiv = html.find('#shop-check')[0];
@@ -414,28 +374,20 @@ async function OseHelperAddItem(itemName, compName, actor) {
   const compendium = await game.packs.get(compName);
   const index = await compendium.getIndex();
   const entry = await index.find((e) => e.name == itemName);
-  console.log('entry', entry, entry._id, entry.id);
   const entity = await compendium.getDocument(entry._id);
 
   const newEntity = await entity.clone();
-  console.log('entity', entity, newEntity);
   actor.createEmbeddedDocuments('Item', [newEntity.data]);
 }
 
 //add class abilities to sheet
 async function OseAddClassAbilities(className, actor, pack) {
-  console.log('name', className, 'pack', pack);
   const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
   const compendium = game.packs.get(pack);
-
-  console.log('comp', compendium);
   for (let abil of compendium.index.contents) {
     const item = await compendium.getDocument(abil._id);
-    // console.log('item', item);
     if (item.data.data.requirements == className) {
-      console.log('ability', item.data.name);
       await sleep(500);
-      //console.log('entity', entity, newEntity);
       await actor.createEmbeddedDocuments('Item', [item.data]);
     }
   }
@@ -451,6 +403,4 @@ function capitalize(s) {
 //needs: check for stats, object containing rules per class, logic to use class rule to compare specified stats then add appropriate bonus to the sheet.
 async function oseBonusXp(actor, reqObj) {
   const scores = actor.data.data.scores;
-
-  console.log(scores);
 }
