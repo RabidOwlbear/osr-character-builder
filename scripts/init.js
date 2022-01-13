@@ -6,6 +6,10 @@ Hooks.once('init', async () => {
     default: {},
     scope: 'world'
   });
+  //register namespace
+  window.OSECB = window.OSECB || {};
+  OSECB.util = OSECB.util || {};
+  Hooks.call('OSECB Registered');
 });
 
 Hooks.once('ready', async () => {
@@ -19,7 +23,7 @@ Hooks.once('ready', async () => {
       options: [
         {
           name: 'SRD',
-          classes: SRDClassData,
+          classes: OSECB.SRDClassData,
           pack: 'OSE-CharacterBuilder.OSE-SRD-class-options'
         }
       ]
@@ -44,15 +48,15 @@ Hooks.on('renderOseActorSheet', (actorObj, html) => {
     );
     modBox.on('click', '.ose-choose-class', (event) => {
       const dataObj = game.settings.get('OSE-CharacterBuilder', 'characterClasses');
-      renderCharacterBuilder(actor, dataObj);
+      OSECB.util.renderCharacterBuilder(actor, dataObj);
     });
     // }
   }
 });
 
 Hooks.on('renderOSECharBuilder', async (app, html) => {
-  renderClassOptions(html);
-  renderAbilScores(html, app.actor);
-  renderGold(html, app.actor);
-  shopCheck(html);
+  OSECB.util.renderClassOptions(html);
+  OSECB.util.renderAbilScores(html, app.actor);
+  OSECB.util.renderGold(html, app.actor);
+  OSECB.util.shopCheck(html);
 });

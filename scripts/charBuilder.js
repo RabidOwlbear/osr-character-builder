@@ -1,4 +1,5 @@
-async function renderCharacterBuilder(actor, dataObj) {
+Hooks.once('OSECB Registered', ()=>{
+OSECB.util.renderCharacterBuilder = async function (actor, dataObj) {
   //options for the forApplication window
   const formOptions = {
     id: 'charBuilderForm',
@@ -32,7 +33,7 @@ async function renderCharacterBuilder(actor, dataObj) {
     classInfo: game.i18n.localize('OSE-CharacterBuilder.formClassInfo'),
     close: game.i18n.localize('OSE-CharacterBuilder.formBtnClose'),
     choose: game.i18n.localize('OSE-CharacterBuilder.formBtnChoose'),
-    classTypeContent: renderClassTypes(dataObj)
+    classTypeContent: OSECB.util.renderClassTypes(dataObj)
   };
   // { content: listContent };
   // const formHTML = await renderTemplate(formTemplate, templateData);
@@ -62,17 +63,17 @@ async function renderCharacterBuilder(actor, dataObj) {
       });
       goldRerollBtn.addEventListener('click', () => {
         
-        renderGold(html, this.actor, true);
+        OSECB.util.renderGold(html, this.actor, true);
       });
       statRerollBtn.addEventListener('click', () => {
         
-        renderAbilScores(html, this.actor, true);
+        OSECB.util.renderAbilScores(html, this.actor, true);
       });
       let classTypes = html.find("input[type='radio'][name='classType']");
       for (let type of classTypes) {
         
         type.addEventListener('input', () => {
-          renderClassOptions(html);
+          OSECB.util.renderClassOptions(html);
         });
       }
       this.html = html;
@@ -93,7 +94,7 @@ async function renderCharacterBuilder(actor, dataObj) {
 
     // end fix 
     
-      oseUpdateSheet(formData, this.actor);
+      OSECB.util.oseUpdateSheet(formData, this.actor);
     }
   }
   const newForm = new OSECharBuilder(templateData, formOptions, actor);
@@ -101,7 +102,7 @@ async function renderCharacterBuilder(actor, dataObj) {
 }
 
 //compile html for class source selection
-function renderClassTypes(dataObj) {
+OSECB.util.renderClassTypes = function (dataObj) {
   //if dataObj has key of 'OSE' use basic as the default checked option, else use 'SRD'
   const defaultCheck = dataObj.OSE ? 'Basic' : 'SRD';
   //output html content
@@ -129,7 +130,7 @@ function renderClassTypes(dataObj) {
   return retHTML;
 }
 
-function renderGold(html, actor, reroll = false) {
+OSECB.util.renderGold = function (html, actor, reroll = false) {
   const goldInp = html.find('#cb-gold-input')[0];
   const actorGold = actor.data.items.getName('GP')?.data?.data?.quantity?.value;
   if (actorGold == undefined && !reroll) {
@@ -137,14 +138,14 @@ function renderGold(html, actor, reroll = false) {
     return;
   }
   if (reroll) {
-    goldInp.value = oseRollGold();
+    goldInp.value = OSECB.util.oseRollGold();
     return;
   }
 
   goldInp.value = actorGold;
 }
 
-function oseRollGold() {
+OSECB.util.oseRollGold = function () {
   let amt = 0;
   for (let i = 0; i < 3; i++) {
     amt += Math.floor(Math.random() * 6 + 1) * 10;
@@ -152,27 +153,27 @@ function oseRollGold() {
   return amt;
 }
 
-function renderAbilScores(html, actor, reroll = false) {
+OSECB.util.renderAbilScores = function (html, actor, reroll = false) {
   const heroCheck = html.find('#hero-check')[0].checked;
   const actorScores = actor.data.data.scores;
-  const scoreObj = reroll == true ? oseRollStats(heroCheck) : actor.data.data.scores;
+  const scoreObj = reroll == true ? OSECB.util.oseRollStats(heroCheck) : actor.data.data.scores;
   const statInputs = html.find("input[type='number'][ class='cb-stat-inp']");
   for (let input of statInputs) {
     input.value = scoreObj[input.name].value;
   }
 }
 
-function oseRollStats(hero = false) {
+OSECB.util.oseRollStats = function (hero = false) {
   let statArr = ['str', 'int', 'wis', 'con', 'dex', 'cha'];
   const retObj = {};
   for (let stat of statArr) {
-    retObj[stat] = { value: oseRollStat(hero) };
+    retObj[stat] = { value: OSECB.util.oseRollStat(hero) };
   }
 
   return retObj;
 }
 
-const oseRollStat = (hero = false) => {
+OSECB.util.oseRollStat   = (hero = false) => {
   let rollArr = [];
   let rollResult = 0;
   const dieCount = hero === true ? 4 : 3;
@@ -200,15 +201,16 @@ const oseRollStat = (hero = false) => {
   return rollResult;
 };
 
-function renderClassOptions(html) {
+OSECB.util.renderClassOptions = function (html) {
   const classListDiv = html.find('#cb-class-list')[0];
   const classType = html.find("input[type='radio'][name='classType']:checked")[0]?.value;
+  console.log(classType)
   const classInfoTop = html.find('#cb-info-head')[0];
   const classInfoBody = html.find('#cb-info-body')[0];
   let classListHtml = ``;
   //hacky swap between ose data object and carcass crawler object
   //const dataObj = classType == 'carcassCrawler' ? crawlerData.cc0 : oseClasses[classType];
-  const dataObj = getClassOptionObj(classType).classes;
+  const dataObj = OSECB.util.getClassOptionObj(classType).classes;
   let length = Object.keys(dataObj).length;
   let pick = Math.floor(Math.random() * length + 1);
   let count = 1;
@@ -238,7 +240,7 @@ function renderClassOptions(html) {
 }
 //retrieve the relevant class option data object from the game settings option object. requires source category name.
 //eg. basic, advanced, SRD
-function getClassOptionObj(classType) {
+OSECB.util.getClassOptionObj = function (classType) {
   const optionObj = game.settings.get('OSE-CharacterBuilder', 'characterClasses');
 
   for (let key of Object.keys(optionObj)) {
@@ -252,11 +254,11 @@ function getClassOptionObj(classType) {
   }
 }
 
-async function oseUpdateSheet(formObj, actor) {
+OSECB.util.oseUpdateSheet = async function (formObj, actor) {
   const optionObj = await game.settings.get('OSE-CharacterBuilder', 'characterClasses');
   const classType = formObj.classType;
   const className = formObj.classOption;
-  const classData = getClassOptionObj(classType);
+  const classData = OSECB.util.getClassOptionObj(classType);
   const classObj = classData.classes[className];
   const packName = classData.pack;
   let goldItem = actor.data.items.getName('GP');
@@ -339,7 +341,7 @@ async function oseUpdateSheet(formObj, actor) {
     await goldItem.update({ data: { quantity: { value: formObj.goldAmount } } });
 
     ui.notifications.warn('Adding Class Abilities: Please Be Patient');
-    await OseAddClassAbilities(className, actor, packName);
+    await OSECB.util.OseAddClassAbilities(className, actor, packName);
     ui.notifications.info('Finished Adding Class Abilities');
     await actor.setFlag('OSE-CharacterBuilder', 'classSelected', true);
     //check for Osr item shop
@@ -353,7 +355,7 @@ async function oseUpdateSheet(formObj, actor) {
   }
 }
 
-async function shopCheck(html) {
+OSECB.util.shopCheck = async function (html) {
   let addShopCheck;
   try {
     addShopCheck = await game.settings.get('osr-item-shop', 'charBuilderCheck');
@@ -370,7 +372,7 @@ async function shopCheck(html) {
   }
 }
 
-async function OseHelperAddItem(itemName, compName, actor) {
+OSECB.util.OseHelperAddItem = async function (itemName, compName, actor) {
   const compendium = await game.packs.get(compName);
   const index = await compendium.getIndex();
   const entry = await index.find((e) => e.name == itemName);
@@ -381,7 +383,7 @@ async function OseHelperAddItem(itemName, compName, actor) {
 }
 
 //add class abilities to sheet
-async function OseAddClassAbilities(className, actor, pack) {
+OSECB.util.OseAddClassAbilities = async function (className, actor, pack) {
   const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
   const compendium = game.packs.get(pack);
   for (let abil of compendium.index.contents) {
@@ -394,13 +396,14 @@ async function OseAddClassAbilities(className, actor, pack) {
 }
 
 //capitalize first letter in string
-function capitalize(s) {
+OSECB.util.capitalize = function (s) {
   if (typeof s !== 'string') return '';
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
 //working: bonus experience calculator.
 //needs: check for stats, object containing rules per class, logic to use class rule to compare specified stats then add appropriate bonus to the sheet.
-async function oseBonusXp(actor, reqObj) {
+OSECB.util.oseBonusXp = async function (actor, reqObj) {
   const scores = actor.data.data.scores;
 }
+})

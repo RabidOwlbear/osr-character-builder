@@ -1,4 +1,5 @@
-const SRDClassData = {
+Hooks.once('OSECB Registered', ()=>{
+OSECB.SRDClassData = {
   cleric: {
     name: 'cleric',
     menu: 'Cleric',
@@ -150,7 +151,7 @@ const SRDClassData = {
     journal: `<br><br><b>Journal Entry</b>: @Compendium[OSE-CharacterBuilder.OSE-SRD-classes.aTfwtSoLj0EYkOR7]{Thief}<br>`
   }
 };
-const gpObj = {
+OSECB.gpObj = {
   name: 'GP',
   type: 'item',
   img: '/systems/ose/assets/gold.png',
@@ -174,3 +175,5 @@ const gpObj = {
   },
   flags: {}
 };
+
+})
