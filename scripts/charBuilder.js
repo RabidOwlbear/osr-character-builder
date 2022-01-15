@@ -350,7 +350,7 @@ OSECB.util.oseUpdateSheet = async function (formObj, actor) {
     if (formObj.shopCheck) {
       // old shop
       // new osrItemShopForm(actor).render(true);
-      renderItemShop(actor);
+      OSRIS.shop.renderItemShop(actor);
     }
   }
 }
