@@ -326,7 +326,10 @@ OSECB.util.oseUpdateSheet = async function (dataObj, actor) {
     console.log('level changed to', level)
   } 
   if(actor.data.name == '#randGen'){
-    await actor.update({name: `${classObj.menu} - ${level}`})
+    await actor.update({
+      name: `${classObj.menu} - ${level}`,
+      token: {name: `${classObj.menu} - ${level}`}
+    })
   }
   console.log('after', actor)
   if (className == 'default') {
