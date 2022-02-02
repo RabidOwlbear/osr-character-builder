@@ -1,4 +1,4 @@
-<form>
+<form id="cb-form">
   <div id="cb-stats" class="fx-sb">
     <!-- <div id="cb-stat-container" class="fx-sb"> -->
     <div id="cb-stat-block">
@@ -29,6 +29,18 @@
           <input class="cb-stat-inp" type="number" name="cha" id="" />
         </div>
       </div>
+    </div>
+    <div id="cb-option-block">
+      <h3>Options</h3>
+     <div id="lvl-div" class="cb-option-div lvl-div">
+       <label for="level">Level</label>
+       <input id="level" type="number" value="1">
+    </div>
+     <div id="spell-div" class="cb-option-div">
+       <label for="spells">Spells?</label>
+       <input id="spells" type="checkbox">
+    </div>
+
     </div>
     <div id="stat-reroll-block">
       <h3>{{reRoll}}</h3>

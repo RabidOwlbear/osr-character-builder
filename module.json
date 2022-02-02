@@ -7,7 +7,12 @@
   "minimumCoreVersion": "0.8.8",
   "compatibleCoreVersion": "0.8.9",
   "styles": ["./styles/main.css"],
-  "scripts": ["./scripts/init.js", "./scripts/charBuilder.js", "./scripts/SRDClassData.js"],
+  "scripts": [
+    "./scripts/init.js", 
+    "./scripts/charBuilder.js", 
+    "./scripts/SRDClassData.js",
+    "./scripts/retainerBuilder.js"
+  ],
   "packs": [
     {
       "name": "OSE-SRD-class-options",
@@ -35,6 +40,13 @@
       "label": "OSE SRD Classes",
       "path": "packs/OSE-SRD-classes.db",
       "entity": "JournalEntry",
+      "module": "OSE-CharacterBuilder"
+    },
+    {
+      "name": "OSE-CharacterBuilder-macros",
+      "label": "OSE-CharacterBuilder Macros",
+      "path": "packs/macros.db",
+      "entity": "Macro",
       "module": "OSE-CharacterBuilder"
     }
   ],

@@ -58,6 +58,7 @@ OSECB.util.renderCharacterBuilder = async function (actor, dataObj) {
       const goldRerollBtn = html.find('#cb-reroll-gold')[0];
       const statRerollBtn = html.find('#stat-reroll-btn')[0];
       const heroSelect = html.find('#hero-check')[0];
+      const lvlInput = html.find('#level')[0]
       closeBtn.addEventListener('click', () => {
         this.close();
       });
@@ -76,15 +77,33 @@ OSECB.util.renderCharacterBuilder = async function (actor, dataObj) {
           OSECB.util.renderClassOptions(html);
         });
       }
+
+      lvlInput.addEventListener('change',async  ()=>{
+
+        const classType = html.find("input[type='radio'][name='classType']:checked")[0]?.value;
+        const dataObj = OSECB.util.getClassOptionObj(classType).classes;
+        const classOption = html.find("input[type='radio'][name='classOption']:checked")[0]?.value;
+        const classObj = dataObj[classOption];
+        // const classObj = await OSECB.util.getClassOptionObj(classType).classes[classOption];
+        console.log(classObj, classObj.maxLvl, this)
+        if(lvlInput.valueAsNumber > classObj.maxLvl){
+          lvlInput.value = classObj.maxLvl
+        }
+    
+      })
+
       this.html = html;
     }
 
     async _updateObject(event, formData) {
       this.render();
-      
+      console.log(formData)
 
     // dont know why this is ncessary, temp fix for the issue of formData not recieving the value of the selected radio button
-
+      const lvl = await this.html.find("#level")
+      const spells = await this.html.find('#spells')[0]
+      formData.level = lvl[0].valueAsNumber
+      formData.spellCheck = spells.checked
       const classTypeInp = this.html.find("[name='classType']");
       for (let i of classTypeInp){
         if(i.checked){
@@ -94,7 +113,10 @@ OSECB.util.renderCharacterBuilder = async function (actor, dataObj) {
 
     // end fix 
     
-      OSECB.util.oseUpdateSheet(formData, this.actor);
+      await OSECB.util.oseUpdateSheet(formData, this.actor);
+      if(formData.spellCheck){
+        OSECB.util.randomSpells(formData, this.actor)
+      }
     }
   }
   const newForm = new OSECharBuilder(templateData, formOptions, actor);
@@ -163,17 +185,24 @@ OSECB.util.renderAbilScores = function (html, actor, reroll = false) {
   }
 }
 
-OSECB.util.oseRollStats = function (hero = false) {
+OSECB.util.oseRollStats = function (hero = false, simple = false) {
   let statArr = ['str', 'int', 'wis', 'con', 'dex', 'cha'];
   const retObj = {};
-  for (let stat of statArr) {
-    retObj[stat] = { value: OSECB.util.oseRollStat(hero) };
+  if(simple){
+    for(let stat of statArr){
+      retObj[stat] = OSECB.util.oseRollStat(hero)
+    }
+  }else{
+    for (let stat of statArr) {
+      retObj[stat] = { value: OSECB.util.oseRollStat(hero) };
+    }
   }
+  
 
   return retObj;
 }
 
-OSECB.util.oseRollStat   = (hero = false) => {
+OSECB.util.oseRollStat  = (hero = false) => {
   let rollArr = [];
   let rollResult = 0;
   const dieCount = hero === true ? 4 : 3;
@@ -207,6 +236,7 @@ OSECB.util.renderClassOptions = function (html) {
   console.log(classType)
   const classInfoTop = html.find('#cb-info-head')[0];
   const classInfoBody = html.find('#cb-info-body')[0];
+  const lvlInput = html.find('#level')[0]
   let classListHtml = ``;
   //hacky swap between ose data object and carcass crawler object
   //const dataObj = classType == 'carcassCrawler' ? crawlerData.cc0 : oseClasses[classType];
@@ -235,8 +265,13 @@ OSECB.util.renderClassOptions = function (html) {
       const classObj = dataObj[input.value];
       classInfoTop.innerHTML = classObj.description;
       classInfoBody.innerHTML = classObj.notes;
+      if(lvlInput.valueAsNumber > classObj.maxLvl){
+        lvlInput.value = classObj.maxLvl
+      }
     });
   }
+
+  
 }
 //retrieve the relevant class option data object from the game settings option object. requires source category name.
 //eg. basic, advanced, SRD
@@ -254,45 +289,79 @@ OSECB.util.getClassOptionObj = function (classType) {
   }
 }
 
-OSECB.util.oseUpdateSheet = async function (formObj, actor) {
+OSECB.util.oseUpdateSheet = async function (dataObj, actor) {
+  console.log(dataObj)
   const optionObj = await game.settings.get('OSE-CharacterBuilder', 'characterClasses');
-  const classType = formObj.classType;
-  const className = formObj.classOption;
+  let {classType, level} = dataObj
+  const className = dataObj.classOption;
+  
   const classData = OSECB.util.getClassOptionObj(classType);
+  
   const classObj = classData.classes[className];
   const packName = classData.pack;
   let goldItem = actor.data.items.getName('GP');
+  console.log('cd', classData, classObj)
+  // return saves array for level
+  const getSaves = (saveObj)=>{
+    let keys =[]
+    for(let key of Object.keys(saveObj)){
+      keys.push(parseInt(key))
+    }
+    keys = keys.sort(function(a, b) {
+      return b - a;
+    });
+    for(let key of keys){
+      if(level >= key){
+        console.log(level, key)
+        return saveObj[key]
+      }
+    }
 
+    
+  }
+  console.log('actor', actor, level> classObj.maxLvl)
+  if(level > classObj.maxLvl){
+    level = classObj.maxLvl;
+    await actor.update({data: {details:{level: level}}})
+    console.log('level changed to', level)
+  } 
+  if(actor.data.name == '#randGen'){
+    await actor.update({name: `${classObj.menu} - ${level}`})
+  }
+  console.log('after', actor)
   if (className == 'default') {
     ui.notifications.warn('Please Choose A Class');
   } else {
+    const saves =  getSaves(classObj.saves)
     let updateData = {
       data: {
         details: {
           class: classObj.menu,
           title: classObj.title,
           xp: {
-            next: classObj.xp
+            next: classObj.xp[level - 1],
+            share: 100,
           },
           description: classObj.description,
           notes: classObj.notes + classObj.journal,
-          alignment: formObj.alignment
+          alignment: dataObj.alignment,
+          level: level
         },
         saves: {
           death: {
-            value: classObj.saves[0]
+            value: saves[0]
           },
           wand: {
-            value: classObj.saves[1]
+            value: saves[1]
           },
           paralysis: {
-            value: classObj.saves[2]
+            value: saves[2]
           },
           breath: {
-            value: classObj.saves[3]
+            value: saves[3]
           },
           spell: {
-            value: classObj.saves[4]
+            value: saves[4]
           }
         },
         languages: {
@@ -302,32 +371,74 @@ OSECB.util.oseUpdateSheet = async function (formObj, actor) {
           enabled: false
         },
         scores: {
-          str: { value: formObj.str },
-          int: { value: formObj.int },
-          wis: { value: formObj.wis },
-          dex: { value: formObj.dex },
-          con: { value: formObj.con },
-          cha: { value: formObj.cha }
+          str: { value: dataObj.str },
+          int: { value: dataObj.int },
+          wis: { value: dataObj.wis },
+          dex: { value: dataObj.dex },
+          con: { value: dataObj.con },
+          cha: { value: dataObj.cha }
         }
       }
     };
     // if (rollHp) {
     //roll Hp
-    let hd = classObj.hd;
-    let hp = Math.floor(Math.random() * hd + 1);
+    function multiLvlHp(level, classObj){
+     let  {hd, hdMod} = classObj;
+     let hpTotal = 0;
+      for(let i = 1; i <= level; i++){
+        // console.log(i)
+        if(i <= 9){
+          let rollTot =  0
+          for(let t=0; t < i; t++){
+            rollTot += Math.floor(Math.random() * hd + 1)
+          }
+          // console.log(rollTot)
+          hpTotal += rollTot
+        }
+        if(i >= 10){
+          let rollTot = 0
+          for(let t=0; t < 9; t++){
+            rollTot += Math.floor(Math.random() * hd + 1)
+          }
+            // console.log(rollTot, hdMod[i - 10])
+            hpTotal += hdMod[i - 10]
+            hpTotal += rollTot
+          }
+      }
+      return hpTotal
+    }
+
+
+    let hd = `1d${classObj.hd}`;
+
+    if(level >= 10){
+      let idx = level - 10;
+      console.log(idx, classObj)
+      hd = `9d${classObj.hd}+${classObj.hdMod[idx]}`
+    }
+
+    let hp = multiLvlHp(level, classObj)
     updateData.data.hp = {
-      hd: `1d${hd}`,
+      hd: hd,
       value: hp,
       max: hp
     };
     // }
-
+    if(dataObj.retainer){
+      updateData.data.retainer = {enabled: true}
+      updateData.data.details.xp.share = 50
+    }
     if (classObj.spellCaster) {
-      updateData.data.spells = { enabled: true };
+      updateData.data.spells = classObj.spellSlot[level];
+      updateData.data.spells.enabled = true
       //  console.log('after', updateData);
-      if (classObj.spellSlot) {
-        updateData.data.spells[1] = { max: classObj.spellSlot };
-      }
+      // if (classObj.spellSlot) {
+      //   console.log(classObj.spellSlot[dataObj.level])
+      //   const spellObj = classObj.spellSlot[dataObj.level];
+      //   spellObj.enabled = true
+      //   // updateData.data.spells[1] = { max: classObj.spellSlot[1] };
+      //   updateData.data.spells = spellObj
+      // }
     }
     await actor.update(updateData);
     //if no gold item exists create one then update, else update gold amount
@@ -338,21 +449,22 @@ OSECB.util.oseUpdateSheet = async function (formObj, actor) {
       await actor.createEmbeddedDocuments('Item', [blankGp.data]);
       goldItem = actor.data.items.getName('GP');
     }
-    await goldItem.update({ data: { quantity: { value: formObj.goldAmount } } });
+    await goldItem.update({ data: { quantity: { value: dataObj.goldAmount } } });
 
-    ui.notifications.warn('Adding Class Abilities: Please Be Patient');
+    // ui.notifications.warn('Adding Class Abilities: Please Be Patient');
     await OSECB.util.OseAddClassAbilities(className, actor, packName);
-    ui.notifications.info('Finished Adding Class Abilities');
+    // ui.notifications.info('Finished Adding Class Abilities');
     await actor.setFlag('OSE-CharacterBuilder', 'classSelected', true);
     //check for Osr item shop
     // const shopActive = game.settings.get('osr-item-shop', 'charBuilderCheck');
 
-    if (formObj.shopCheck) {
+    if (dataObj.shopCheck) {
       // old shop
       // new osrItemShopForm(actor).render(true);
       OSRIS.shop.renderItemShop(actor);
     }
   }
+  
 }
 
 OSECB.util.shopCheck = async function (html) {
@@ -386,10 +498,10 @@ OSECB.util.OseHelperAddItem = async function (itemName, compName, actor) {
 OSECB.util.OseAddClassAbilities = async function (className, actor, pack) {
   const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
   const compendium = game.packs.get(pack);
-  for (let abil of compendium.index.contents) {
+  for (let abil of compendium.index.contents) {  
     const item = await compendium.getDocument(abil._id);
     if (item.data.data.requirements == className) {
-      await sleep(500);
+      await sleep(50);
       await actor.createEmbeddedDocuments('Item', [item.data]);
     }
   }

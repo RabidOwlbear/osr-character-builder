@@ -78,6 +78,40 @@
   flex-direction: column;
   align-items: center;
 }
+.cb-s-cont label{
+  font-size: 8pt;
+  font-weight: bold;
+}
+#cb-form input[type=number]{
+  width: 25px;
+  height: 20px;
+}
+
+#cb-form #level{
+  width: 25px;
+}
+#cb-option-block label{
+  padding-right: 5px;
+}
+#cb-option-block {
+  display: flex;
+  /* display: none; */
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 120px;
+  height: 70px;
+  padding: 0 5px;
+}
+#cb-form .lvl-div{
+  padding-bottom: 5px
+}
+.cb-option-div{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .w-full {
   width: 100%;
 }
@@ -138,7 +172,7 @@
   width: 100%;
 } */
 #cb-stat-block {
-  width: 260px;
+  width: 200px;
   margin-left: 15px;
 }
 
@@ -166,9 +200,9 @@
   width: 100%;
   height: 150px;
 }
-input[type='number'] {
+/* input[type='number'] {
   width: 2em;
-}
+} */
 #cb-class-select {
   width: 150px;
 }
@@ -184,7 +218,7 @@ input[type='number'] {
   margin-bottom: 1em;
   width: 100%;
 }
-#cb-gold-input {
+#cb-gold #cb-gold-input {
   width: 2.5em;
   margin-left: 5px;
 }
@@ -218,4 +252,35 @@ input[type='number'] {
 }
 #osrCharacterBuilder .window-content {
   background-image: url(/modules/OSE-CharacterBuilder/assets/cb-bg.webp);
+}
+
+/* retainer generator styling */
+
+#retainer-generator.formApp h2 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+#retainer-generator .fxsb {
+  display: flex;
+  justify-content: space-between;
+}
+#retainer-generator .fxjcc {
+  display: flex;
+  justify-content: center;
+}
+#retainer-generator .padh10 {
+  padding: 0 10px;
+}
+#retainer-generator .mt10 {
+  margin-top: 10px;
+}
+#retainer-generator input[type="number"] {
+  width: 25px;
+}
+#retainer-generator input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+#retainer-generator input[type="number"] {
+  -moz-appearance: textfield;
 }
