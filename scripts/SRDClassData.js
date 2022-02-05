@@ -2,7 +2,7 @@
 Hooks.once('OSECB Registered', async () => {
   const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
   
-  OSECB.SRDClassData = {
+  OSECB.data.SRDClassData = {
     cleric: {
       name: 'cleric',
       menu: 'Cleric',
@@ -424,7 +424,7 @@ Hooks.once('OSECB Registered', async () => {
         ]
     }
   };
-  OSECB.retainerGear = {
+  OSECB.data.retainerGear = {
     cleric: {
       armor: ['Leather Armor', 'Chain Mail', 'Plate Mail'],
       weapons: ['Club', 'Mace', 'Warhammer']
@@ -453,6 +453,7 @@ Hooks.once('OSECB Registered', async () => {
       armor: ['Leather Armor'],
       weapons: ['Sword', 'Dagger', 'Hand Axe', 'Mace', 'Longbow', 'Shortbow']
     },
+   
   }
   await sleep(50);
   OSECB.spells.mergedList = mergeObject(OSECB.spells.spellList, OSECB.spells.mergedList)

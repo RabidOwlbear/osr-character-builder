@@ -5,14 +5,18 @@
       <div>
         <label for="class-select">Class:</label>
         <select name="class-select" id="class-select">
-          <option value="">--Basic--</option>
+          {{#each option}}
+              <option value='{{value}}'>{{name}}</option>
+          {{/each}}
+          
+          <!-- <option value="">--Basic--</option>
           <option value="SRD.cleric">cleric</option>
           <option value="SRD.dwarf">dwarf</option>
           <option value="SRD.elf">elf</option>
           <option value="SRD.fighter">fighter</option>
           <option value="SRD.halfling">halfling</option>
           <option value="SRD.magic-user">magic-user</option>
-          <option value="SRD.thief">thief</option>
+          <option value="SRD.thief">thief</option> -->
         </select>
       </div>
       <div>

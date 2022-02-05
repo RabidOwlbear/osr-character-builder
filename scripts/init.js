@@ -16,6 +16,7 @@ Hooks.once('init', async () => {
   //register namespace
   window.OSECB = window.OSECB || {};
   OSECB.util = OSECB.util || {};
+  OSECB.data = OSECB.data || {};
   OSECB.spells = OSECB.spells || { mergedList: {}, }
   OSECB.spells.mergedList = {};
   Hooks.call('OSECB Registered');
@@ -32,7 +33,7 @@ Hooks.once('ready', async () => {
       options: [
         {
           name: 'SRD',
-          classes: OSECB.SRDClassData,
+          classes: OSECB.data.SRDClassData,
           pack: 'OSE-CharacterBuilder.OSE-SRD-class-options'
         }
       ]

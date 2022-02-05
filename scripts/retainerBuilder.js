@@ -2,7 +2,7 @@ Hooks.once('OSECB Registered', () => {
 
 
   OSECB.util.renderRetainerBuilder = async function (actor) {
-
+    
     class RetainerBuilder extends FormApplication {
       constructor(actor) {
         super();
@@ -23,7 +23,35 @@ Hooks.once('OSECB Registered', () => {
     
       getData() {
         // Send data to the template
-        return {}
+        let tData = {
+          option: [
+            {name:'--Basic--', value: 'none.basic'},
+            {name:'cleric', value: 'SRD.cleric'},
+            {name:'dwarf', value: 'SRD.dwarf'},
+            {name:'elf', value: 'SRD.elf'},
+            {name:'fighter', value: 'SRD.fighter'},
+            {name:'halfling', value: 'SRD.halfling'},
+            {name:'magic-user', value: 'SRD.magic-user'},
+            {name:'thief', value: 'SRD.thief'},
+            {name:'--Advanced--', value: 'none.advanced'},
+            {name:'acrobat', value: 'advanced.acrobat'},
+            {name:'assassin', value: 'advanced.assassin'},
+            {name:'barbarian', value: 'advanced.barbarian'},
+            {name:'bard', value: 'advanced.bard'},
+            {name:'drow', value: 'advanced.drow'},
+            {name:'druid', value: 'advanced.druid'},
+            {name:'duergar', value: 'advanced.duergar'},
+            {name:'gnome', value: 'advanced.gnome'},
+            {name:'half-elf', value: 'advanced.half-elf'},
+            {name:'half-orc', value: 'advanced.half-orc'},
+            {name:'illusionist', value: 'advanced.illusionist'},
+            {name:'knight', value: 'advanced.knight'},
+            {name:'paladin', value: 'advanced.paladin'},
+            {name:'ranger', value: 'advanced.ranger'},
+            {name:'svirfneblin', value: 'advanced.svirfneblin'},
+          ]
+        }
+        return tData
       
       }
     
@@ -40,9 +68,10 @@ Hooks.once('OSECB Registered', () => {
             let classType = classInput[0]
             let classOption = classInput[1]
             if(classType == 'SRD'){
-              classType = game.modules.get('old-school-essentials').active ? 'Basic' : 'SRD'
+              classType = game.modules.get('old-school-essentials')?.active ? 'basic' : 'SRD'
             }
             // console.log(classType)
+            console.log(classinput, classType, classOption)
             const dataObj = OSECB.util.getClassOptionObj(classType).classes;
             const classObj = dataObj[classOption];
             // const classObj = await OSECB.util.getClassOptionObj(classType).classes[classOption];
@@ -59,7 +88,7 @@ Hooks.once('OSECB Registered', () => {
             let classType = classInput[0]
             let classOption = classInput[1]
             if(classType == 'SRD'){
-              classType = game.modules.get('old-school-essentials').active ? 'Basic' : 'SRD'
+              classType = game.modules.get('old-school-essentials')?.active ? 'basic' : 'SRD'
             }
             // console.log(classType)
             const dataObj = OSECB.util.getClassOptionObj(classType).classes;
@@ -84,10 +113,10 @@ Hooks.once('OSECB Registered', () => {
         // console.log(formData, this.actor);
         
           const newRetainer = await OSECB.util.retainerGen(formData);
-          if(formData.spellCheck) {
+          if(formData.spellCheck && newRetainer) {
             // console.log('spellgen')
             OSECB.util.randomSpells(formData, newRetainer)}
-          if(formData.itemsCheck) {
+          if(formData.itemsCheck && newRetainer) {
             // console.log('itemGen')
             OSECB.util.randomItems(formData, newRetainer)}
         
@@ -102,8 +131,12 @@ Hooks.once('OSECB Registered', () => {
   };
   OSECB.util.retainerGen= async function (data){
     let { level} = data
-    if(data.classType == 'SRD'){
-      data.classType = game.modules.get('old-school-essentials').active ? 'Basic' : 'SRD'
+    if(data.classType == 'none'){
+      ui.notifications.warn('Please select a class.')
+      return null
+    }
+    if(data.classType == 'SRD' ){
+      data.classType = game.modules.get('old-school-essentials')?.active ? 'basic' : 'SRD'
     }
     let statObj = OSECB.util.oseRollStats(false, true);
     // console.log(statObj)
@@ -135,7 +168,7 @@ Hooks.once('OSECB Registered', () => {
     const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
     let {classType, classOption, level} = data
     if(classType == 'SRD'){
-      classType = game.modules.get('old-school-essentials').active ? 'Basic' : 'SRD'
+      classType = game.modules.get('old-school-essentials')?.active ? 'basic' : 'SRD'
     }
     
     // console.log(classType, level)
@@ -200,12 +233,17 @@ Hooks.once('OSECB Registered', () => {
   }
 
   OSECB.util.randomItems = async function (data , actor){
+    const oseActive = game.modules.get('old-school-essentials')?.active;
     const {classOption} = data
     // console.log(classOption)
     const compendium = await game.packs.get("OSE-CharacterBuilder.OSE-SRD-items")
     const gearList = ['Backpack', 'Crowbar', 'Garlic', 'Grappling Hook', 'Hammer (small)', 'Holy Symbol', 'Holy Water (vial)', 'Iron Spikes (12)', 'Lantern', 'Mirror (hand sized, steel)', 'Oil (1 flask)', "Pole (10' long, wooden)", 'Rations (iron, 7 days)', 'Rations (standard, 7 days)', "Rope (50')", 'Sack (large)', 'Sack (small)', 'Stakes (3) and Mallet', 'Thieves Tools', 'Tinder Box (flint and steel)', 'Torches (6)', 'Waterskin', 'Wine (2 pints)', 'Wolfsbane (1 bunch)'];
-    const armorList = OSECB.retainerGear[classOption].armor;
-    const weaponList = OSECB.retainerGear[classOption].weapons;
+    const armorList = oseActive ?
+    OSE.data.retainerGear[classOption].armor :
+    OSECB.data.retainerGear[classOption].armor;
+    const weaponList = oseActive ?
+    OSE.data.retainerGear[classOption].weapons :
+    OSECB.data.retainerGear[classOption].weapons;
     const weaponPick = []
     let weaponCount = Math.floor(Math.random() * 2 + 1)
     if(weaponCount > weaponList.length)weaponCount = weaponList.length;
@@ -273,8 +311,16 @@ Hooks.once('OSECB Registered', () => {
       }
   */
 
-  OSECB.util.randomRetainers = async function (data){
-    const classOptions = ['cleric', 'dwarf', 'elf', 'fighter', 'halfling','magic-user', 'thief']
+  OSECB.util.randomRetainers = async function (data, classType = 'basic'){
+    
+    const advanced = ['acrobat','assassin','barbarian','bard','drow','druid','duergar','gnome','half-elf','half-orc','illusionist','knight','paladin','ranger','svirfneblin']
+    const basic = ['cleric', 'dwarf', 'elf', 'fighter', 'halfling','magic-user', 'thief']
+    let classOptions = basic
+    let type = 'basic'
+    if(classType == 'advanced'){
+      classOptions = advanced;
+      type = classType
+    }
     let {number, randomNumber, maxLvl, minLvl, items, spells } = data
     if(randomNumber){
       
@@ -291,7 +337,7 @@ Hooks.once('OSECB Registered', () => {
     randLvl = randLvl == 0 ? 1 : randLvl;
       const data = {
         level: randLvl,
-        classType: 'SRD',
+        classType: type,
         classOption: classOptions[Math.floor(Math.random() * classOptions.length)]
       }
     const newRetainer = await OSECB.util.retainerGen(data);

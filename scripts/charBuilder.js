@@ -126,7 +126,7 @@ OSECB.util.renderCharacterBuilder = async function (actor, dataObj) {
 //compile html for class source selection
 OSECB.util.renderClassTypes = function (dataObj) {
   //if dataObj has key of 'OSE' use basic as the default checked option, else use 'SRD'
-  const defaultCheck = dataObj.OSE ? 'Basic' : 'SRD';
+  const defaultCheck = dataObj.OSE ? 'basic' : 'SRD';
   //output html content
   let retHTML = ``;
   //loop through the data object
@@ -388,26 +388,40 @@ OSECB.util.oseUpdateSheet = async function (dataObj, actor) {
     function multiLvlHp(level, classObj){
      let  {hd, hdMod} = classObj;
      let hpTotal = 0;
-      for(let i = 1; i <= level; i++){
-        // console.log(i)
-        if(i <= 9){
-          let rollTot =  0
-          for(let t=0; t < i; t++){
-            rollTot += Math.floor(Math.random() * hd + 1)
-          }
-          // console.log(rollTot)
-          hpTotal += rollTot
+      // for(let i = 1; i <= level; i++){
+      //   // console.log(i)
+      //   if(i <= 9){
+      //     let rollTot =  0
+      //     for(let t=0; t < i; t++){
+      //       rollTot += Math.floor(Math.random() * hd + 1)
+      //     }
+      //     // console.log(rollTot)
+      //     hpTotal += rollTot
+      //   }
+      //   if(i >= 10){
+      //     let rollTot = 0
+      //     for(let t=0; t < 9; t++){
+      //       rollTot += Math.floor(Math.random() * hd + 1)
+      //     }
+      //       // console.log(rollTot, hdMod[i - 10])
+      //       hpTotal += hdMod[i - 10]
+      //       hpTotal += rollTot
+      //     }
+      // }
+      for(let i = 0; i< level; i++){
+        if(i < 9){
+          let roll = Math.floor(Math.random() * hd + 1)
+          hpTotal += roll
+          console.log(roll, hpTotal)
         }
-        if(i >= 10){
-          let rollTot = 0
-          for(let t=0; t < 9; t++){
-            rollTot += Math.floor(Math.random() * hd + 1)
-          }
-            // console.log(rollTot, hdMod[i - 10])
-            hpTotal += hdMod[i - 10]
-            hpTotal += rollTot
-          }
+        if(i >= 9){
+          let roll = Math.floor(Math.random() * hd + 1) + hdMod[i - 9]
+          hpTotal += roll
+          console.log(roll, hpTotal, i - 9, hdMod[i - 9])
+        }
       }
+
+
       return hpTotal
     }
 
