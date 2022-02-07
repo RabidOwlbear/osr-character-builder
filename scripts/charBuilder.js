@@ -278,11 +278,10 @@ OSECB.util.getClassOptionObj = function (classType) {
 
   for (let key of Object.keys(optionObj)) {
     let options = optionObj[key].options;
-    for (let i = 0; i < options.length; i++) {
+        for (let i = 0; i < options.length; i++) {
       
       let obj = options[i];
-      
-      if (obj.name == classType) {
+            if (obj.name == classType) {
         
         return obj;
       }
@@ -291,18 +290,17 @@ OSECB.util.getClassOptionObj = function (classType) {
 }
 
 OSECB.util.oseUpdateSheet = async function (dataObj, actor) {
-  
-  const optionObj = await game.settings.get('OSE-CharacterBuilder', 'characterClasses');
-  let {classType, level} = dataObj
+    const optionObj = await game.settings.get('OSE-CharacterBuilder', 'characterClasses');
+    let {classType, level} = dataObj
   const className = dataObj.classOption;  
-  const classData = OSECB.util.getClassOptionObj(classType);  
-  const classObj = classData.classes[className];
+  const classData = OSECB.util.getClassOptionObj(classType);
+    const classObj = classData.classes[className];
   const packName = classData.pack;
   let goldItem = actor.data.items.getName('GP');  
   // return saves array for level
-  const getSaves = (saveObj)=>{
-    let keys =[]
-    for(let key of Object.keys(saveObj)){
+  const getObj = (multiObj)=>{
+        let keys =[]
+    for(let key of Object.keys(multiObj)){
       keys.push(parseInt(key))
     }
     keys = keys.sort(function(a, b) {
@@ -311,7 +309,7 @@ OSECB.util.oseUpdateSheet = async function (dataObj, actor) {
     for(let key of keys){
       if(level >= key){
         
-        return saveObj[key]
+        return multiObj[key]
       }
     }  
   }
@@ -329,7 +327,8 @@ OSECB.util.oseUpdateSheet = async function (dataObj, actor) {
   if (className == 'default') {
     ui.notifications.warn('Please Choose A Class');
   } else {
-    const saves =  getSaves(classObj.saves)
+    const saves =  getObj(classObj.saves)
+    const thac0 = getObj(classObj['thac0']);
    const xpValue = level == classObj.maxLvl? 'Max Level' : classObj.xp[level - 1]
     let updateData = {
       data: {
@@ -375,6 +374,10 @@ OSECB.util.oseUpdateSheet = async function (dataObj, actor) {
           dex: { value: dataObj.dex },
           con: { value: dataObj.con },
           cha: { value: dataObj.cha }
+        },
+        thac0: {
+          bba: thac0[1],
+          value: thac0[0],
         }
       }
     };
