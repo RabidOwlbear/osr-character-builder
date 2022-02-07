@@ -33,22 +33,6 @@ Hooks.once('OSECB Registered', () => {
             {name:'halfling', value: 'SRD.halfling'},
             {name:'magic-user', value: 'SRD.magic-user'},
             {name:'thief', value: 'SRD.thief'},
-            {name:'--Advanced--', value: 'none.advanced'},
-            {name:'acrobat', value: 'advanced.acrobat'},
-            {name:'assassin', value: 'advanced.assassin'},
-            {name:'barbarian', value: 'advanced.barbarian'},
-            {name:'bard', value: 'advanced.bard'},
-            {name:'drow', value: 'advanced.drow'},
-            {name:'druid', value: 'advanced.druid'},
-            {name:'duergar', value: 'advanced.duergar'},
-            {name:'gnome', value: 'advanced.gnome'},
-            {name:'half-elf', value: 'advanced.half-elf'},
-            {name:'half-orc', value: 'advanced.half-orc'},
-            {name:'illusionist', value: 'advanced.illusionist'},
-            {name:'knight', value: 'advanced.knight'},
-            {name:'paladin', value: 'advanced.paladin'},
-            {name:'ranger', value: 'advanced.ranger'},
-            {name:'svirfneblin', value: 'advanced.svirfneblin'},
           ]
         }
         return tData
