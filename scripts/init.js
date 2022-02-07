@@ -6,9 +6,19 @@ Hooks.once('init', async () => {
     default: {},
     scope: 'world'
   });
+  await game.settings.register('OSE-CharacterBuilder', 'spellList', {
+    name: 'spellList',
+    type: Object,
+    default: {},
+    scope: 'world'
+  });
+  
   //register namespace
   window.OSECB = window.OSECB || {};
   OSECB.util = OSECB.util || {};
+  OSECB.data = OSECB.data || {};
+  OSECB.spells = OSECB.spells || { mergedList: {}, }
+  OSECB.spells.mergedList = {};
   Hooks.call('OSECB Registered');
 });
 
@@ -23,14 +33,15 @@ Hooks.once('ready', async () => {
       options: [
         {
           name: 'SRD',
-          classes: OSECB.SRDClassData,
+          classes: OSECB.data.SRDClassData,
           pack: 'OSE-CharacterBuilder.OSE-SRD-class-options'
         }
       ]
     };
   }
-
+  
   if (game.user.role >= 4) {
+    // await game.settings.set('OSE-CharacterBuilder', 'spellList', {})
     await game.settings.set('OSE-CharacterBuilder', 'characterClasses', srdObj);
     Hooks.callAll('OseCharacterClassAdded');
   }
