@@ -14,7 +14,7 @@ Hooks.once('OSECB Registered', () => {
           classes: ['retainer-builder'],
           popOut: true,
           template: `modules/OSE-CharacterBuilder/template/retainerBuilder.html`,
-          height: 200,
+          height: 220,
           width: 300,
           id: 'retainer-builder',
           title: 'Retainer Builder',
@@ -22,6 +22,7 @@ Hooks.once('OSECB Registered', () => {
       }
     
       getData() {
+        
         // Send data to the template
         let tData = {
           option: [
@@ -33,7 +34,40 @@ Hooks.once('OSECB Registered', () => {
             {name:'halfling', value: 'SRD.halfling'},
             {name:'magic-user', value: 'SRD.magic-user'},
             {name:'thief', value: 'SRD.thief'},
+          ],
+          randName: ``
+        }
+        let helperActive = game.modules.get('OSE-helper')?.active;
+        if (helperActive){
+          tData.randName = `
+          <div>
+            <label for="randName">Name</label>
+            <input class="padh10" id="randName" type="checkbox" checked>
+          </div>
+          `
+        }
+        let ose = OSECB.util.oseActive()
+        console.log(ose)
+        if(ose){
+          let opt = [
+            {name:'--Advanced--', value: 'none.advanced'},
+            {name:'acrobat', value: 'advanced.acrobat'},
+            {name:'assassin', value: 'advanced.assassin'},
+            {name:'barbarian', value: 'advanced.barbarian'},
+            {name:'bard', value: 'advanced.bard'},
+            {name:'drow', value: 'advanced.drow'},
+            {name:'druid', value: 'advanced.druid'},
+            {name:'duergar', value: 'advanced.duergar'},
+            {name:'gnome', value: 'advanced.gnome'},
+            {name:'half-elf', value: 'advanced.half-elf'},
+            {name:'half-orc', value: 'advanced.half-orc'},
+            {name:'illusionist', value: 'advanced.illusionist'},
+            {name:'knight', value: 'advanced.knight'},
+            {name:'paladin', value: 'advanced.paladin'},
+            {name:'ranger', value: 'advanced.ranger'},
+            {name:'svirfneblin', value: 'advanced.svirfneblin'},
           ]
+          tData.option = tData.option.concat(opt)
         }
         return tData
       
@@ -86,6 +120,7 @@ Hooks.once('OSECB Registered', () => {
         formData.level = this.html.find('#level')[0].valueAsNumber;
         formData.spellCheck = this.html.find('#spells')[0].checked;
         formData.itemsCheck = this.html.find('#items')[0].checked;
+        formData.randName = this.html.find('#randName')[0].checked;
         let selectData = formData['class-select'].split('.')
         formData.classType = selectData[0];
         formData.classOption = selectData[1]
@@ -97,6 +132,15 @@ Hooks.once('OSECB Registered', () => {
           if(formData.itemsCheck && newRetainer) {
             
             OSECB.util.randomItems(formData, newRetainer)}
+          if(formData.randName){
+            let classObj  = OSECB.util.getClassOptionObj(formData.classType).classes[formData.classOption]
+            console.log(classObj, classObj.nameType)
+            let name = OSEH.util.randomName(classObj.nameType)
+            console.log(newRetainer, name, newRetainer.name)
+            const oldName = newRetainer.name
+            await newRetainer.update({name: `${name} ${oldName}`, token: {name: name}})
+
+          }
       }
     }
     new RetainerBuilder(actor).render(true)
@@ -272,7 +316,7 @@ Hooks.once('OSECB Registered', () => {
     if(classType == 'advanced' && OSECB.util.oseActive()){
       classOptions = advanced;
     }
-    let {number, randomNumber, maxLvl, minLvl, items, spells } = data
+    let {number, randomNumber, maxLvl, minLvl, items, spells, randomName } = data
     if(randomNumber){
       let newNum = Math.floor(Math.random() * number + 1)
      number = newNum
@@ -282,19 +326,29 @@ Hooks.once('OSECB Registered', () => {
       
     let randLvl = Math.floor(Math.random() * diff + 1) + minLvl
     randLvl = randLvl == 0 ? 1 : randLvl;
-      const data = {
-        level: randLvl,
-        classType: type,
-        classOption: classOptions[Math.floor(Math.random() * classOptions.length)]
-      }
-      
+    const data = {
+      level: randLvl,
+      classType: type,
+      classOption: classOptions[Math.floor(Math.random() * classOptions.length)]
+    }
+    console.log('data', data)  
     const newRetainer = await OSECB.util.retainerGen(data);
     data.level = newRetainer.data.data.details.level;
+    // random name support
+    if(randomName && game.modules.get("OSE-helper")?.active){
+      let classObj  = OSECB.util.getClassOptionObj(data.classType).classes[data.classOption]
+      console.log(classObj, classObj.nameType)
+      let name = OSEH.util.randomName(classObj.nameType)
+      console.log(newRetainer, name, newRetainer.name)
+      const oldName = newRetainer.name
+      await newRetainer.update({name: `${name} ${oldName}`, token: {name: name}})
+    }
+    // -------------------
     if(spells) await OSECB.util.randomSpells(data, newRetainer)
     if(items) await OSECB.util.randomItems(data, newRetainer)
     }
   }
-
+  
   OSECB.util.oseActive = function(){
     if(game.modules.get('old-school-essentials')?.active){
       return true

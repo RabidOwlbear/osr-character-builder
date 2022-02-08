@@ -8,15 +8,6 @@
           {{#each option}}
               <option value='{{value}}'>{{name}}</option>
           {{/each}}
-          
-          <!-- <option value="">--Basic--</option>
-          <option value="SRD.cleric">cleric</option>
-          <option value="SRD.dwarf">dwarf</option>
-          <option value="SRD.elf">elf</option>
-          <option value="SRD.fighter">fighter</option>
-          <option value="SRD.halfling">halfling</option>
-          <option value="SRD.magic-user">magic-user</option>
-          <option value="SRD.thief">thief</option> -->
         </select>
       </div>
       <div>
@@ -24,14 +15,18 @@
         <input id="level" type="number" max="14" placeholder="1" value="1">
       </div>
     </div>
-    <div class="fxsb padh10 mt10">
-      <div>
-        <label for="spells">Random Spells</label>
-        <input class="padh10" id="spells" type="checkbox" checked>
-      </div>
-      <div>
-        <label for="items">Random Items</label>
-        <input class="padh10" id="items" type="checkbox" checked>
+    <div>
+      <h3>Random</h3>
+      <div class="fxsb padh10">
+        <div>
+          <label for="spells">Spells</label>
+          <input class="padh10" id="spells" type="checkbox" checked>
+        </div>
+        {{{randName}}}
+        <div>
+          <label for="items">Items</label>
+          <input class="padh10" id="items" type="checkbox" checked>
+        </div>
       </div>
     </div>
     <div class="fxjcc mt10">

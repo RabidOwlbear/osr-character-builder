@@ -54,7 +54,8 @@ Hooks.once('OSECB Registered', async () => {
         'Clerics are adventurers who have sworn to serve a deity. They are trained for battle and channel the power of their deity.',
       languages: ['Alignment', 'Common'],
       journal: `<br><br><b>Journal Entry</b>: @Compendium[OSE-CharacterBuilder.OSE-SRD-classes.MxTAGtazZxJfvF7M]{Cleric}<br>`,
-      maxLvl: 14
+      maxLvl: 14,
+      nameType: 'human'
     },
     dwarf: {
       name: 'dwarf',
@@ -89,7 +90,8 @@ Hooks.once('OSECB Registered', async () => {
         'Dwarves are stout, bearded demihumans, about 4’ tall and weighing about 150 pounds. Dwarves typically live underground and love fine craftsmanship, gold, hearty food, and strong drink. They have skin, hair, and eye colours in earth tones. Dwarves are known for their stubbornness and practicality. They are a hardy people and have a strong resistance to magic, as reflected in their saving throws.',
       languages: ['Alignment', 'Common', 'Dwarvish', 'Gnomish', 'Goblin', 'Kobold'],
       journal: `<br><br><b>Journal Entry</b>: @Compendium[OSE-CharacterBuilder.OSE-SRD-classes.8FaYQ5BwGMxlWJA7]{Dwarf}<br>`,
-      maxLvl: 12
+      maxLvl: 12,
+      nameType: 'dwarf'
     },
     elf: {
       name: 'elf',
@@ -137,7 +139,8 @@ Hooks.once('OSECB Registered', async () => {
     <b>Prime requisites</b>: An elf with at least 13 INT and STR gains a 5% bonus to experience. An elf with an INT of at least 16 and a STR of at least 13 receives a +10% XP bonus.`,
       languages: ['Alignment', 'Common', 'Elvish', 'Gnoll', 'Hobgoblin', 'Orcish'],
       journal: `<br><br><b>Journal Entry</b>: @Compendium[OSE-CharacterBuilder.OSE-SRD-classes.iH341o9KMs0jx96z]{Elf}<br>`,
-      maxLvl: 10
+      maxLvl: 10,
+      nameType: 'elf'
     },
     fighter: {
       name: 'fighter',
@@ -173,7 +176,8 @@ Hooks.once('OSECB Registered', async () => {
         'Fighters are adventurers dedicated to mastering the arts of combat and war. In a group of adventurers, the role of fighters is to battle monsters and to defend other characters.',
       languages: ['Alignment', 'Common'],
       journal: `<br><br><b>Journal Entry</b>: @Compendium[OSE-CharacterBuilder.OSE-SRD-classes.tuxYnX5oQOhSkHrp]{Fighter}<br>`,
-      maxLvl: 14
+      maxLvl: 14,
+      nameType: 'human'
     },
     halfling: {
       name: 'halfling',
@@ -205,7 +209,8 @@ Hooks.once('OSECB Registered', async () => {
       <b>Prime requisites</b>: A halfling with at least 13 in one prime requisite gains a 5% bonus to experience. If both DEX and STR are 13 or higher, the halfling gets a +10% bonus.`,
       languages: ['Alignment', 'Common', 'Halfling'],
       journal: `<br><br><b>Journal Entry</b>: @Compendium[OSE-CharacterBuilder.OSE-SRD-classes.56pppv5spL3hnIbc]{Halfling}<br>`,
-      maxLvl: 8
+      maxLvl: 8,
+      nameType: 'halfling'
     },
     'magic-user': {
       name: 'magic-user',
@@ -255,7 +260,8 @@ Hooks.once('OSECB Registered', async () => {
         'Magic-users are adventurers whose study of arcane secrets has taught them how to cast spells. Magic-users are able to cast a greater number of increasingly powerful spells as they advance in level.',
       languages: ['Alignment', 'Common'],
       journal: `<br><br><b>Journal Entry</b>: @Compendium[OSE-CharacterBuilder.OSE-SRD-classes.8xWQ2MGa2LPMA43Z]{Magic-User}<br>`,
-      maxLvl: 14
+      maxLvl: 14,
+      nameType: 'human'
     },
     thief: {
       name: 'thief',
@@ -289,7 +295,8 @@ Hooks.once('OSECB Registered', async () => {
     Adjust ability scores: In step 3 of character creation, thieves may not lower STR.`,
       languages: ['Alignment', 'Common'],
       journal: `<br><br><b>Journal Entry</b>: @Compendium[OSE-CharacterBuilder.OSE-SRD-classes.aTfwtSoLj0EYkOR7]{Thief}<br>`,
-      maxLvl: 14
+      maxLvl: 14,
+      nameType: 'human'
     }
   };
   OSECB.gpObj = {
