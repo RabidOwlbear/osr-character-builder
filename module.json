@@ -3,7 +3,7 @@
   "title": "OSE Character Builder",
   "description": "A character builder for OSE",
   "author": "Grim",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "minimumCoreVersion": "0.8.8",
   "compatibleCoreVersion": "9",
   "styles": ["./styles/main.css"],
