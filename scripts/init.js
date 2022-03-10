@@ -51,7 +51,10 @@ Hooks.once('ready', async () => {
 Hooks.on('renderOseActorSheet', (actorObj, html) => {
   const actor = actorObj.actor;
   const modBox = html.find(`[class="modifiers-btn"]`);
+  const defCharBtn = html.find(`.profile .blinking`)[0]
+  if(defCharBtn) defCharBtn.style.display = 'none'
   const classSelected = actor.getFlag('OSE-CharacterBuilder', 'classSelected');
+
   if (actor.data?.data?.scores?.str?.value == 0) {
     // if (!classSelected) {
     modBox.append(
