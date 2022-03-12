@@ -1,6 +1,5 @@
 # OSE-Character-Builder
 
-WARNING: As of now this module will not work correctly if you are hosting your game using The Forge. I will trey and fix this issue, if at all possible, until such time, this module is unuseable on The Forge.
 
 A module that adds a basic character builder to the Old School Essentials system character sheet in Foundry Vtt.
 
