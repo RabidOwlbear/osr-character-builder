@@ -313,10 +313,11 @@ Hooks.once('OSECB Registered', () => {
     const basic = ['cleric', 'dwarf', 'elf', 'fighter', 'halfling','magic-user', 'thief']
     let classOptions = basic
     let type = classType
-    if(classType == 'advanced' && OSECB.util.oseActive()){
-      classOptions = advanced;
-    }
-    let {number, randomNumber, maxLvl, minLvl, items, spells, randomName } = data
+    if(classType == 'advanced' && OSECB.util.oseActive())classOptions = advanced;
+    if(classType == 'mixed' && OSECB.util.oseActive())  classOptions = advanced.concat(basic);
+
+    let {number, randomNumber, maxLvl, minLvl, items, spells, randomName } = data;
+    
     if(randomNumber){
       let newNum = Math.floor(Math.random() * number + 1)
      number = newNum
@@ -324,10 +325,10 @@ Hooks.once('OSECB Registered', () => {
     for( let i = 0; i < number; i++){
       let diff = maxLvl - minLvl;
       
-    let randLvl = Math.floor(Math.random() * diff + 1) + minLvl
-    randLvl = randLvl == 0 ? 1 : randLvl;
+    let randNum = Math.floor(Math.random() * diff + 1) + minLvl
+    randLvl = randNum == 0 ? 1 : randNum;
     const data = {
-      level: randLvl,
+      level: minLvl == maxLvl ? minLvl : randNum,
       classType: type,
       classOption: classOptions[Math.floor(Math.random() * classOptions.length)]
     }
@@ -343,7 +344,6 @@ Hooks.once('OSECB Registered', () => {
       const oldName = newRetainer.name
       await newRetainer.update({name: `${name} ${oldName}`, token: {name: name}})
     }
-    // -------------------
     if(spells) await OSECB.util.randomSpells(data, newRetainer)
     if(items) await OSECB.util.randomItems(data, newRetainer)
     }

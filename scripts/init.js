@@ -25,7 +25,10 @@ Hooks.once('init', async () => {
 Hooks.once('ready', async () => {
   const oseModName = 'old-school-essentials';
   const srdObj = {};
-  if (!game.modules.get(oseModName)?.active) {
+  
+  let oseActive = await game.modules.get(oseModName)?.active
+  console.log(oseActive)
+  if (!oseActive) {
     srdObj.SRD = {
       name: 'SRD',
       header: false,
@@ -60,8 +63,9 @@ Hooks.on('renderOseActorSheet', (actorObj, html) => {
     modBox.append(
       `<a class="ose-icon ose-choose-class" title="Character Builder"><i class="fas fa-user-shield"></i></a>`
     );
-    modBox.on('click', '.ose-choose-class', (event) => {
-      const dataObj = game.settings.get('OSE-CharacterBuilder', 'characterClasses');
+    modBox.on('click', '.ose-choose-class', async (event) => {
+      const dataObj = await game.settings.get('OSE-CharacterBuilder', 'characterClasses');
+      console.log(dataObj)
       OSECB.util.renderCharacterBuilder(actor, dataObj);
     });
     // }
