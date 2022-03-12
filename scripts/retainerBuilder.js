@@ -325,7 +325,7 @@ Hooks.once('OSECB Registered', () => {
     for( let i = 0; i < number; i++){
       let diff = maxLvl - minLvl;
       
-    let randNum = Math.floor(Math.random() * diff + 1) + minLvl
+    let randNum = Math.floor(Math.random() * (diff + 1)) + minLvl;
     randLvl = randNum == 0 ? 1 : randNum;
     const data = {
       level: minLvl == maxLvl ? minLvl : randNum,
