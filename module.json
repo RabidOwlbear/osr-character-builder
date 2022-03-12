@@ -3,9 +3,9 @@
   "title": "OSE Character Builder",
   "description": "A character builder for OSE",
   "author": "Grim",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "minimumCoreVersion": "0.8.8",
-  "compatibleCoreVersion": "9",
+  "compatibleCoreVersion": "0.9.0",
   "styles": ["./styles/main.css"],
   "scripts": [
     "./scripts/init.js", 
