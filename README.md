@@ -28,5 +28,5 @@ When clicked the Character Builder window will appear.
 - Gold: enter a gold amount or randomly roll starting gold by clicking on the dice button.
 
 When finished selecting options/rolling scores clicking the Choose button at the bottom of the form will add the selected class options, stats gold etc. to the character sheet.
-
+The module will now create an item for all 'standard' currency types when creating a new character.
 Clicking the close button will exit out of the form without adding anything to the sheet.
