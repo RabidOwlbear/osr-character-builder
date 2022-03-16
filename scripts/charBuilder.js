@@ -419,12 +419,23 @@ OSECB.util.oseUpdateSheet = async function (dataObj, actor) {
     }
     await actor.update(updateData);
     //if no gold item exists create one then update, else update gold amount
-    if (goldItem == undefined) {
+    // check for currency items
+    let types = ['PP','GP','EP','SP','CP']
+    let curCheck = async (type)=>{
+      let itemExists = actor.data.items.getName(type)
       let pack = game.packs.get('OSE-CharacterBuilder.OSE-SRD-items');
-      let gpId = pack.index.contents.find((a) => a.name == 'GP')._id;
-      const blankGp = await pack.getDocument(gpId);
-      await actor.createEmbeddedDocuments('Item', [blankGp.data]);
-      goldItem = actor.data.items.getName('GP');
+      if(!itemExists){
+        let curItem = await pack.getDocument(pack.index.getName(type)._id);
+        let itemData = curItem.clone().data
+        await actor.createEmbeddedDocuments('Item', [itemData])
+        if(type == 'GP'){
+          goldItem = actor.data.items.getName('GP');
+        }
+      }
+      
+    }
+    for(let type of types){
+      await curCheck(type)
     }
     await goldItem.update({ data: { quantity: { value: dataObj.goldAmount } } });
     await OSECB.util.OseAddClassAbilities(className, actor, packName);
