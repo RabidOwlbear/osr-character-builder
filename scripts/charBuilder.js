@@ -101,7 +101,9 @@ OSECB.util.renderCharacterBuilder = async function (actor, dataObj) {
       const spells = await this.html.find('#spells')[0]
       formData.level = lvl[0].valueAsNumber
       formData.spellCheck = spells.checked
-      const classTypeInp = this.html.find("[name='classType']");
+      const classTypeInp = await this.html.find("[name='classType']");
+      const chooseBtn = await this.html.find('#cb-sub-btn')[0];
+      chooseBtn.disabled = true;
       for (let i of classTypeInp){
         if(i.checked){
           formData.classType = i.value
@@ -479,6 +481,7 @@ OSECB.util.OseHelperAddItem = async function (itemName, compName, actor) {
 OSECB.util.OseAddClassAbilities = async function (className, actor, pack) {
   const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
   const compendium = game.packs.get(pack);
+  ui.notifications.warn(game.i18n.localize('OSE-CharacterBuilder.addClassWarn'));
   for (let abil of compendium.index.contents) {  
     const item = await compendium.getDocument(abil._id);
     if (item.data.data.requirements == className) {
