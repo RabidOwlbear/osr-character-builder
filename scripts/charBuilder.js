@@ -101,7 +101,9 @@ OSECB.util.renderCharacterBuilder = async function (actor, dataObj) {
       const spells = await this.html.find('#spells')[0]
       formData.level = lvl[0].valueAsNumber
       formData.spellCheck = spells.checked
-      const classTypeInp = this.html.find("[name='classType']");
+      const classTypeInp = await this.html.find("[name='classType']");
+      const chooseBtn = await this.html.find('#cb-sub-btn')[0];
+      chooseBtn.disabled = true;
       for (let i of classTypeInp){
         if(i.checked){
           formData.classType = i.value
@@ -419,12 +421,23 @@ OSECB.util.oseUpdateSheet = async function (dataObj, actor) {
     }
     await actor.update(updateData);
     //if no gold item exists create one then update, else update gold amount
-    if (goldItem == undefined) {
+    // check for currency items
+    let types = ['PP','GP','EP','SP','CP']
+    let curCheck = async (type)=>{
+      let itemExists = actor.data.items.getName(type)
       let pack = game.packs.get('OSE-CharacterBuilder.OSE-SRD-items');
-      let gpId = pack.index.contents.find((a) => a.name == 'GP')._id;
-      const blankGp = await pack.getDocument(gpId);
-      await actor.createEmbeddedDocuments('Item', [blankGp.data]);
-      goldItem = actor.data.items.getName('GP');
+      if(!itemExists){
+        let curItem = await pack.getDocument(pack.index.getName(type)._id);
+        let itemData = curItem.clone().data
+        await actor.createEmbeddedDocuments('Item', [itemData])
+        if(type == 'GP'){
+          goldItem = actor.data.items.getName('GP');
+        }
+      }
+      
+    }
+    for(let type of types){
+      await curCheck(type)
     }
     await goldItem.update({ data: { quantity: { value: dataObj.goldAmount } } });
     await OSECB.util.OseAddClassAbilities(className, actor, packName);
@@ -468,6 +481,7 @@ OSECB.util.OseHelperAddItem = async function (itemName, compName, actor) {
 OSECB.util.OseAddClassAbilities = async function (className, actor, pack) {
   const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
   const compendium = game.packs.get(pack);
+  ui.notifications.warn(game.i18n.localize('OSE-CharacterBuilder.addClassWarn'));
   for (let abil of compendium.index.contents) {  
     const item = await compendium.getDocument(abil._id);
     if (item.data.data.requirements == className) {

@@ -251,6 +251,7 @@
   display: none;
 }
 #osrCharacterBuilder .window-content {
+  background-color: rgb(236, 230, 218);
   background-image: url(/modules/OSE-CharacterBuilder/assets/cb-bg.webp);
 }
 
