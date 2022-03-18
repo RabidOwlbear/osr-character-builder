@@ -30,3 +30,7 @@ When clicked the Character Builder window will appear.
 When finished selecting options/rolling scores clicking the Choose button at the bottom of the form will add the selected class options, stats gold etc. to the character sheet.
 The module will now create an item for all 'standard' currency types when creating a new character.
 Clicking the close button will exit out of the form without adding anything to the sheet.
+
+#### Stat Roll Chat Message Settings
+- Send character builder stat rolls to chat: When checked a chat message will be created whenever a user rolls/rerolls stats in the character builder.
+- Whisper character builder stat rolls to the GM: When checked stat roll messages will be whispered to the GM instead of being sent to chat.
