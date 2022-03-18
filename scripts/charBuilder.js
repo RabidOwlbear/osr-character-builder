@@ -174,18 +174,67 @@ OSECB.util.oseRollGold = function () {
   return amt;
 }
 
-OSECB.util.renderAbilScores = function (html, actor, reroll = false) {
+OSECB.util.renderAbilScores = async function (html, actor, reroll = false) {
   const heroCheck = html.find('#hero-check')[0].checked;
   const actorScores = actor.data.data.scores;
-  const scoreObj = reroll == true ? OSECB.util.oseRollStats(heroCheck) : actor.data.data.scores;
+  const scoreObj = reroll == true ? await OSECB.util.oseRollStats(heroCheck) : actor.data.data.scores;
   const statInputs = html.find("input[type='number'][ class='cb-stat-inp']");
   for (let input of statInputs) {
     input.value = scoreObj[input.name].value;
   }
+  const statsToMsg = await game.settings.get('OSE-CharacterBuilder', 'whisperStatRollMessage');
+  if(statsToMsg && reroll){
+    OSECB.util.statsToMsg({stats: scoreObj, actor: actor, type: heroCheck ? '4d6 Drop Lowest' : '3d6 Standard'})
+  }
 }
-
-OSECB.util.oseRollStats = function (hero = false, simple = false) {
+OSECB.util.statsToMsg = async function (data){
+  let {stats, actor, type} = data;
+  let msgContent = `
+  <details>
+  
+  <summary>
+    <h4 style="display: inline">${game.user.name} Rolled Stats For ${actor.name}</h4>
+  </summary>
+  </br>
+  <div><b>Roll Type:</b> ${type}</div>
+  </br>
+  <div style="border-bottom: 2px solid black; margin-bottom: 3px;">Results:</div>
+  <div style="display: flex; justify-content: space-between; width: 150px">
+    <div style"width: 75px"><b>Str:</b></div>
+    <div> ${stats.str.value}</div>
+  </div>
+  <div style="display: flex; justify-content: space-between; width: 150px">
+    <div style"width: 75px"><b>Int:</b></div>
+    <div> ${stats.int.value}</div>
+  </div>
+  <div style="display: flex; justify-content: space-between; width: 150px">
+    <div style"width: 75px"><b>Wis:</b></div>
+    <div> ${stats.wis.value}</div>
+  </div>
+  <div style="display: flex; justify-content: space-between; width: 150px">
+    <div style"width: 75px"><b>Dex:</b></div>
+    <div> ${stats.dex.value}</div>
+  </div>
+  <div style="display: flex; justify-content: space-between; width: 150px">
+    <div style"width: 75px"><b>Con:</b></div>
+    <div> ${stats.con.value}</div>
+  </div>
+  <div style="display: flex; justify-content: space-between; width: 150px">
+    <div style"width: 75px"><b>Cha:</b></div>
+    <div> ${stats.cha.value}</div>
+  </div>
+  </details>
+  
+  `
+  ChatMessage.create({
+    speaker: game.user,
+    content: msgContent,
+    whisper: await game.settings.get('OSE-CharacterBuilder', 'whisperStatRollMessage') ? game.users.filter(u=>u.isGM) : []
+  })
+}
+OSECB.util.oseRollStats =  async function (hero = false, simple = false) {
   let statArr = ['str', 'int', 'wis', 'con', 'dex', 'cha'];
+  
   const retObj = {};
   if(simple){
     for(let stat of statArr){
@@ -197,7 +246,7 @@ OSECB.util.oseRollStats = function (hero = false, simple = false) {
     }
   }
   
-
+  
   return retObj;
 }
 

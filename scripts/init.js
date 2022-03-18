@@ -12,6 +12,22 @@ Hooks.once('init', async () => {
     default: {},
     scope: 'world'
   });
+  await game.settings.register('OSE-CharacterBuilder', 'statRollMessage', {
+    name: 'Send Character Builder Stat Rolls To Chat',
+    hint: 'Sends stat roll results from the character builder to chat.',
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true
+  });
+  await game.settings.register('OSE-CharacterBuilder', 'whisperStatRollMessage', {
+    name: 'Whisper Character Builder Stat Rolls To GM',
+    hint: 'Whispers stat roll result message to GM istead of sending to chat.',
+    scope: 'world',
+    type: Boolean,
+    default: true,
+    config: true
+  });
   
   //register namespace
   window.OSECB = window.OSECB || {};
