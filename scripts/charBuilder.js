@@ -182,7 +182,7 @@ OSECB.util.renderAbilScores = async function (html, actor, reroll = false) {
   for (let input of statInputs) {
     input.value = scoreObj[input.name].value;
   }
-  const statsToMsg = await game.settings.get('OSE-CharacterBuilder', 'whisperStatRollMessage');
+  const statsToMsg = await game.settings.get('OSE-CharacterBuilder', 'statRollMessage');
   if(statsToMsg && reroll){
     OSECB.util.statsToMsg({stats: scoreObj, actor: actor, type: heroCheck ? '4d6 Drop Lowest' : '3d6 Standard'})
   }
