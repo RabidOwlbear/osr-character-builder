@@ -155,7 +155,7 @@ Hooks.once('OSECB Registered', () => {
     if(data.classType == 'SRD' ){
       data.classType = OSECB.util.oseActive() ? 'basic' : 'SRD'
     }
-    let statObj = OSECB.util.oseRollStats(false, true);
+    let statObj = await OSECB.util.oseRollStats(false, true);
     
     const alignment = ['lawful','neutral', 'chaotic'];
     data.alignment = alignment[Math.floor(Math.random() * alignment.length)]
