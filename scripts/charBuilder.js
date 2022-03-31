@@ -5,7 +5,7 @@ OSECB.util.renderCharacterBuilder = async function (actor, dataObj) {
     id: 'charBuilderForm',
     classes: ['charBuilderForm'],
     popOut: true,
-    template: `modules/OSE-CharacterBuilder/template/characterBuilder.html`,
+    template: `modules/${OSECB.moduleName}/template/characterBuilder.html`,
     id: 'osrCharacterBuilder',
     title: 'Character Builder',
     width: 550,
@@ -13,26 +13,26 @@ OSECB.util.renderCharacterBuilder = async function (actor, dataObj) {
   };
 
   const templateData = {
-    attrib: game.i18n.localize('OSE-CharacterBuilder.formAttrib'),
-    str: game.i18n.localize('OSE-CharacterBuilder.formStr'),
-    int: game.i18n.localize('OSE-CharacterBuilder.formInt'),
-    wis: game.i18n.localize('OSE-CharacterBuilder.formWis'),
-    dex: game.i18n.localize('OSE-CharacterBuilder.formDex'),
-    con: game.i18n.localize('OSE-CharacterBuilder.formCon'),
-    cha: game.i18n.localize('OSE-CharacterBuilder.formCha'),
-    reRoll: game.i18n.localize('OSE-CharacterBuilder.formReRoll'),
-    heroCheck: game.i18n.localize('OSE-CharacterBuilder.formHeroCheck'),
-    classType: game.i18n.localize('OSE-CharacterBuilder.formClassType'),
-    srd: game.i18n.localize('OSE-CharacterBuilder.classTypeSRD'),
-    alignment: game.i18n.localize('OSE-CharacterBuilder.formAlignment'),
-    lawful: game.i18n.localize('OSE-CharacterBuilder.formLaw'),
-    neutral: game.i18n.localize('OSE-CharacterBuilder.formNeut'),
-    chaotic: game.i18n.localize('OSE-CharacterBuilder.formChaos'),
-    gold: game.i18n.localize('OSE-CharacterBuilder.formGold'),
-    classSelect: game.i18n.localize('OSE-CharacterBuilder.formClassSelect'),
-    classInfo: game.i18n.localize('OSE-CharacterBuilder.formClassInfo'),
-    close: game.i18n.localize('OSE-CharacterBuilder.formBtnClose'),
-    choose: game.i18n.localize('OSE-CharacterBuilder.formBtnChoose'),
+    attrib: game.i18n.localize(`${OSECB.moduleName}.formAttrib`),
+    str: game.i18n.localize(`${OSECB.moduleName}.formStr`),
+    int: game.i18n.localize(`${OSECB.moduleName}.formInt`),
+    wis: game.i18n.localize(`${OSECB.moduleName}.formWis`),
+    dex: game.i18n.localize(`${OSECB.moduleName}.formDex`),
+    con: game.i18n.localize(`${OSECB.moduleName}.formCon`),
+    cha: game.i18n.localize(`${OSECB.moduleName}.formCha`),
+    reRoll: game.i18n.localize(`${OSECB.moduleName}.formReRoll`),
+    heroCheck: game.i18n.localize(`${OSECB.moduleName}.formHeroCheck`),
+    classType: game.i18n.localize(`${OSECB.moduleName}.formClassType`),
+    srd: game.i18n.localize(`${OSECB.moduleName}.classTypeSRD`),
+    alignment: game.i18n.localize(`${OSECB.moduleName}.formAlignment`),
+    lawful: game.i18n.localize(`${OSECB.moduleName}.formLaw`),
+    neutral: game.i18n.localize(`${OSECB.moduleName}.formNeut`),
+    chaotic: game.i18n.localize(`${OSECB.moduleName}.formChaos`),
+    gold: game.i18n.localize(`${OSECB.moduleName}.formGold`),
+    classSelect: game.i18n.localize(`${OSECB.moduleName}.formClassSelect`),
+    classInfo: game.i18n.localize(`${OSECB.moduleName}.formClassInfo`),
+    close: game.i18n.localize(`${OSECB.moduleName}.formBtnClose`),
+    choose: game.i18n.localize(`${OSECB.moduleName}.formBtnChoose`),
     classTypeContent: OSECB.util.renderClassTypes(dataObj)
   };
   // { content: listContent };
@@ -182,7 +182,7 @@ OSECB.util.renderAbilScores = async function (html, actor, reroll = false) {
   for (let input of statInputs) {
     input.value = scoreObj[input.name].value;
   }
-  const statsToMsg = await game.settings.get('OSE-CharacterBuilder', 'statRollMessage');
+  const statsToMsg = await game.settings.get(`${OSECB.moduleName}`, 'statRollMessage');
   if(statsToMsg && reroll){
     OSECB.util.statsToMsg({stats: scoreObj, actor: actor, type: heroCheck ? '4d6 Drop Lowest' : '3d6 Standard'})
   }
@@ -229,7 +229,7 @@ OSECB.util.statsToMsg = async function (data){
   ChatMessage.create({
     speaker: game.user,
     content: msgContent,
-    whisper: await game.settings.get('OSE-CharacterBuilder', 'whisperStatRollMessage') ? game.users.filter(u=>u.isGM) : []
+    whisper: await game.settings.get(`${OSECB.moduleName}`, 'whisperStatRollMessage') ? game.users.filter(u=>u.isGM) : []
   })
 }
 OSECB.util.oseRollStats =  async function (hero = false, simple = false) {
@@ -325,7 +325,7 @@ OSECB.util.renderClassOptions = function (html) {
 //retrieve the relevant class option data object from the game settings option object. requires source category name.
 //eg. basic, advanced, SRD
 OSECB.util.getClassOptionObj = function (classType) {
-  const optionObj = game.settings.get('OSE-CharacterBuilder', 'characterClasses');
+  const optionObj = game.settings.get(`${OSECB.moduleName}`, 'characterClasses');
 
   for (let key of Object.keys(optionObj)) {
     let options = optionObj[key].options;
@@ -341,7 +341,7 @@ OSECB.util.getClassOptionObj = function (classType) {
 }
 
 OSECB.util.oseUpdateSheet = async function (dataObj, actor) {
-    const optionObj = await game.settings.get('OSE-CharacterBuilder', 'characterClasses');
+    const optionObj = await game.settings.get(`${OSECB.moduleName}`, 'characterClasses');
     let {classType, level} = dataObj
   const className = dataObj.classOption;  
   const classData = OSECB.util.getClassOptionObj(classType);
@@ -474,7 +474,7 @@ OSECB.util.oseUpdateSheet = async function (dataObj, actor) {
     let types = ['PP','GP','EP','SP','CP']
     let curCheck = async (type)=>{
       let itemExists = actor.data.items.getName(type)
-      let pack = game.packs.get('OSE-CharacterBuilder.OSE-SRD-items');
+      let pack = game.packs.get(`${OSECB.moduleName}.OSE-SRD-items`);
       if(!itemExists){
         let curItem = await pack.getDocument(pack.index.getName(type)._id);
         let itemData = curItem.clone().data
@@ -490,7 +490,7 @@ OSECB.util.oseUpdateSheet = async function (dataObj, actor) {
     }
     await goldItem.update({ data: { quantity: { value: dataObj.goldAmount } } });
     await OSECB.util.OseAddClassAbilities(className, actor, packName);
-    await actor.setFlag('OSE-CharacterBuilder', 'classSelected', true);
+    await actor.setFlag(`${OSECB.moduleName}`, 'classSelected', true);
 
     if (dataObj.shopCheck) {
       OSRIS.shop.renderItemShop(actor);
@@ -530,7 +530,7 @@ OSECB.util.OseHelperAddItem = async function (itemName, compName, actor) {
 OSECB.util.OseAddClassAbilities = async function (className, actor, pack) {
   const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
   const compendium = game.packs.get(pack);
-  ui.notifications.warn(game.i18n.localize('OSE-CharacterBuilder.addClassWarn'));
+  ui.notifications.warn(game.i18n.localize(`${OSECB.moduleName}.addClassWarn`));
   for (let abil of compendium.index.contents) {  
     const item = await compendium.getDocument(abil._id);
     if (item.data.data.requirements == className) {

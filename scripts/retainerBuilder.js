@@ -13,7 +13,7 @@ Hooks.once('OSECB Registered', () => {
         return mergeObject(super.defaultOptions, {
           classes: ['retainer-builder'],
           popOut: true,
-          template: `modules/OSE-CharacterBuilder/template/retainerBuilder.html`,
+          template: `modules/${OSECB.moduleName}/template/retainerBuilder.html`,
           height: 220,
           width: 300,
           id: 'retainer-builder',
@@ -239,7 +239,7 @@ Hooks.once('OSECB Registered', () => {
     const oseActive = OSECB.util.oseActive();
     const {classOption} = data
     
-    const compendium = await game.packs.get("OSE-CharacterBuilder.OSE-SRD-items")
+    const compendium = await game.packs.get(`${OSECB.moduleName}.OSE-SRD-items`)
     const gearList = ['Backpack', 'Crowbar', 'Garlic', 'Grappling Hook', 'Hammer (small)', 'Holy Symbol', 'Holy Water (vial)', 'Iron Spikes (12)', 'Lantern', 'Mirror (hand sized, steel)', 'Oil (1 flask)', "Pole (10' long, wooden)", 'Rations (iron, 7 days)', 'Rations (standard, 7 days)', "Rope (50')", 'Sack (large)', 'Sack (small)', 'Stakes (3) and Mallet', 'Thieves Tools', 'Tinder Box (flint and steel)', 'Torches (6)', 'Waterskin', 'Wine (2 pints)', 'Wolfsbane (1 bunch)'];
     const armorList = oseActive ?
     OSE.data.retainerGear[classOption].armor :
