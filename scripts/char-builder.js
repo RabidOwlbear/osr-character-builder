@@ -39,7 +39,7 @@ export async function registerCharacterBuilder() {
     // { content: listContent };
     // const formHTML = await renderTemplate(formTemplate, templateData);
 
-    class OSECharBuilder extends FormApplication {
+    class OSRCharBuilder extends FormApplication {
       constructor(object, options, actor) {
         super(object, options);
         this.actor = actor;
@@ -107,13 +107,13 @@ export async function registerCharacterBuilder() {
 
         // end fix
 
-        await OSRCB.util.oseUpdateSheet(formData, this.actor);
+        await OSRCB.util.osrUpdateSheet(formData, this.actor);
         if (formData.spellCheck) {
           OSRCB.util.randomSpells(formData, this.actor);
         }
       }
     }
-    const newForm = new OSECharBuilder(templateData, formOptions, actor);
+    const newForm = new OSRCharBuilder(templateData, formOptions, actor);
     await newForm.render(true);
   };
 
@@ -156,14 +156,14 @@ export async function registerCharacterBuilder() {
       return;
     }
     if (reroll) {
-      goldInp.value = OSRCB.util.oseRollGold();
+      goldInp.value = OSRCB.util.osrRollGold();
       return;
     }
 
     goldInp.value = actorGold;
   };
 
-  OSRCB.util.oseRollGold = function () {
+  OSRCB.util.osrRollGold = function () {
     let amt = 0;
     for (let i = 0; i < 3; i++) {
       amt += Math.floor(Math.random() * 6 + 1) * 10;
@@ -174,7 +174,7 @@ export async function registerCharacterBuilder() {
   OSRCB.util.renderAbilScores = async function (html, actor, reroll = false) {
     const heroCheck = html.find('#hero-check')[0].checked;
     const actorScores = actor.data.data.scores;
-    const scoreObj = reroll == true ? await OSRCB.util.oseRollStats(heroCheck) : actor.data.data.scores;
+    const scoreObj = reroll == true ? await OSRCB.util.osrRollStats(heroCheck) : actor.data.data.scores;
     const statInputs = html.find("input[type='number'][ class='cb-stat-inp']");
     for (let input of statInputs) {
       input.value = scoreObj[input.name].value;
@@ -231,24 +231,24 @@ export async function registerCharacterBuilder() {
         : []
     });
   };
-  OSRCB.util.oseRollStats = async function (hero = false, simple = false) {
+  OSRCB.util.osrRollStats = async function (hero = false, simple = false) {
     let statArr = ['str', 'int', 'wis', 'con', 'dex', 'cha'];
 
     const retObj = {};
     if (simple) {
       for (let stat of statArr) {
-        retObj[stat] = OSRCB.util.oseRollStat(hero);
+        retObj[stat] = OSRCB.util.osrRollStat(hero);
       }
     } else {
       for (let stat of statArr) {
-        retObj[stat] = { value: OSRCB.util.oseRollStat(hero) };
+        retObj[stat] = { value: OSRCB.util.osrRollStat(hero) };
       }
     }
 
     return retObj;
   };
 
-  OSRCB.util.oseRollStat = (hero = false) => {
+  OSRCB.util.osrRollStat = (hero = false) => {
     let rollArr = [];
     let rollResult = 0;
     const dieCount = hero === true ? 4 : 3;
@@ -321,8 +321,9 @@ export async function registerCharacterBuilder() {
   //retrieve the relevant class option data object from the game settings option object. requires source category name.
   //eg. basic, advanced, SRD
   OSRCB.util.getClassOptionObj = function (classType) {
+    
     const optionObj = game.settings.get(`${OSRCB.moduleName}`, 'characterClasses');
-
+    console.log(classType, optionObj)
     for (let key of Object.keys(optionObj)) {
       let options = optionObj[key].options;
       for (let i = 0; i < options.length; i++) {
@@ -334,7 +335,7 @@ export async function registerCharacterBuilder() {
     }
   };
 
-  OSRCB.util.oseUpdateSheet = async function (dataObj, actor) {
+  OSRCB.util.osrUpdateSheet = async function (dataObj, actor) {
     const optionObj = await game.settings.get(`${OSRCB.moduleName}`, 'characterClasses');
     let { classType, level } = dataObj;
     const className = dataObj.classOption;
@@ -479,7 +480,7 @@ export async function registerCharacterBuilder() {
         await curCheck(type);
       }
       await goldItem.update({ data: { quantity: { value: dataObj.goldAmount } } });
-      await OSRCB.util.OseAddClassAbilities(className, actor, packName);
+      await OSRCB.util.osrAddClassAbilities(className, actor, packName);
       await actor.setFlag(`${OSRCB.moduleName}`, 'classSelected', true);
 
       if (dataObj.shopCheck) {
@@ -505,7 +506,7 @@ export async function registerCharacterBuilder() {
     }
   };
 
-  OSRCB.util.OseHelperAddItem = async function (itemName, compName, actor) {
+  OSRCB.util.osrHelperAddItem = async function (itemName, compName, actor) {
     const compendium = await game.packs.get(compName);
     const index = await compendium.getIndex();
     const entry = await index.find((e) => e.name == itemName);
@@ -516,7 +517,7 @@ export async function registerCharacterBuilder() {
   };
 
   //add class abilities to sheet
-  OSRCB.util.OseAddClassAbilities = async function (className, actor, pack) {
+  OSRCB.util.osrAddClassAbilities = async function (className, actor, pack) {
     const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
     const compendium = game.packs.get(pack);
     ui.notifications.warn(game.i18n.localize(`${OSRCB.moduleName}.addClassWarn`));
@@ -537,7 +538,7 @@ export async function registerCharacterBuilder() {
 
   //working: bonus experience calculator.
   //needs: check for stats, object containing rules per class, logic to use class rule to compare specified stats then add appropriate bonus to the sheet.
-  OSRCB.util.oseBonusXp = async function (actor, reqObj) {
+  OSRCB.util.osrBonusXp = async function (actor, reqObj) {
     const scores = actor.data.data.scores;
   };
 }

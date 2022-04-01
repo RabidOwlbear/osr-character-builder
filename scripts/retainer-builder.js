@@ -37,7 +37,7 @@ export async function registerRetainerBuilder() {
           ],
           randName: ``
         }
-        let helperActive = game.modules.get('OSE-helper')?.active;
+        let helperActive = game.modules.get('osr-helper')?.active;
         if (helperActive){
           tData.randName = `
           <div>
@@ -132,10 +132,11 @@ export async function registerRetainerBuilder() {
           if(formData.itemsCheck && newRetainer) {
             
             OSRCB.util.randomItems(formData, newRetainer)}
-          if(formData.randName){
+          if(formData.randName && newRetainer){
+            console.log('ghggggggg', formData, OSRCB.util.getClassOptionObj(formData.classType))
             let classObj  = OSRCB.util.getClassOptionObj(formData.classType).classes[formData.classOption]
             console.log(classObj, classObj.nameType)
-            let name = OSEH.util.randomName(classObj.nameType)
+            let name = OSRH.util.randomName(classObj.nameType)
             console.log(newRetainer, name, newRetainer.name)
             const oldName = newRetainer.name
             await newRetainer.update({name: `${name} ${oldName}`, token: {name: name}})
@@ -155,7 +156,7 @@ export async function registerRetainerBuilder() {
     if(data.classType == 'SRD' ){
       data.classType = OSRCB.util.oseActive() ? 'basic' : 'SRD'
     }
-    let statObj = await OSRCB.util.oseRollStats(false, true);
+    let statObj = await OSRCB.util.osrRollStats(false, true);
     
     const alignment = ['lawful','neutral', 'chaotic'];
     data.alignment = alignment[Math.floor(Math.random() * alignment.length)]
@@ -174,7 +175,7 @@ export async function registerRetainerBuilder() {
       folder: folder.id
     })
      
-    await OSRCB.util.oseUpdateSheet(data, newActor);
+    await OSRCB.util.osrUpdateSheet(data, newActor);
     return newActor
 
   }
@@ -320,13 +321,13 @@ export async function registerRetainerBuilder() {
     
     if(randomNumber){
       let newNum = Math.floor(Math.random() * number + 1)
-     number = newNum
+      number = newNum
     }
     for( let i = 0; i < number; i++){
       let diff = maxLvl - minLvl;
       
     let randNum = Math.floor(Math.random() * (diff + 1)) + minLvl;
-    randLvl = randNum == 0 ? 1 : randNum;
+    let randLvl = randNum == 0 ? 1 : randNum;
     const data = {
       level: minLvl == maxLvl ? minLvl : randNum,
       classType: type,
@@ -336,10 +337,10 @@ export async function registerRetainerBuilder() {
     const newRetainer = await OSRCB.util.retainerGen(data);
     data.level = newRetainer.data.data.details.level;
     // random name support
-    if(randomName && game.modules.get("OSE-helper")?.active){
+    if(randomName && game.modules.get("osr-helper")?.active){
       let classObj  = OSRCB.util.getClassOptionObj(data.classType).classes[data.classOption]
       console.log(classObj, classObj.nameType)
-      let name = OSEH.util.randomName(classObj.nameType)
+      let name = OSRH.util.randomName(classObj.nameType)
       console.log(newRetainer, name, newRetainer.name)
       const oldName = newRetainer.name
       await newRetainer.update({name: `${name} ${oldName}`, token: {name: name}})

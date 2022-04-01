@@ -5,7 +5,7 @@ window.OSRCB = window.OSRCB || {
   moduleName: `osr-character-builder`
 };
 Hooks.once('init', async () => {
-  console.log('OSE-Character-Builder Loaded.<-----------------------------');
+  console.log('OSR-Character-Builder Loaded.<-----------------------------');
   await game.settings.register(`${OSRCB.moduleName}`, 'characterClasses', {
     name: 'characterClasses',
     type: Object,
@@ -100,7 +100,7 @@ Hooks.on('renderOseActorSheet', (actorObj, html) => {
   }
 });
 
-Hooks.on('renderOSECharBuilder', async (app, html) => {
+Hooks.on('renderOSRCharBuilder', async (app, html) => {
   OSRCB.util.renderClassOptions(html);
   OSRCB.util.renderAbilScores(html, app.actor);
   OSRCB.util.renderGold(html, app.actor);
