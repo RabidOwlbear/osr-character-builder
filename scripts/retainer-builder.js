@@ -1,7 +1,7 @@
-Hooks.once('OSECB Registered', () => {
+export async function registerRetainerBuilder() {
 
 
-  OSECB.util.renderRetainerBuilder = async function (actor) {
+  OSRCB.util.renderRetainerBuilder = async function (actor) {
     
     class RetainerBuilder extends FormApplication {
       constructor(actor) {
@@ -13,7 +13,7 @@ Hooks.once('OSECB Registered', () => {
         return mergeObject(super.defaultOptions, {
           classes: ['retainer-builder'],
           popOut: true,
-          template: `modules/${OSECB.moduleName}/template/retainerBuilder.html`,
+          template: `modules/${OSRCB.moduleName}/template/retainerBuilder.html`,
           height: 220,
           width: 300,
           id: 'retainer-builder',
@@ -46,7 +46,7 @@ Hooks.once('OSECB Registered', () => {
           </div>
           `
         }
-        let ose = OSECB.util.oseActive()
+        let ose = OSRCB.util.oseActive()
         console.log(ose)
         if(ose){
           let opt = [
@@ -86,13 +86,13 @@ Hooks.once('OSECB Registered', () => {
             let classType = classInput[0]
             let classOption = classInput[1]
             if(classType == 'SRD'){              
-              classType = OSECB.util.oseActive() ? 'basic' : 'SRD'
+              classType = OSRCB.util.oseActive() ? 'basic' : 'SRD'
             }
             
             
-            const dataObj = OSECB.util.getClassOptionObj(classType).classes;
+            const dataObj = OSRCB.util.getClassOptionObj(classType).classes;
             const classObj = dataObj[classOption];
-            // const classObj = await OSECB.util.getClassOptionObj(classType).classes[classOption];
+            // const classObj = await OSRCB.util.getClassOptionObj(classType).classes[classOption];
             
             if(lvlInput.valueAsNumber > classObj.maxLvl){
               lvlInput.value = classObj.maxLvl
@@ -105,9 +105,9 @@ Hooks.once('OSECB Registered', () => {
             let classType = classInput[0]
             let classOption = classInput[1]
             if(classType == 'SRD'){
-              classType = OSECB.util.oseActive() ? 'basic' : 'SRD'
+              classType = OSRCB.util.oseActive() ? 'basic' : 'SRD'
             }
-            const dataObj = OSECB.util.getClassOptionObj(classType).classes;
+            const dataObj = OSRCB.util.getClassOptionObj(classType).classes;
             const classObj = dataObj[classOption];
             if(lvlInput.valueAsNumber > classObj.maxLvl){
               lvlInput.value = classObj.maxLvl
@@ -125,15 +125,15 @@ Hooks.once('OSECB Registered', () => {
         formData.classType = selectData[0];
         formData.classOption = selectData[1]
         formData.retainer= true;
-          const newRetainer = await OSECB.util.retainerGen(formData);
+          const newRetainer = await OSRCB.util.retainerGen(formData);
           if(formData.spellCheck && newRetainer) {
             
-            OSECB.util.randomSpells(formData, newRetainer)}
+            OSRCB.util.randomSpells(formData, newRetainer)}
           if(formData.itemsCheck && newRetainer) {
             
-            OSECB.util.randomItems(formData, newRetainer)}
+            OSRCB.util.randomItems(formData, newRetainer)}
           if(formData.randName){
-            let classObj  = OSECB.util.getClassOptionObj(formData.classType).classes[formData.classOption]
+            let classObj  = OSRCB.util.getClassOptionObj(formData.classType).classes[formData.classOption]
             console.log(classObj, classObj.nameType)
             let name = OSEH.util.randomName(classObj.nameType)
             console.log(newRetainer, name, newRetainer.name)
@@ -145,7 +145,7 @@ Hooks.once('OSECB Registered', () => {
     }
     new RetainerBuilder(actor).render(true)
   };
-  OSECB.util.retainerGen= async function (data){
+  OSRCB.util.retainerGen= async function (data){
     
     let { level} = data
     if(data.classType == 'none'){
@@ -153,9 +153,9 @@ Hooks.once('OSECB Registered', () => {
       return null
     }
     if(data.classType == 'SRD' ){
-      data.classType = OSECB.util.oseActive() ? 'basic' : 'SRD'
+      data.classType = OSRCB.util.oseActive() ? 'basic' : 'SRD'
     }
-    let statObj = await OSECB.util.oseRollStats(false, true);
+    let statObj = await OSRCB.util.oseRollStats(false, true);
     
     const alignment = ['lawful','neutral', 'chaotic'];
     data.alignment = alignment[Math.floor(Math.random() * alignment.length)]
@@ -174,18 +174,18 @@ Hooks.once('OSECB Registered', () => {
       folder: folder.id
     })
      
-    await OSECB.util.oseUpdateSheet(data, newActor);
+    await OSRCB.util.oseUpdateSheet(data, newActor);
     return newActor
 
   }
-  OSECB.util.randomSpells = async function (data, actor){
+  OSRCB.util.randomSpells = async function (data, actor){
     
     const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
     let {classType, classOption, level} = data
     if(classType == 'SRD'){
-      classType = OSECB.util.oseActive() ? 'basic' : 'SRD'
+      classType = OSRCB.util.oseActive() ? 'basic' : 'SRD'
     }
-    const typeData = await OSECB.util.getClassOptionObj(classType)
+    const typeData = await OSRCB.util.getClassOptionObj(classType)
     const classData = typeData.classes[classOption];
     //break out if not spellcaster
     if(!classData.spellCaster){
@@ -193,7 +193,7 @@ Hooks.once('OSECB Registered', () => {
       return
     } 
     const magicType = classData?.spellType
-    const spellList = OSECB.spells.mergedList[magicType];
+    const spellList = OSRCB.spells.mergedList[magicType];
     const slotData = classData?.spellSlot[level]
     const compendium = await game.packs.get(classData.spellPackName);
     for(let key in slotData){
@@ -235,18 +235,18 @@ Hooks.once('OSECB Registered', () => {
     }
   }
 
-  OSECB.util.randomItems = async function (data , actor){
-    const oseActive = OSECB.util.oseActive();
+  OSRCB.util.randomItems = async function (data , actor){
+    const oseActive = OSRCB.util.oseActive();
     const {classOption} = data
     
-    const compendium = await game.packs.get(`${OSECB.moduleName}.OSE-SRD-items`)
+    const compendium = await game.packs.get(`${OSRCB.moduleName}.osr-srd-items`)
     const gearList = ['Backpack', 'Crowbar', 'Garlic', 'Grappling Hook', 'Hammer (small)', 'Holy Symbol', 'Holy Water (vial)', 'Iron Spikes (12)', 'Lantern', 'Mirror (hand sized, steel)', 'Oil (1 flask)', "Pole (10' long, wooden)", 'Rations (iron, 7 days)', 'Rations (standard, 7 days)', "Rope (50')", 'Sack (large)', 'Sack (small)', 'Stakes (3) and Mallet', 'Thieves Tools', 'Tinder Box (flint and steel)', 'Torches (6)', 'Waterskin', 'Wine (2 pints)', 'Wolfsbane (1 bunch)'];
     const armorList = oseActive ?
     OSE.data.retainerGear[classOption].armor :
-    OSECB.data.retainerGear[classOption].armor;
+    OSRCB.data.retainerGear[classOption].armor;
     const weaponList = oseActive ?
     OSE.data.retainerGear[classOption].weapons :
-    OSECB.data.retainerGear[classOption].weapons;
+    OSRCB.data.retainerGear[classOption].weapons;
     const weaponPick = []
     let weaponCount = Math.floor(Math.random() * 2 + 1)
     if(weaponCount > weaponList.length)weaponCount = weaponList.length;
@@ -307,14 +307,14 @@ Hooks.once('OSECB Registered', () => {
       }
   */
 
-  OSECB.util.randomRetainers = async function (data, classType = 'SRD'){
+  OSRCB.util.randomRetainers = async function (data, classType = 'SRD'){
     
     const advanced = ['acrobat','assassin','barbarian','bard','drow','druid','duergar','gnome','half-elf','half-orc','illusionist','knight','paladin','ranger','svirfneblin']
     const basic = ['cleric', 'dwarf', 'elf', 'fighter', 'halfling','magic-user', 'thief']
     let classOptions = basic
     let type = classType
-    if(classType == 'advanced' && OSECB.util.oseActive())classOptions = advanced;
-    if(classType == 'mixed' && OSECB.util.oseActive())  classOptions = advanced.concat(basic);
+    if(classType == 'advanced' && OSRCB.util.oseActive())classOptions = advanced;
+    if(classType == 'mixed' && OSRCB.util.oseActive())  classOptions = advanced.concat(basic);
 
     let {number, randomNumber, maxLvl, minLvl, items, spells, randomName } = data;
     
@@ -333,25 +333,25 @@ Hooks.once('OSECB Registered', () => {
       classOption: classOptions[Math.floor(Math.random() * classOptions.length)]
     }
     console.log('data', data)  
-    const newRetainer = await OSECB.util.retainerGen(data);
+    const newRetainer = await OSRCB.util.retainerGen(data);
     data.level = newRetainer.data.data.details.level;
     // random name support
     if(randomName && game.modules.get("OSE-helper")?.active){
-      let classObj  = OSECB.util.getClassOptionObj(data.classType).classes[data.classOption]
+      let classObj  = OSRCB.util.getClassOptionObj(data.classType).classes[data.classOption]
       console.log(classObj, classObj.nameType)
       let name = OSEH.util.randomName(classObj.nameType)
       console.log(newRetainer, name, newRetainer.name)
       const oldName = newRetainer.name
       await newRetainer.update({name: `${name} ${oldName}`, token: {name: name}})
     }
-    if(spells) await OSECB.util.randomSpells(data, newRetainer)
-    if(items) await OSECB.util.randomItems(data, newRetainer)
+    if(spells) await OSRCB.util.randomSpells(data, newRetainer)
+    if(items) await OSRCB.util.randomItems(data, newRetainer)
     }
   }
   
-  OSECB.util.oseActive = function(){
+  OSRCB.util.oseActive = function(){
     if(game.modules.get('old-school-essentials')?.active){
       return true
     } else return false
   }
-});
+}
