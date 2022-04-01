@@ -1,18 +1,24 @@
+import { registerCharacterBuilder } from './char-builder.js'
+import { registerSrdData } from './srd-class-data.js'
+import { registerRetainerBuilder } from './retainer-builder.js'
+window.OSRCB = window.OSRCB || {
+  moduleName: `osr-character-builder`
+};
 Hooks.once('init', async () => {
   console.log('OSE-Character-Builder Loaded.<-----------------------------');
-  await game.settings.register('OSE-CharacterBuilder', 'characterClasses', {
+  await game.settings.register(`${OSRCB.moduleName}`, 'characterClasses', {
     name: 'characterClasses',
     type: Object,
     default: {},
     scope: 'world'
   });
-  await game.settings.register('OSE-CharacterBuilder', 'spellList', {
+  await game.settings.register(`${OSRCB.moduleName}`, 'spellList', {
     name: 'spellList',
     type: Object,
     default: {},
     scope: 'world'
   });
-  await game.settings.register('OSE-CharacterBuilder', 'statRollMessage', {
+  await game.settings.register(`${OSRCB.moduleName}`, 'statRollMessage', {
     name: 'Send Character Builder Stat Rolls To Chat',
     hint: 'Sends stat roll results from the character builder to chat.',
     scope: 'world',
@@ -20,7 +26,7 @@ Hooks.once('init', async () => {
     default: false,
     config: true
   });
-  await game.settings.register('OSE-CharacterBuilder', 'whisperStatRollMessage', {
+  await game.settings.register(`${OSRCB.moduleName}`, 'whisperStatRollMessage', {
     name: 'Whisper Character Builder Stat Rolls To GM',
     hint: 'Whispers stat roll result message to GM istead of sending to chat.',
     scope: 'world',
@@ -30,12 +36,18 @@ Hooks.once('init', async () => {
   });
   
   //register namespace
-  window.OSECB = window.OSECB || {};
-  OSECB.util = OSECB.util || {};
-  OSECB.data = OSECB.data || {};
-  OSECB.spells = OSECB.spells || { mergedList: {}, }
-  OSECB.spells.mergedList = {};
-  Hooks.call('OSECB Registered');
+  window.OSRCB = window.OSRCB || {};
+  OSRCB.util = OSRCB.util || {};
+  OSRCB.data = OSRCB.data || {};
+  OSRCB.spells = OSRCB.spells || { mergedList: {}, }
+  OSRCB.spells.mergedList = {};
+  Hooks.call('OSRCB Registered');
+
+  // import modules
+  registerCharacterBuilder()
+  registerSrdData()
+  registerRetainerBuilder()
+
 });
 
 Hooks.once('ready', async () => {
@@ -48,20 +60,20 @@ Hooks.once('ready', async () => {
     srdObj.SRD = {
       name: 'SRD',
       header: false,
-      pack: 'OSE-CharacterBuilder.OSE-SRD-class-options',
+      pack: `${OSRCB.moduleName}.osr-srd-class-options`,
       options: [
         {
           name: 'SRD',
-          classes: OSECB.data.SRDClassData,
-          pack: 'OSE-CharacterBuilder.OSE-SRD-class-options'
+          classes: OSRCB.data.SRDClassData,
+          pack: `${OSRCB.moduleName}.osr-srd-class-options`
         }
       ]
     };
   }
   
   if (game.user.role >= 4) {
-    // await game.settings.set('OSE-CharacterBuilder', 'spellList', {})
-    await game.settings.set('OSE-CharacterBuilder', 'characterClasses', srdObj);
+    // await game.settings.set(`${OSRCB.moduleName}`, 'spellList', {})
+    await game.settings.set(`${OSRCB.moduleName}`, 'characterClasses', srdObj);
     Hooks.callAll('OseCharacterClassAdded');
   }
 });
@@ -72,25 +84,25 @@ Hooks.on('renderOseActorSheet', (actorObj, html) => {
   const modBox = html.find(`[class="modifiers-btn"]`);
   const defCharBtn = html.find(`.profile .blinking`)[0]
   if(defCharBtn) defCharBtn.style.display = 'none'
-  const classSelected = actor.getFlag('OSE-CharacterBuilder', 'classSelected');
+  const classSelected = actor.getFlag(`${OSRCB.moduleName}`, 'classSelected');
 
   if (actor.data?.data?.scores?.str?.value == 0) {
     // if (!classSelected) {
     modBox.append(
-      `<a class="ose-icon ose-choose-class" title="Character Builder"><i class="fas fa-user-shield"></i></a>`
+      `<a class="osr-icon osr-choose-class" title="Character Builder"><i class="fas fa-user-shield"></i></a>`
     );
-    modBox.on('click', '.ose-choose-class', async (event) => {
-      const dataObj = await game.settings.get('OSE-CharacterBuilder', 'characterClasses');
+    modBox.on('click', '.osr-choose-class', async (event) => {
+      const dataObj = await game.settings.get(`${OSRCB.moduleName}`, 'characterClasses');
       console.log(dataObj)
-      OSECB.util.renderCharacterBuilder(actor, dataObj);
+      OSRCB.util.renderCharacterBuilder(actor, dataObj);
     });
     // }
   }
 });
 
 Hooks.on('renderOSECharBuilder', async (app, html) => {
-  OSECB.util.renderClassOptions(html);
-  OSECB.util.renderAbilScores(html, app.actor);
-  OSECB.util.renderGold(html, app.actor);
-  OSECB.util.shopCheck(html);
+  OSRCB.util.renderClassOptions(html);
+  OSRCB.util.renderAbilScores(html, app.actor);
+  OSRCB.util.renderGold(html, app.actor);
+  OSRCB.util.shopCheck(html);
 });

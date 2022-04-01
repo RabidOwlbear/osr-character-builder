@@ -1,8 +1,8 @@
 
-Hooks.once('OSECB Registered', async () => {
+export async function registerSrdData (){
   const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
   
-  OSECB.data.SRDClassData = {
+  OSRCB.data.SRDClassData = {
     cleric: {
       name: 'cleric',
       menu: 'Cleric',
@@ -42,7 +42,7 @@ Hooks.once('OSECB Registered', async () => {
         14: { 1: { max: 6 }, 2: { max: 5 }, 3: { max: 5 }, 4: { max: 5 }, 5: { max: 4 }, 6: { max: 0 } }
       },
       spellType: 'cleric',
-      spellPackName: 'OSE-CharacterBuilder.OSE-SRD-spells',
+      spellPackName: `${OSRCB.moduleName}.osr-srd-spells`,
       description: `<b>Requirements</b>: None<br>
     <b>Prime requisite</b>: WIS<br>
     <b>Hit Dice</b>: 1d6<br>
@@ -53,7 +53,7 @@ Hooks.once('OSECB Registered', async () => {
       notes:
         'Clerics are adventurers who have sworn to serve a deity. They are trained for battle and channel the power of their deity.',
       languages: ['Alignment', 'Common'],
-      journal: `<br><br><b>Journal Entry</b>: @Compendium[OSE-CharacterBuilder.OSE-SRD-classes.MxTAGtazZxJfvF7M]{Cleric}<br>`,
+      journal: `<br><br><b>Journal Entry</b>: @Compendium[${OSRCB.moduleName}.osr-srd-classes.MxTAGtazZxJfvF7M]{Cleric}<br>`,
       maxLvl: 14,
       nameType: 'human'
     },
@@ -89,7 +89,7 @@ Hooks.once('OSECB Registered', async () => {
       notes:
         'Dwarves are stout, bearded demihumans, about 4’ tall and weighing about 150 pounds. Dwarves typically live underground and love fine craftsmanship, gold, hearty food, and strong drink. They have skin, hair, and eye colours in earth tones. Dwarves are known for their stubbornness and practicality. They are a hardy people and have a strong resistance to magic, as reflected in their saving throws.',
       languages: ['Alignment', 'Common', 'Dwarvish', 'Gnomish', 'Goblin', 'Kobold'],
-      journal: `<br><br><b>Journal Entry</b>: @Compendium[OSE-CharacterBuilder.OSE-SRD-classes.8FaYQ5BwGMxlWJA7]{Dwarf}<br>`,
+      journal: `<br><br><b>Journal Entry</b>: @Compendium[${OSRCB.moduleName}.osr-srd-classes.8FaYQ5BwGMxlWJA7]{Dwarf}<br>`,
       maxLvl: 12,
       nameType: 'dwarf'
     },
@@ -127,7 +127,7 @@ Hooks.once('OSECB Registered', async () => {
         10: { 1: { max: 3 }, 2: { max: 3 }, 3: { max: 3 }, 4: { max: 3 }, 5: { max: 2 }, 6: { max: 0 } }
       },
       spellType: 'magic-user',
-      spellPackName: 'OSE-CharacterBuilder.OSE-SRD-spells',
+      spellPackName: `${OSRCB.moduleName}.osr-srd-spells`,
       description: `<b>Requirements</b>: Minimum INT 9<br>
     <b>Prime requisite</b>: INT and STR<br>
     <b>Hit Dice:</b> 1d6<br>
@@ -138,7 +138,7 @@ Hooks.once('OSECB Registered', async () => {
       notes: `Elves are slender, fey demihumans with pointed ears. They typically weigh about 120 pounds and are between 5 and 5½ feet tall. Elves are seldom met in human settlements, preferring to feast and make merry in the woods. If crossed, they are dangerous enemies, as they are masters of both sword and spell. Elves are fascinated by spells and beautifully constructed magic items and love to collect both.<br>
     <b>Prime requisites</b>: An elf with at least 13 INT and STR gains a 5% bonus to experience. An elf with an INT of at least 16 and a STR of at least 13 receives a +10% XP bonus.`,
       languages: ['Alignment', 'Common', 'Elvish', 'Gnoll', 'Hobgoblin', 'Orcish'],
-      journal: `<br><br><b>Journal Entry</b>: @Compendium[OSE-CharacterBuilder.OSE-SRD-classes.iH341o9KMs0jx96z]{Elf}<br>`,
+      journal: `<br><br><b>Journal Entry</b>: @Compendium[${OSRCB.moduleName}.osr-srd-classes.iH341o9KMs0jx96z]{Elf}<br>`,
       maxLvl: 10,
       nameType: 'elf'
     },
@@ -175,7 +175,7 @@ Hooks.once('OSECB Registered', async () => {
       notes:
         'Fighters are adventurers dedicated to mastering the arts of combat and war. In a group of adventurers, the role of fighters is to battle monsters and to defend other characters.',
       languages: ['Alignment', 'Common'],
-      journal: `<br><br><b>Journal Entry</b>: @Compendium[OSE-CharacterBuilder.OSE-SRD-classes.tuxYnX5oQOhSkHrp]{Fighter}<br>`,
+      journal: `<br><br><b>Journal Entry</b>: @Compendium[${OSRCB.moduleName}.osr-srd-classes.tuxYnX5oQOhSkHrp]{Fighter}<br>`,
       maxLvl: 14,
       nameType: 'human'
     },
@@ -208,7 +208,7 @@ Hooks.once('OSECB Registered', async () => {
       notes: `Halflings are small, rotund demihumans with furry feet and curly hair. They weigh about 60 pounds and are around 3’ tall. Halflings are a friendly and welcoming folk. Above all, they love the comforts of home and are not known for their bravery. Halflings who gain treasure through adventuring will often use their wealth in pursuit of a quiet, comfortable life. <br>
       <b>Prime requisites</b>: A halfling with at least 13 in one prime requisite gains a 5% bonus to experience. If both DEX and STR are 13 or higher, the halfling gets a +10% bonus.`,
       languages: ['Alignment', 'Common', 'Halfling'],
-      journal: `<br><br><b>Journal Entry</b>: @Compendium[OSE-CharacterBuilder.OSE-SRD-classes.56pppv5spL3hnIbc]{Halfling}<br>`,
+      journal: `<br><br><b>Journal Entry</b>: @Compendium[${OSRCB.moduleName}.osr-srd-classes.56pppv5spL3hnIbc]{Halfling}<br>`,
       maxLvl: 8,
       nameType: 'halfling'
     },
@@ -248,7 +248,7 @@ Hooks.once('OSECB Registered', async () => {
         14: { 1: { max: 4 }, 2: { max: 4 }, 3: { max: 4 }, 4: { max: 4 }, 5: { max: 3 }, 6: { max: 3 } }
       },
       spellType: 'magic-user',
-      spellPackName: 'OSE-CharacterBuilder.OSE-SRD-spells',
+      spellPackName: `${OSRCB.moduleName}.osr-srd-spells`,
       description: `<b>Requirements</b>: None<br>
     <b>Prime requisite</b>: INT<br>
     <b>Hit Dice</b>: 1d4<br>
@@ -259,7 +259,7 @@ Hooks.once('OSECB Registered', async () => {
       notes:
         'Magic-users are adventurers whose study of arcane secrets has taught them how to cast spells. Magic-users are able to cast a greater number of increasingly powerful spells as they advance in level.',
       languages: ['Alignment', 'Common'],
-      journal: `<br><br><b>Journal Entry</b>: @Compendium[OSE-CharacterBuilder.OSE-SRD-classes.8xWQ2MGa2LPMA43Z]{Magic-User}<br>`,
+      journal: `<br><br><b>Journal Entry</b>: @Compendium[${OSRCB.moduleName}.osr-srd-classes.8xWQ2MGa2LPMA43Z]{Magic-User}<br>`,
       maxLvl: 14,
       nameType: 'human'
     },
@@ -294,12 +294,12 @@ Hooks.once('OSECB Registered', async () => {
       notes: `Thieves are adventurers who live by their skills of deception and stealth. Their range of unique skills makes them very handy companions in adventures. However, thieves are not always to be trusted.
     Adjust ability scores: In step 3 of character creation, thieves may not lower STR.`,
       languages: ['Alignment', 'Common'],
-      journal: `<br><br><b>Journal Entry</b>: @Compendium[OSE-CharacterBuilder.OSE-SRD-classes.aTfwtSoLj0EYkOR7]{Thief}<br>`,
+      journal: `<br><br><b>Journal Entry</b>: @Compendium[${OSRCB.moduleName}.osr-srd-classes.aTfwtSoLj0EYkOR7]{Thief}<br>`,
       maxLvl: 14,
       nameType: 'human'
     }
   };
-  OSECB.gpObj = {
+  OSRCB.gpObj = {
     name: 'GP',
     type: 'item',
     img: '/systems/ose/assets/gold.png',
@@ -323,7 +323,7 @@ Hooks.once('OSECB Registered', async () => {
     },
     flags: {}
   };
-  OSECB.spells.spellList = {
+  OSRCB.spells.spellList = {
     cleric : {
       1:[
           `Cure Light Wounds`,
@@ -473,7 +473,7 @@ Hooks.once('OSECB Registered', async () => {
         ]
     }
   };
-  OSECB.data.retainerGear = {
+  OSRCB.data.retainerGear = {
     cleric: {
       armor: ['Leather Armor', 'Chain Mail', 'Plate Mail'],
       weapons: ['Club', 'Mace', 'Warhammer']
@@ -505,6 +505,6 @@ Hooks.once('OSECB Registered', async () => {
    
   }
   await sleep(50);
-  OSECB.spells.mergedList = mergeObject(OSECB.spells.spellList, OSECB.spells.mergedList)
+  OSRCB.spells.mergedList = mergeObject(OSRCB.spells.spellList, OSRCB.spells.mergedList);
 
-});
+};

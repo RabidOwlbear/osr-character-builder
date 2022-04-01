@@ -1,53 +1,50 @@
 {
-  "name": "OSE-CharacterBuilder",
-  "title": "OSE Character Builder",
+  "name": "osr-character-builder",
+  "title": "OSR Character Builder",
   "description": "A character builder for OSE",
   "author": "Grim",
   "version": "0.1.7",
   "minimumCoreVersion": "0.8.8",
   "compatibleCoreVersion": "0.9.0",
   "styles": ["./styles/main.css"],
-  "scripts": [
-    "./scripts/init.js", 
-    "./scripts/charBuilder.js", 
-    "./scripts/SRDClassData.js",
-    "./scripts/retainerBuilder.js"
+  "esmodules": [
+    "./scripts/init.js"
   ],
   "packs": [
     {
-      "name": "OSE-SRD-class-options",
+      "name": "osr-srd-class-options",
       "label": "OSE SRD Class Options",
-      "path": "packs/OSE-SRD-class-options.db",
+      "path": "packs/osr-srd-class-options.db",
       "entity": "Item",
-      "module": "OSE-CharacterBuilder"
+      "module": "osr-character-builder"
     },
     {
-      "name": "OSE-SRD-items",
+      "name": "osr-srd-items",
       "label": "OSE SRD items",
-      "path": "packs/OSE-SRD-items.db",
+      "path": "packs/osr-srd-items.db",
       "entity": "Item",
-      "module": "OSE-CharacterBuilder"
+      "module": "osr-character-builder"
     },
     {
-      "name": "OSE-SRD-spells",
+      "name": "osr-srd-spells",
       "label": "OSE SRD Spells",
-      "path": "packs/OSE-SRD-spells.db",
+      "path": "packs/osr-srd-spells.db",
       "entity": "Item",
-      "module": "OSE-CharacterBuilder"
+      "module": "osr-character-builder"
     },
     {
-      "name": "OSE-SRD-classes",
+      "name": "osr-srd-classes",
       "label": "OSE SRD Classes",
-      "path": "packs/OSE-SRD-classes.db",
+      "path": "packs/osr-srd-classes.db",
       "entity": "JournalEntry",
-      "module": "OSE-CharacterBuilder"
+      "module": "osr-character-builder"
     },
     {
-      "name": "OSE-CharacterBuilder-macros",
-      "label": "OSE-CharacterBuilder Macros",
+      "name": "osr-character-builder-macros",
+      "label": "osr-character-builder Macros",
       "path": "packs/macros.db",
       "entity": "Macro",
-      "module": "OSE-CharacterBuilder"
+      "module": "osr-character-builder"
     }
   ],
   "dependencies": [
@@ -69,8 +66,8 @@
       "path": "languages/en.json"
     }
   ],
-  "url": "https://github.com/RabidOwlbear/OSE-CharacterBuilder",
-  "manifest": "https://raw.githubusercontent.com/RabidOwlbear/OSE-CharacterBuilder/main/module.json",
-  "download": "https://github.com/RabidOwlbear/OSE-CharacterBuilder/archive/refs/heads/main.zip",
+  "url": "https://github.com/RabidOwlbear/osr-character-builder",
+  "manifest": "https://raw.githubusercontent.com/RabidOwlbear/osr-character-builder/main/module.json",
+  "download": "https://github.com/RabidOwlbear/osr-character-builder/archive/refs/heads/main.zip",
   "readme": "README.md"
 }
