@@ -9,7 +9,7 @@ A module that adds a basic character builder to the Foundry Vtt implementation o
 
 ## Installation
 
-In the setup screen, use the URL https://raw.githubusercontent.com/RabidOwlbear/OSR-CharacterBuilder/main/module.json to install the module.
+In the setup screen, use the URL https://raw.githubusercontent.com/RabidOwlbear/osr-character-builder/main/module.json to install the module.
 
 ## How To Use
 ![icon](./assets/img/charBuilderIcon.jpg)
