@@ -432,7 +432,8 @@ export async function registerCharacterBuilder() {
           if (i < 9) {
             let roll = Math.floor(Math.random() * hd + 1);
             hpMsg += `<p><b>roll${i+1}</b>: ${roll} + ${hpMod} = ${roll + hpMod}</p>` 
-            hpTotal += roll + hpMod;
+            let total = roll + hpMod > 1 ? roll + hpMod : 1
+            hpTotal += total;
 
           }
           if (i >= 9) {
