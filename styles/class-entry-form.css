@@ -1,0 +1,67 @@
+.OSRCB input.num-inp {
+  width: 30px;
+}
+.OSRCB #spell-slots .lvl {
+  width: 55px;
+}
+
+.OSRCB .util-btn {
+  padding: 0;
+  margin: 0;
+  height: 20px;
+  width: 20px;
+  line-height: 0;
+}
+
+.OSRCB .s-lvl-num {
+  width: 20px;
+}
+
+.OSRCB #sav-control {
+  display: flex;
+  justify-content: space-between;
+  width: 55px;
+}
+
+.OSRCB .s-lvl-num{
+  display: flex;
+  align-items: end;
+  padding-bottom: 7px;
+}
+
+.OSRCB .spell-slot-cont{
+  width: 100%;
+  border-top: 3px black solid;
+  padding-top: 15px;
+  margin-top: 5px
+}
+.OSRCB .spell-slot-header {
+  margin: 0 10px 5px 105px;
+  display: flex;
+  justify-content: space-between;
+}
+.OSRCB #thac0-cont{
+  width: 155px;
+}
+.OSRCB #thac0-row-cont {
+  padding-top: 17px;
+  padding-right: 10px;
+}
+.OSRCB .form-box-1{
+  width: 150px;
+  height: 300px;
+  overflow-y: auto;
+}
+.OSRCB .sm-btn{
+  padding: 0;
+  margin: 0;
+  width: auto;
+  height: 14px;
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}

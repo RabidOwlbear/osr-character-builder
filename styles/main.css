@@ -23,77 +23,87 @@
 }
 
 /* character builder sheet styling */
-.fx-sb {
+.OSRCB .fx-sb {
   display: flex;
   justify-content: space-between;
 }
-.fx-sb-aic {
+.OSRCB .fx-sb-aic {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.pr5 {
+.OSRCB .pr5 {
   padding-right: 5px;
 }
-.pl5 {
+.OSRCB .mr-5 {
+  margin-right: 5px;
+}
+.OSRCB .pl5 {
   padding-left: 5px;
 }
-.fx-jc-aic {
+.OSRCB .fx-jc-aic {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.fx-jc {
+.OSRCB .fx-jc {
   display: flex;
   justify-content: center;
 }
-.fx-col {
+.OSRCB .fx-sa {
+  display: flex;
+  justify-content: space-around;
+}
+.OSRCB .fx-col {
   display: flex;
   flex-direction: column;
 }
-.aic {
+.OSRCB .aib {
+  align-items: baseline;
+}
+.OSRCB .aic {
   align-items: center;
 }
-.cb-list {
+.OSRCB .cb-list {
   padding-bottom: 0.5em;
 }
-.cb-pt {
+.OSRCB .cb-pt {
   padding-top: 0.3em;
 }
-.cb-mb {
+.OSRCB .cb-mb {
   margin-bottom: 1em;
 }
-.cb-pb {
+.OSRCB .cb-pb {
   padding-bottom: 5px;
 }
-.cb-select-heading {
+.OSRCB .cb-select-heading {
   padding: 0.5em 0;
 }
-.cb-bl {
+.OSRCB .cb-bl {
   border-left: 2px solid var(--border-bar);
 }
-.cb-s-cont {
+.OSRCB .cb-s-cont {
   padding-right: 0.25em;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.cb-s-cont label{
+.OSRCB .cb-s-cont label{
   font-size: 8pt;
   font-weight: bold;
 }
-#cb-form input[type=number]{
+.OSRCB #cb-form input[type=number]{
   width: 25px;
   height: 20px;
 }
 
-#cb-form #level{
+.OSRCB #cb-form #level{
   width: 25px;
 }
-#cb-option-block label{
+.OSRCB #cb-option-block label{
   padding-right: 5px;
 }
-#cb-option-block {
+.OSRCB #cb-option-block {
   display: flex;
   /* display: none; */
   flex-direction: column;
@@ -103,64 +113,69 @@
   height: 70px;
   padding: 0 5px;
 }
-#cb-form .lvl-div{
+.OSRCB #cb-form .lvl-div{
   padding-bottom: 5px
 }
-.cb-option-div{
+.OSRCB .cb-option-div{
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-
-.w-full {
+.OSRCB .w100 {
+  width: 100%
+}
+.OSRCB .w-full {
   width: 100%;
+}
+.OSRCB .w-45{
+  width: 45%;
 }
 /* #cb-stats {
 } */
-#cb-main {
+.OSRCB #cb-main {
   width: 100%;
   height: 575px;
   /* margin-bottom: 10px; */
 }
-.cb-col {
+.OSRCB .cb-col {
   width: 150px;
   height: 100%;
   /* background-color: rgba(162, 213, 255, 0.103); */
 }
-.cb-list-cat {
+.OSRCB .cb-list-cat {
   font-weight: 800;
   margin: 0 0 0.25em 0;
 }
-#osrCharacterBuilder h3 {
+.OSRCB #osrCharacterBuilder h3 {
   text-align: center;
   font-weight: 650;
 }
-#osrCharacterBuilder .window-content {
+.OSRCB #osrCharacterBuilder .window-content {
   padding: 5px;
 }
-#cb-buttons {
+.OSRCB #cb-buttons {
   height: 35px;
   width: 100%;
   padding: 0 1em;
 }
-.cb-form-btn {
+.OSRCB .cb-form-btn {
   margin-top: auto;
   width: 120px;
   height: 30px;
   border-radius: 8px;
 }
 
-#shop-check {
+.OSRCB #shop-check {
   margin-top: auto;
   width: 170px;
 }
-.cb-stat-div {
+.OSRCB .cb-stat-div {
   width: 100%;
   /* margin: 0 2em; */
   display: flex;
   justify-content: space-between;
 }
-#cb-stats {
+.OSRCB #cb-stats {
   display: flex;
   /* flex-direction: column; */
   align-items: center;
@@ -171,30 +186,30 @@
 /* #cb-stat-container {
   width: 100%;
 } */
-#cb-stat-block {
+.OSRCB #cb-stat-block {
   width: 200px;
   margin-left: 15px;
 }
 
-#cb-info-head {
+.OSRCB #cb-info-head {
   width: 100%;
 }
-#cb-info-body {
+.OSRCB #cb-info-body {
   padding-top: 8px;
   padding-left: 8px;
   height: 350px;
   overflow: auto;
 }
-#cb-class-info {
+.OSRCB #cb-class-info {
   height: 225px;
   overflow: auto;
   padding-bottom: 0;
   border-bottom: 2px solid var(--border-bar);
 }
-#cb-type-select {
+.OSRCB #cb-type-select {
   min-height: 150px;
 }
-#cb-align-select {
+.OSRCB #cb-align-select {
   border-top: 2px solid var(--border-bar);
   padding-top: 5px;
   width: 100%;
@@ -203,16 +218,16 @@
 /* input[type='number'] {
   width: 2em;
 } */
-#cb-class-select {
+.OSRCB #cb-class-select {
   width: 150px;
 }
-#cb-class-option {
+.OSRCB #cb-class-option {
   width: 150px;
 }
-#cb-class-description {
+.OSRCB #cb-class-description {
   width: 250px;
 }
-#cb-gold {
+.OSRCB #cb-gold {
   border-top: 2px solid var(--border-bar);
   padding-top: 5px;
   margin-bottom: 1em;
@@ -252,7 +267,7 @@
 }
 #osrCharacterBuilder .window-content {
   background-color: rgb(236, 230, 218);
-  background-image: url(/modules/OSE-CharacterBuilder/assets/cb-bg.webp);
+  background-image: url(../assets/cb-bg.webp);
 }
 
 /* retainer generator styling */

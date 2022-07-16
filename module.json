@@ -3,10 +3,10 @@
   "title": "OSR Character Builder",
   "description": "A character builder for OSE",
   "author": "Grim",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "minimumCoreVersion": "0.8.8",
   "compatibleCoreVersion": "9.255",
-  "styles": ["./styles/main.css"],
+  "styles": ["./styles/main.css", "./styles/class-entry-form.css"],
   "esmodules": [
     "./scripts/init.js"
   ],

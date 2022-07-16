@@ -1,0 +1,110 @@
+<form action="" class="custom-class-form OSRCB">
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="nav-link" data-tab="main"> Main </a>
+    <a class="nav-link" data-tab="details"> Details </a>
+    <a class="nav-link" data-tab="spellcaster"> Spell Caster </a>
+  </nav>
+  <div class="tab-content" data-group="primary" data-tab="main">
+    <h1>Custom Class Entry Form</h1>
+    <div class="fx">
+      <div>
+        <label for="clsssName">Class name</label>
+        <input type="text" name="className" id="className" />
+      </div>
+      <div>
+        <label for="displayname">Display Name</label>
+        <input type="text" name="displayName" id="displayName" />
+      </div>
+    </div>
+    <div class="fx-sb">
+      <div>
+        <label for="title">Title</label>
+        <input type="text" name="title" id="title" />
+      </div>
+      <div>
+        <label for="hd">HD</label>
+        <input type="text" name="hd" id="hd" />
+      </div>
+      <div>
+        <label for="maxLvl">Max Level</label>
+        <input type="text" name="maxLvl" id="maxLvl" value="14" class="num-check"/>
+      </div>
+    </div>
+    <div class="fx-sa">
+      <div id="xp-cont" class="form-box-1">
+        <label for="xp">XP: </label>
+        <div class="fx">
+         
+          <input type="text" name="xp-inp" id="xp-inp" class="num-check" value="0"/>
+          <button  id="xp-plus-btn" type="button" value=""class="sm-btn">
+            <i class="fas fa-plus-square"></i>
+          </button>
+          <button  id="xp-minus-btn" type="button" value=""class="sm-btn">
+            <i class="fas fa-minus-square"></i>
+          </button>
+        </div>
+        <div class="xp-cont" id="xp-display">
+          <div class="fx" id="xp-lvl-1">
+            <div class="lvl-pref mr-5">1: </div>
+            <div class="lvl-xp">0</div>
+          </div>
+        </div>
+      </div>
+      <div id="hd-mod-cont" class="form-box-1">
+        <label for="hdMod">HD Mod</label>
+        <div class="fx">
+          
+          <input type="text" name="hdMod" id="hdMod" class="num-inp num-check"/>
+          <button  id="hd-mod-plus-btn" type="button" value=""class="sm-btn">
+            <i class="fas fa-plus-square"></i>
+          </button>
+          <button  id="hd-mod-minus-btn" type="button" value=""class="sm-btn">
+            <i class="fas fa-minus-square"></i>
+          </button>
+        </div>
+        <div class="hd-mod-cont">
+        </div>
+      </div>
+      <div id="lang-cont" class="form-box-1">
+        <label for="xp">Languages: </label>
+        <div class="fx">
+          
+          <input type="text" name="lang-inp" id="lang-inp" class=""/>
+          <button  id="lang-plus-btn" type="button" value=""class="sm-btn">
+            <i class="fas fa-plus-square"></i>
+          </button>
+          <button  id="lang-minus-btn" type="button" value=""class="sm-btn">
+            <i class="fas fa-minus-square"></i>
+          </button>
+        </div>
+        <div class="lang-cont">
+        </div>
+      </div>
+    </div>
+    <div>
+      <div>
+        <label for="req">Requirements</label>
+        <input type="text" name="req" id="req" />
+      </div>
+    </div>
+    <div>
+      <label for="description">Description</label>
+      <input type="text" name="description" id="description" />
+    </div>
+    <div>
+      <label for="notes">Notes</label>
+      <input type="text" name="notes" id="notes" />
+    </div>
+    <div>
+      <label for="journal">Journal</label>
+      <input type="text" name="journal" id="journal" />
+    </div>
+  </div> 
+
+
+  <div class="tab-content" data-group="primary" data-tab="spellcaster">{{> spellCaster }}</div>
+  <div class="tab-content" data-group="primary" data-tab="details">
+    <h1>Info</h1>
+    {{> infoTab}}
+  </div>
+</form>

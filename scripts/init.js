@@ -1,8 +1,11 @@
 import { registerCharacterBuilder } from './char-builder.js'
 import { registerSrdData } from './srd-class-data.js'
 import { registerRetainerBuilder } from './retainer-builder.js'
+import { registerClassEntryForm } from './character-builder.js'
+import { registerPartials } from './partials.js'
 window.OSRCB = window.OSRCB || {
-  moduleName: `osr-character-builder`
+  moduleName: `osr-character-builder`,
+  forms: {},
 };
 Hooks.once('init', async () => {
   console.log('OSR-Character-Builder Loaded.<-----------------------------');
@@ -47,6 +50,8 @@ Hooks.once('init', async () => {
   registerCharacterBuilder()
   registerSrdData()
   registerRetainerBuilder()
+  registerClassEntryForm()
+  registerPartials()
 
 });
 
