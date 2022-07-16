@@ -118,14 +118,13 @@ export async function registerCharacterBuilder() {
 
   //compile html for class source selection
   OSRCB.util.renderClassTypes = function (dataObj) {
-    console.log(dataObj);
+
     //if dataObj has key of 'OSE' use basic as the default checked option, else use 'SRD'
     const defaultCheck = dataObj?.OSE ? 'basic' : 'SRD';
     //output html content
     let retHTML = ``;
     //loop through the data object
     for (let source in dataObj) {
-      console.log(source, dataObj[source]);
       let current = dataObj[source];
       //if header = true create header before list entry
       if (current.header) {
@@ -321,7 +320,7 @@ export async function registerCharacterBuilder() {
   //eg. basic, advanced, SRD
   OSRCB.util.getClassOptionObj = function (classType) {
     const optionObj = game.settings.get(`${OSRCB.moduleName}`, 'characterClasses');
-    console.log(classType, optionObj);
+
     for (let key of Object.keys(optionObj)) {
       let options = optionObj[key].options;
       for (let i = 0; i < options.length; i++) {
@@ -425,7 +424,7 @@ export async function registerCharacterBuilder() {
         }
       };
       function multiLvlHp(level, classObj, hpMod, msg=false, whisper) {
-        console.log(classObj, actor);
+
         let { hd, hdMod } = classObj;
         let hpTotal = 0;
         let hpMsg = ``
@@ -433,7 +432,8 @@ export async function registerCharacterBuilder() {
           if (i < 9) {
             let roll = Math.floor(Math.random() * hd + 1);
             hpMsg += `<p><b>roll${i+1}</b>: ${roll} + ${hpMod} = ${roll + hpMod}</p>` 
-            hpTotal += roll + hpMod;
+            let total = roll + hpMod > 1 ? roll + hpMod : 1
+            hpTotal += total;
 
           }
           if (i >= 9) {
