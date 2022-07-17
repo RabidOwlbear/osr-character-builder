@@ -340,6 +340,7 @@ export async function registerCharacterBuilder() {
     const classObj = classData.classes[className];
     const packName = classData.pack;
     let goldItem = actor.data.items.getName('GP');
+    
     // return saves array for level
     const getObj = (multiObj) => {
       let keys = [];
@@ -423,8 +424,19 @@ export async function registerCharacterBuilder() {
           }
         }
       };
-      function multiLvlHp(level, classObj, hpMod, msg=false, whisper) {
-
+      function multiLvlHp(level, classObj, con, msg = false, whisper) {
+        const conMod = [
+          [3,-3], [5,-2],[8,-1],[12, 0],[15,1],[17,2],[18,3]
+        ]
+        let hpMod = 0
+        for(let val of conMod){
+          hpMod = val[1]
+          if(con===3)break
+          if(con <= val[0] ){
+           break           
+          }
+        }
+   
         let { hd, hdMod } = classObj;
         let hpTotal = 0;
         let hpMsg = ``
@@ -471,7 +483,8 @@ export async function registerCharacterBuilder() {
       }
       let hpMsg = await game.settings.get(`${OSRCB.moduleName}`, 'statRollMessage')
       let wHpMsg = await game.settings.get(`${OSRCB.moduleName}`, 'statRollMessage')
-      let hp = multiLvlHp(level, classObj, actor.data.data.scores.con.mod, hpMsg, wHpMsg);
+      let mod = actor.data.data.scores.con.mod;
+      let hp = multiLvlHp(level, classObj, dataObj.con, hpMsg, wHpMsg);
       updateData.data.hp = {
         hd: hd,
         value: hp,
