@@ -1,5 +1,4 @@
 export async function registerCharacterBuilder() {
-
   OSRCB.util.renderCharacterBuilder = async function (actor, dataObj) {
     //options for the forApplication window
     const formOptions = {
@@ -119,14 +118,13 @@ export async function registerCharacterBuilder() {
 
   //compile html for class source selection
   OSRCB.util.renderClassTypes = function (dataObj) {
-    console.log(dataObj)
+
     //if dataObj has key of 'OSE' use basic as the default checked option, else use 'SRD'
     const defaultCheck = dataObj?.OSE ? 'basic' : 'SRD';
     //output html content
     let retHTML = ``;
     //loop through the data object
     for (let source in dataObj) {
-      console.log(source, dataObj[source])
       let current = dataObj[source];
       //if header = true create header before list entry
       if (current.header) {
@@ -321,9 +319,8 @@ export async function registerCharacterBuilder() {
   //retrieve the relevant class option data object from the game settings option object. requires source category name.
   //eg. basic, advanced, SRD
   OSRCB.util.getClassOptionObj = function (classType) {
-    
     const optionObj = game.settings.get(`${OSRCB.moduleName}`, 'characterClasses');
-    console.log(classType, optionObj)
+
     for (let key of Object.keys(optionObj)) {
       let options = optionObj[key].options;
       for (let i = 0; i < options.length; i++) {
@@ -426,18 +423,44 @@ export async function registerCharacterBuilder() {
           }
         }
       };
-      function multiLvlHp(level, classObj) {
+      function multiLvlHp(level, classObj, hpMod, msg=false, whisper) {
+
         let { hd, hdMod } = classObj;
         let hpTotal = 0;
+        let hpMsg = ``
         for (let i = 0; i < level; i++) {
           if (i < 9) {
             let roll = Math.floor(Math.random() * hd + 1);
-            hpTotal += roll;
+            hpMsg += `<p><b>roll${i+1}</b>: ${roll} + ${hpMod} = ${roll + hpMod}</p>` 
+            let total = roll + hpMod > 1 ? roll + hpMod : 1
+            hpTotal += total;
+
           }
           if (i >= 9) {
-            let roll = Math.floor(Math.random() * hd + 1) + hdMod[i - 9];
-            hpTotal += roll;
+            let roll = Math.floor(Math.random() * hd + 1);
+            hpMsg += `<p><b>roll${i+1}</b>: ${roll} + ${hpMod} = ${roll + hpMod}</p>` 
+            hpTotal += roll + hdMod[i - 9] + hpMod;
+            
           }
+        }
+        if(msg == true){
+          let msgData = {
+            speaker: game.user,
+            content: `
+            <details>
+  
+            <summary>
+             <b>${actor.name} HP Rolls:</b>
+            </summary>
+            </br>
+            <div>
+            ${hpMsg}
+            </div>
+            </details>
+            `,
+          }
+          if(whisper) msgData.whisper = [...game.users.filter((u) => u.isGM), game.user];
+          ChatMessage.create(msgData)
         }
         return hpTotal;
       }
@@ -446,7 +469,9 @@ export async function registerCharacterBuilder() {
         let idx = level - 10;
         hd = `9d${classObj.hd}+${classObj.hdMod[idx]}`;
       }
-      let hp = multiLvlHp(level, classObj);
+      let hpMsg = await game.settings.get(`${OSRCB.moduleName}`, 'statRollMessage')
+      let wHpMsg = await game.settings.get(`${OSRCB.moduleName}`, 'statRollMessage')
+      let hp = multiLvlHp(level, classObj, actor.data.data.scores.con.mod, hpMsg, wHpMsg);
       updateData.data.hp = {
         hd: hd,
         value: hp,
