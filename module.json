@@ -28,7 +28,7 @@
       "type": "Item",
       "entity": "Item",
       "module": "osr-character-builder",
-      "system": ["ose-dev"]
+      "system": ["ose"]
     },
     {
       "name": "osr-srd-items",
@@ -37,7 +37,7 @@
       "type": "Item",
       "entity": "Item",
       "module": "osr-character-builder",
-      "system": ["ose-dev"]
+      "system": ["ose"]
     },
     {
       "name": "osr-srd-spells",
@@ -46,7 +46,7 @@
       "type": "Item",
       "entity": "Item",
       "module": "osr-character-builder",
-      "system": ["ose-dev"]
+      "system": ["ose"]
     },
     {
       "name": "osr-srd-classes",
@@ -55,7 +55,7 @@
       "type": "JournalEntry",
       "entity": "JournalEntry",
       "module": "osr-character-builder",
-      "system": ["ose-dev"]
+      "system": ["ose"]
     },
     {
       "name": "osr-character-builder-macros",
