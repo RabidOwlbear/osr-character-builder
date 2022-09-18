@@ -148,7 +148,7 @@ export async function registerCharacterBuilder() {
 
   OSRCB.util.renderGold = function (html, actor, reroll = false) {
     const goldInp = html.find('#cb-gold-input')[0];
-    const actorGold = actor.data.items.getName('GP')?.data?.data?.quantity?.value;
+    const actorGold = actor.items.getName('GP')?.system?.quantity?.value;
     if (actorGold == undefined && !reroll) {
       goldInp.value = 0;
       return;
@@ -171,8 +171,8 @@ export async function registerCharacterBuilder() {
 
   OSRCB.util.renderAbilScores = async function (html, actor, reroll = false) {
     const heroCheck = html.find('#hero-check')[0].checked;
-    const actorScores = actor.data.data.scores;
-    const scoreObj = reroll == true ? await OSRCB.util.osrRollStats(heroCheck) : actor.data.data.scores;
+    const actorScores = actor.system.scores;
+    const scoreObj = reroll == true ? await OSRCB.util.osrRollStats(heroCheck) : actor.system.scores;
     const statInputs = html.find("input[type='number'][ class='cb-stat-inp']");
     for (let input of statInputs) {
       input.value = scoreObj[input.name].value;
@@ -339,7 +339,7 @@ export async function registerCharacterBuilder() {
     const classData = OSRCB.util.getClassOptionObj(classType);
     const classObj = classData.classes[className];
     const packName = classData.pack;
-    let goldItem = actor.data.items.getName('GP');
+    let goldItem = actor.items.getName('GP');
     
     // return saves array for level
     const getObj = (multiObj) => {
@@ -361,7 +361,7 @@ export async function registerCharacterBuilder() {
       level = classObj.maxLvl;
       await actor.update({ data: { details: { level: level } } });
     }
-    if (actor.data.name == '#randGen') {
+    if (actor.name == '#randGen') {
       await actor.update({
         name: `${classObj.menu} - ${level}`,
         token: { name: `${classObj.menu} - ${level}` }
@@ -374,7 +374,7 @@ export async function registerCharacterBuilder() {
       const thac0 = getObj(classObj['thac0']);
       const xpValue = level == classObj.maxLvl ? 'Max Level' : classObj.xp[level - 1];
       let updateData = {
-        data: {
+        system: {
           details: {
             class: classObj.menu,
             title: classObj.title,
@@ -483,34 +483,34 @@ export async function registerCharacterBuilder() {
       }
       let hpMsg = await game.settings.get(`${OSRCB.moduleName}`, 'statRollMessage')
       let wHpMsg = await game.settings.get(`${OSRCB.moduleName}`, 'statRollMessage')
-      let mod = actor.data.data.scores.con.mod;
+      let mod = actor.system.scores.con.mod;
       let hp = multiLvlHp(level, classObj, dataObj.con, hpMsg, wHpMsg);
-      updateData.data.hp = {
+      updateData.system.hp = {
         hd: hd,
         value: hp,
         max: hp
       };
       if (dataObj.retainer) {
-        updateData.data.retainer = { enabled: true };
-        updateData.data.details.xp.share = 50;
+        updateData.system.retainer = { enabled: true };
+        updateData.system.details.xp.share = 50;
       }
       if (classObj.spellCaster) {
-        updateData.data.spells = classObj.spellSlot[level];
-        updateData.data.spells.enabled = true;
+        updateData.system.spells = classObj.spellSlot[level];
+        updateData.system.spells.enabled = true;
       }
       await actor.update(updateData);
       //if no gold item exists create one then update, else update gold amount
       // check for currency items
       let types = ['PP', 'GP', 'EP', 'SP', 'CP'];
       let curCheck = async (type) => {
-        let itemExists = actor.data.items.getName(type);
+        let itemExists = actor.items.getName(type);
         let pack = game.packs.get(`${OSRCB.moduleName}.osr-srd-items`);
         if (!itemExists) {
           let curItem = await pack.getDocument(pack.index.getName(type)._id);
-          let itemData = curItem.clone().data;
+          let itemData = curItem.clone();
           await actor.createEmbeddedDocuments('Item', [itemData]);
           if (type == 'GP') {
-            goldItem = actor.data.items.getName('GP');
+            goldItem = actor.items.getName('GP');
           }
         }
       };
@@ -551,7 +551,7 @@ export async function registerCharacterBuilder() {
     const entity = await compendium.getDocument(entry._id);
 
     const newEntity = await entity.clone();
-    actor.createEmbeddedDocuments('Item', [newEntity.data]);
+    actor.createEmbeddedDocuments('Item', [newEntity]);
   };
 
   //add class abilities to sheet
@@ -561,9 +561,9 @@ export async function registerCharacterBuilder() {
     ui.notifications.warn(game.i18n.localize(`${OSRCB.moduleName}.addClassWarn`));
     for (let abil of compendium.index.contents) {
       const item = await compendium.getDocument(abil._id);
-      if (item.data.data.requirements == className) {
+      if (item.system.requirements == className) {
         await sleep(50);
-        await actor.createEmbeddedDocuments('Item', [item.data]);
+        await actor.createEmbeddedDocuments('Item', [item]);
       }
     }
   };
@@ -577,6 +577,6 @@ export async function registerCharacterBuilder() {
   //working: bonus experience calculator.
   //needs: check for stats, object containing rules per class, logic to use class rule to compare specified stats then add appropriate bonus to the sheet.
   OSRCB.util.osrBonusXp = async function (actor, reqObj) {
-    const scores = actor.data.data.scores;
+    const scores = actor.system.scores;
   };
 }

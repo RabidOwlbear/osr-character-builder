@@ -86,7 +86,7 @@ Hooks.on('renderOseActorSheet', (actorObj, html) => {
   if(defCharBtn) defCharBtn.style.display = 'none'
   const classSelected = actor.getFlag(`${OSRCB.moduleName}`, 'classSelected');
 
-  if (actor.data?.data?.scores?.str?.value == 0) {
+  if (actor.system?.scores?.str?.value == 0) {
     // if (!classSelected) {
     modBox.append(
       `<a class="osr-icon osr-choose-class" title="Character Builder"><i class="fas fa-user-shield"></i></a>`

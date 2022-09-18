@@ -216,9 +216,9 @@ export async function registerRetainerBuilder() {
             for(let s of compSpellList){
               let spellObj = await compendium.getDocument(s._id)
               
-              if(spellObj.data.data.class.toLowerCase() == classData.spellType.toLowerCase()){
+              if(spellObj.system.class.toLowerCase() == classData.spellType.toLowerCase()){
                 
-                const data = spellObj.clone().data;
+                const data = spellObj.clone();
                 await actor.createEmbeddedDocuments('Item', [data])
               }
             }
@@ -228,7 +228,7 @@ export async function registerRetainerBuilder() {
             
             const itemObj = await compendium.getDocument(itemData._id);
             
-            const data = itemObj.clone().data;
+            const data = itemObj.clone();
             await actor.createEmbeddedDocuments('Item', [data])
           }
         }
@@ -271,28 +271,28 @@ export async function registerRetainerBuilder() {
     for(let item of armorPick){
       const itemData = await compendium.index.getName(item);
       const itemObj = await compendium.getDocument(itemData._id);
-      const data =  itemObj.clone().data;
-      data.data.equipped = true
+      const data =  itemObj.clone();
+      data.system.equipped = true
       
       await actor.createEmbeddedDocuments('Item', [data])
-      await actor.data.items.getName(data.name).update({data: {equipped: true}})
+      await actor.items.getName(data.name).update({data: {equipped: true}})
     }
     let weapCount = 0;
     for(let item of weaponPick){
       const itemData = await compendium.index.getName(item);
       const itemObj = await compendium.getDocument(itemData._id);
-      const data =  itemObj.clone().data;
+      const data =  itemObj.clone();
       
       await actor.createEmbeddedDocuments('Item', [data])
       if(weapCount == 0){
-        await actor.data.items.getName(data.name).update({data: {equipped: true}})
+        await actor.items.getName(data.name).update({data: {equipped: true}})
       }
       weapCount++
     }
     for(let item of itemPick){
       const itemData = await compendium.index.getName(item);
       const itemObj = await compendium.getDocument(itemData._id);
-      const data =  itemObj.clone().data;
+      const data =  itemObj.clone();
       
       await actor.createEmbeddedDocuments('Item', [data])
     }
@@ -335,7 +335,7 @@ export async function registerRetainerBuilder() {
     }
     console.log('data', data)  
     const newRetainer = await OSRCB.util.retainerGen(data);
-    data.level = newRetainer.data.data.details.level;
+    data.level = newRetainer.system.details.level;
     // random name support
     if(randomName && game.modules.get("osr-helper")?.active){
       let classObj  = OSRCB.util.getClassOptionObj(data.classType).classes[data.classOption]
