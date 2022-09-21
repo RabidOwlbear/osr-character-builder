@@ -64,7 +64,7 @@
       "type": "Macro",
       "entity": "Macro",
       "module": "osr-character-builder",
-      "system": ["ose-dev"]
+      "system": ["ose"]
     }
   ],
   "languages": [
