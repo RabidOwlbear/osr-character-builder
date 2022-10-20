@@ -79,7 +79,7 @@ Hooks.once('ready', async () => {
 });
 
 //on actor sheet load, add helper buttons to sheet
-Hooks.on('renderOseActorSheet', (actorObj, html) => {
+Hooks.on('renderActorSheet', (actorObj, html) => {
   const actor = actorObj.actor;
   const modBox = html.find(`[class="modifiers-btn"]`);
   const defCharBtn = html.find(`.profile .blinking`)[0]
