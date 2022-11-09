@@ -222,7 +222,8 @@ export async function registerCharacterBuilder() {
   
   `;
     ChatMessage.create({
-      speaker: game.user,
+      user: game.user._id,
+      speaker: ChatMessage.getSpeaker(),
       content: msgContent,
       whisper: (await game.settings.get(`${OSRCB.moduleName}`, 'whisperStatRollMessage'))
         ? game.users.filter((u) => u.isGM)
