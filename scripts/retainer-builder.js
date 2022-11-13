@@ -126,6 +126,7 @@ export async function registerRetainerBuilder() {
         formData.classOption = selectData[1]
         formData.retainer= true;
           const newRetainer = await OSRCB.util.retainerGen(formData);
+          console.log(newRetainer)
           if(formData.spellCheck && newRetainer) {
             
             OSRCB.util.randomSpells(formData, newRetainer)}
@@ -169,6 +170,7 @@ export async function registerRetainerBuilder() {
       await Folder.create([{name: 'Retainers', type: 'Actor', color: '#a02e9d'}]);
       folder = game.folders.getName('Retainers')
     }
+    console.log('before')
     const newActor = await Actor.create({
       name: `#randGen`,
       type: 'character',
@@ -187,6 +189,7 @@ export async function registerRetainerBuilder() {
       classType = OSRCB.util.oseActive() ? 'basic' : 'SRD'
     }
     const typeData = await OSRCB.util.getClassOptionObj(classType)
+    console.log(typeData)
     const classData = typeData.classes[classOption];
     //break out if not spellcaster
     if(!classData.spellCaster){
@@ -195,6 +198,7 @@ export async function registerRetainerBuilder() {
     } 
     const magicType = classData?.spellType
     const spellList = OSRCB.spells.mergedList[magicType];
+    console.log('hdhdhdhdhdhdhdhdhdd',classType,magicType, spellList, OSRCB.spells.mergedList)
     const slotData = classData?.spellSlot[level]
     const compendium = await game.packs.get(classData.spellPackName);
     for(let key in slotData){

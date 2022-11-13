@@ -373,6 +373,7 @@ export async function registerCharacterBuilder() {
     } else {
       const saves = getObj(classObj.saves);
       const thac0 = getObj(classObj['thac0']);
+      console.log(saves, thac0)
       const xpValue = level == classObj.maxLvl ? 'Max Level' : classObj.xp[level - 1];
       let updateData = {
         system: {
@@ -458,7 +459,7 @@ export async function registerCharacterBuilder() {
         }
         if(msg == true){
           let msgData = {
-            speaker: game.user,
+            speaker: ChatMessage.getSpeaker(),
             content: `
             <details>
   
