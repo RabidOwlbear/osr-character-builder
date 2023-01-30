@@ -10,9 +10,7 @@
       "url": "https://github.com/RabidOwlbear"
     }
   ],
-  "version": "0.1.18",
-  "minimumCoreVersion": "0.8.8",
-  "compatibleCoreVersion": "9.255",
+  "version": "0.1.19",
   "compatibility": {
     "minimum": "10",
     "verified": "10.284",

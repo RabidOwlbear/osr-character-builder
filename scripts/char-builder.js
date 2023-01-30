@@ -524,7 +524,7 @@ export async function registerCharacterBuilder() {
       await actor.setFlag(`${OSRCB.moduleName}`, 'classSelected', true);
 
       if (dataObj.shopCheck) {
-        OSRIS.shop.renderItemShop(actor);
+        OSRIS.shop.RUIS(actor._id)
       }
     }
   };
