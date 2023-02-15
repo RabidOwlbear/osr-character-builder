@@ -1,55 +1,52 @@
+import { mergeClassOptions } from "./util.mjs";
 export async function registerCharacterBuilder() {
   OSRCB.util.renderCharacterBuilder = async function (actor, dataObj) {
-    //options for the forApplication window
-    const formOptions = {
-      id: 'charBuilderForm',
-      classes: ['charBuilderForm'],
-      popOut: true,
-      template: `modules/${OSRCB.moduleName}/template/characterBuilder.html`,
-      id: 'osrCharacterBuilder',
-      title: 'Character Builder',
-      width: 550,
-      height: 730
-    };
-
-    const templateData = {
-      attrib: game.i18n.localize(`${OSRCB.moduleName}.formAttrib`),
-      str: game.i18n.localize(`${OSRCB.moduleName}.formStr`),
-      int: game.i18n.localize(`${OSRCB.moduleName}.formInt`),
-      wis: game.i18n.localize(`${OSRCB.moduleName}.formWis`),
-      dex: game.i18n.localize(`${OSRCB.moduleName}.formDex`),
-      con: game.i18n.localize(`${OSRCB.moduleName}.formCon`),
-      cha: game.i18n.localize(`${OSRCB.moduleName}.formCha`),
-      reRoll: game.i18n.localize(`${OSRCB.moduleName}.formReRoll`),
-      heroCheck: game.i18n.localize(`${OSRCB.moduleName}.formHeroCheck`),
-      classType: game.i18n.localize(`${OSRCB.moduleName}.formClassType`),
-      srd: game.i18n.localize(`${OSRCB.moduleName}.classTypeSRD`),
-      alignment: game.i18n.localize(`${OSRCB.moduleName}.formAlignment`),
-      lawful: game.i18n.localize(`${OSRCB.moduleName}.formLaw`),
-      neutral: game.i18n.localize(`${OSRCB.moduleName}.formNeut`),
-      chaotic: game.i18n.localize(`${OSRCB.moduleName}.formChaos`),
-      gold: game.i18n.localize(`${OSRCB.moduleName}.formGold`),
-      classSelect: game.i18n.localize(`${OSRCB.moduleName}.formClassSelect`),
-      classInfo: game.i18n.localize(`${OSRCB.moduleName}.formClassInfo`),
-      close: game.i18n.localize(`${OSRCB.moduleName}.formBtnClose`),
-      choose: game.i18n.localize(`${OSRCB.moduleName}.formBtnChoose`),
-      classTypeContent: OSRCB.util.renderClassTypes(dataObj)
-    };
-    // { content: listContent };
-    // const formHTML = await renderTemplate(formTemplate, templateData);
-
+    
     class OSRCharBuilder extends FormApplication {
-      constructor(object, options, actor) {
-        super(object, options);
+      constructor(actor, dataObj) {
+        super();
         this.actor = actor;
+        this.dataObj = dataObj
         this.html;
       }
 
       static get defaultOptions() {
-        return super.defaultOptions;
+        return mergeObject(super.defaultOptions, {
+          id: 'charBuilderForm',
+          classes: ['charBuilderForm'],
+          popOut: true,
+          template: `modules/${OSRCB.moduleName}/template/characterBuilder.hbs`,
+          id: 'osrCharacterBuilder',
+          title: 'Character Builder',
+          width: 550,
+          height: 730
+        });
       }
-      getData(options = {}) {
-        return super.getData().object; // the object from the constructor is where we are storing the data
+      getData() {
+        const context = super.getData();
+        context.attrib = game.i18n.localize(`${OSRCB.moduleName}.formAttrib`);
+        context.str = game.i18n.localize(`${OSRCB.moduleName}.formStr`);
+        context.int = game.i18n.localize(`${OSRCB.moduleName}.formInt`);
+        context.wis = game.i18n.localize(`${OSRCB.moduleName}.formWis`);
+        context.dex = game.i18n.localize(`${OSRCB.moduleName}.formDex`);
+        context.con = game.i18n.localize(`${OSRCB.moduleName}.formCon`);
+        context.cha = game.i18n.localize(`${OSRCB.moduleName}.formCha`);
+        context.reRoll = game.i18n.localize(`${OSRCB.moduleName}.formReRoll`);
+        context.heroCheck = game.i18n.localize(`${OSRCB.moduleName}.formHeroCheck`);
+        context.classSource = game.i18n.localize(`${OSRCB.moduleName}.formClassSource`);
+        context.srd = game.i18n.localize(`${OSRCB.moduleName}.classTypeSRD`);
+        context.alignment = game.i18n.localize(`${OSRCB.moduleName}.formAlignment`);
+        context.lawful = game.i18n.localize(`${OSRCB.moduleName}.formLaw`);
+        context.neutral = game.i18n.localize(`${OSRCB.moduleName}.formNeut`);
+        context.chaotic = game.i18n.localize(`${OSRCB.moduleName}.formChaos`);
+        context.gold = game.i18n.localize(`${OSRCB.moduleName}.formGold`);
+        context.classSelect = game.i18n.localize(`${OSRCB.moduleName}.formClassSelect`);
+        context.classInfo = game.i18n.localize(`${OSRCB.moduleName}.formClassInfo`);
+        context.close = game.i18n.localize(`${OSRCB.moduleName}.formBtnClose`);
+        context.choose = game.i18n.localize(`${OSRCB.moduleName}.formBtnChoose`);
+        // context.classTypeContent = OSRCB.util.renderClassTypes(this.dataObj);
+        context.data = this.dataObj;
+        return context; 
       }
       activateListeners(html) {
         super.activateListeners(html);
@@ -67,19 +64,19 @@ export async function registerCharacterBuilder() {
         statRerollBtn.addEventListener('click', () => {
           OSRCB.util.renderAbilScores(html, this.actor, true);
         });
-        let classTypes = html.find("input[type='radio'][name='classType']");
-        for (let type of classTypes) {
+        let classSources = html.find("input[type='radio'][name='source']");
+        for (let type of classSources) {
           type.addEventListener('input', () => {
             OSRCB.util.renderClassOptions(html);
           });
         }
 
         lvlInput.addEventListener('change', async () => {
-          const classType = html.find("input[type='radio'][name='classType']:checked")[0]?.value;
-          const dataObj = OSRCB.util.getClassOptionObj(classType).classes;
+          const classSource = html.find("input[type='radio'][name='source']:checked")[0]?.value;
+          const dataObj = OSRCB.util.getClassOptionObj(classSource).classes;
           const classOption = html.find("input[type='radio'][name='classOption']:checked")[0]?.value;
           const classObj = dataObj[classOption];
-          // const classObj = await OSRCB.util.getClassOptionObj(classType).classes[classOption];
+          // const classObj = await OSRCB.util.getClassOptionObj(classSource).classes[classOption];
 
           if (lvlInput.valueAsNumber > classObj.maxLvl) {
             lvlInput.value = classObj.maxLvl;
@@ -95,29 +92,29 @@ export async function registerCharacterBuilder() {
         const spells = await this.html.find('#spells')[0];
         formData.level = lvl[0].valueAsNumber;
         formData.spellCheck = spells.checked;
-        const classTypeInp = await this.html.find("[name='classType']");
+        const classSourceInp = await this.html.find("[name='source']");
         const chooseBtn = await this.html.find('#cb-sub-btn')[0];
         chooseBtn.disabled = true;
-        for (let i of classTypeInp) {
+        for (let i of classSourceInp) {
           if (i.checked) {
-            formData.classType = i.value;
+            formData.classSource = i.value;
           }
         }
 
         // end fix
-
+        console.log(formData)
         await OSRCB.util.osrUpdateSheet(formData, this.actor);
         if (formData.spellCheck) {
           OSRCB.util.randomSpells(formData, this.actor);
         }
       }
     }
-    const newForm = new OSRCharBuilder(templateData, formOptions, actor);
+    const newForm = new OSRCharBuilder(actor, dataObj);
     await newForm.render(true);
   };
 
   //compile html for class source selection
-  OSRCB.util.renderClassTypes = function (dataObj) {
+  OSRCB.util.renderclassSources = function (dataObj) {
 
     //if dataObj has key of 'OSE' use basic as the default checked option, else use 'SRD'
     const defaultCheck = dataObj?.OSE ? 'basic' : 'SRD';
@@ -137,7 +134,7 @@ export async function registerCharacterBuilder() {
         retHTML += `
       <div class="fx-sb cb-list">
         <label for="${option.name}">${option.name}</label>
-        <input type="radio" name="classType" id="${option.name}" value="${option.name}" ${checked} />
+        <input type="radio" name="classSource" id="${option.name}" value="${option.name}" ${checked} />
       </div>
       `;
       }
@@ -277,15 +274,15 @@ export async function registerCharacterBuilder() {
 
   OSRCB.util.renderClassOptions = function (html) {
     const classListDiv = html.find('#cb-class-list')[0];
-    const classType = html.find("input[type='radio'][name='classType']:checked")[0]?.value;
+    const source = html.find("input[type='radio'][name='source']:checked")[0]?.value;
 
     const classInfoTop = html.find('#cb-info-head')[0];
     const classInfoBody = html.find('#cb-info-body')[0];
     const lvlInput = html.find('#level')[0];
     let classListHtml = ``;
     //hacky swap between ose data object and carcass crawler object
-    //const dataObj = classType == 'carcassCrawler' ? crawlerData.cc0 : oseClasses[classType];
-    const dataObj = OSRCB.util.getClassOptionObj(classType).classes;
+    //const dataObj = classSource == 'carcassCrawler' ? crawlerData.cc0 : oseClasses[classSource];
+    const dataObj = OSRCB.util.getClassOptionObj(source).classes;
 
     let length = Object.keys(dataObj).length;
     let pick = Math.floor(Math.random() * length + 1);
@@ -294,12 +291,12 @@ export async function registerCharacterBuilder() {
       let checked = pick == count ? 'checked' : '';
       const obj = dataObj[entry];
       classListHtml += `<div class="fx-sb cb-list">
-    <label for"${obj.name}">${obj.menu}</label>
+    <label for"${obj.name}">${obj.name}</label>
     <input type="radio" name="classOption" id="${obj.name} - ${obj.req}" value="${obj.name}" + ${checked}>
     </div>`;
       if (checked === 'checked') {
         classInfoTop.innerHTML = obj.description;
-        classInfoBody.innerHTML = obj.notes;
+        classInfoBody.innerHTML = TextEditor.enrichHTML(obj.notes, {async:false});
       }
       count++;
     }
@@ -310,7 +307,7 @@ export async function registerCharacterBuilder() {
       input.addEventListener('input', () => {
         const classObj = dataObj[input.value];
         classInfoTop.innerHTML = classObj.description;
-        classInfoBody.innerHTML = classObj.notes;
+        classInfoBody.innerHTML = TextEditor.enrichHTML(classObj.notes, {async:false});
         if (lvlInput.valueAsNumber > classObj.maxLvl) {
           lvlInput.value = classObj.maxLvl;
         }
@@ -319,27 +316,33 @@ export async function registerCharacterBuilder() {
   };
   //retrieve the relevant class option data object from the game settings option object. requires source category name.
   //eg. basic, advanced, SRD
-  OSRCB.util.getClassOptionObj = function (classType) {
-    const optionObj = game.settings.get(`${OSRCB.moduleName}`, 'characterClasses');
-
-    for (let key of Object.keys(optionObj)) {
-      let options = optionObj[key].options;
-      for (let i = 0; i < options.length; i++) {
-        let obj = options[i];
-        if (obj.name == classType) {
-          return obj;
-        }
-      }
-    }
+  OSRCB.util.getClassOptionObj = function (classSource) {
+    // const optionObj = game.settings.get(`${OSRCB.moduleName}`, 'characterClasses');
+    // const optionObj = game.settings.get(`${OSRCB.moduleName}`, 'defaultClasses');
+    const optionObj = mergeClassOptions();
+    console.log(classSource, optionObj)
+    let sourceObj = optionObj.find(s=>s.name.toLowerCase()===classSource.toLowerCase());
+    console.log(sourceObj)
+    return sourceObj
+    // for (let key of Object.keys(optionObj)) {
+    //   let options = optionObj[key].options;
+    //   for (let i = 0; i < options.length; i++) {
+    //     let obj = options[i];
+    //     if (obj.name == classSource) {
+    //       return obj;
+    //     }
+    //   }
+    // }
   };
 
   OSRCB.util.osrUpdateSheet = async function (dataObj, actor) {
     const optionObj = await game.settings.get(`${OSRCB.moduleName}`, 'characterClasses');
-    let { classType, level } = dataObj;
+    let { source, level } = dataObj;
     const className = dataObj.classOption;
-    const classData = OSRCB.util.getClassOptionObj(classType);
+    const classData = OSRCB.util.getClassOptionObj(source);
     const classObj = classData.classes[className];
-    const packName = classData.pack;
+    const packName = classObj.pack;
+    const titles = classObj.title
     let goldItem = actor.items.getName('GP');
     
     // return saves array for level
@@ -373,19 +376,19 @@ export async function registerCharacterBuilder() {
     } else {
       const saves = getObj(classObj.saves);
       const thac0 = getObj(classObj['thac0']);
-      console.log(saves, thac0)
-      const xpValue = level == classObj.maxLvl ? 'Max Level' : classObj.xp[level - 1];
+      const xpValue = level === classObj.maxLvl ? 'Max Level' : classObj.xp[level - 1];
       let updateData = {
         system: {
           details: {
             class: classObj.menu,
-            title: classObj.title,
+            // get current tile or last title listed
+            title: level -1 < titles.length ? titles[level - 1] : titles[titles.length-1],
             xp: {
               next: xpValue,
               share: 100
             },
-            description: classObj.description,
-            notes: classObj.notes + classObj.journal,
+            biography: classObj.description,
+            notes: classObj.notes,
             alignment: dataObj.alignment,
             level: level
           },
@@ -426,7 +429,7 @@ export async function registerCharacterBuilder() {
           }
         }
       };
-      function multiLvlHp(level, classObj, con, msg = false, whisper) {
+      async function multiLvlHp(level, classObj, con, msg = false, whisper) {
         const conMod = [
           [3,-3], [5,-2],[8,-1],[12, 0],[15,1],[17,2],[18,3]
         ]
@@ -438,25 +441,37 @@ export async function registerCharacterBuilder() {
            break           
           }
         }
-   
-        let { hd, hdMod } = classObj;
+        
+        let { hd} = classObj;
         let hpTotal = 0;
-        let hpMsg = ``
-        for (let i = 0; i < level; i++) {
-          if (i < 9) {
-            let roll = Math.floor(Math.random() * hd + 1);
-            hpMsg += `<p><b>roll${i+1}</b>: ${roll} + ${hpMod} = ${roll + hpMod}</p>` 
-            let total = roll + hpMod > 1 ? roll + hpMod : 1
-            hpTotal += total;
+        let hpBonus = 0;
+        let bonus = 0
+        let hpMsg = ``;
+        let hdArr = classObj.hdArr;
+        let rollArr = []
 
-          }
-          if (i >= 9) {
-            let roll = Math.floor(Math.random() * hd + 1);
-            hpMsg += `<p><b>roll${i+1}</b>: ${roll} + ${hpMod} = ${roll + hpMod}</p>` 
-            hpTotal += roll + hdMod[i - 9] + hpMod;
-            
-          }
+        if(level<10){
+            hpBonus = level * hpMod;
+            let formula = `${hdArr[level-1]} + ${hpBonus}`
+            let roll = await new Roll(formula).evaluate({async:true})
+            hpMsg += `<p><b>roll</b>: ${roll.formula} = ${roll.total}</p>`
+            hpTotal+= roll.total + hpMod;
+            msg = true;
+        }else{
+          let modArr = hdArr.slice(9);
+          console.log(modArr);
+          hpBonus = 9 * hpMod;
+          modArr.map(i=>{
+            let num = parseInt(i.slice(i.indexOf('+') + 1));
+            bonus+= num;
+          })
+          let formula = `${level}d${hd}+ ${hpBonus} + ${bonus}`;
+          let roll = await new Roll(formula).evaluate({async:true});
+          hpMsg += `<p><b>roll</b>: ${roll.formula} = ${roll.total}</p>`;
+          hpTotal+= roll.total;
+          msg = true;
         }
+        
         if(msg == true){
           let msgData = {
             speaker: ChatMessage.getSpeaker(),
@@ -478,15 +493,16 @@ export async function registerCharacterBuilder() {
         }
         return hpTotal;
       }
-      let hd = `1d${classObj.hd}`;
-      if (level >= 10) {
-        let idx = level - 10;
-        hd = `9d${classObj.hd}+${classObj.hdMod[idx]}`;
-      }
+      // let hd = `1d${classObj.hd}`;
+      let hd = classObj.hdArr[level - 1];
+      // if (level >= 10) {
+      //   let idx = level - 10;
+      //   hd = `9d${classObj.hd}+${classObj.hdMod[idx]}`;
+      // }
       let hpMsg = await game.settings.get(`${OSRCB.moduleName}`, 'statRollMessage')
       let wHpMsg = await game.settings.get(`${OSRCB.moduleName}`, 'statRollMessage')
       let mod = actor.system.scores.con.mod;
-      let hp = multiLvlHp(level, classObj, dataObj.con, hpMsg, wHpMsg);
+      let hp = await multiLvlHp(level, classObj, dataObj.con, hpMsg, wHpMsg);
       updateData.system.hp = {
         hd: hd,
         value: hp,
@@ -563,7 +579,7 @@ export async function registerCharacterBuilder() {
     ui.notifications.warn(game.i18n.localize(`${OSRCB.moduleName}.addClassWarn`));
     for (let abil of compendium.index.contents) {
       const item = await compendium.getDocument(abil._id);
-      if (item.system.requirements == className) {
+      if (item.system.requirements?.toLowerCase() == className?.toLowerCase()) {
         await sleep(50);
         await actor.createEmbeddedDocuments('Item', [item]);
       }

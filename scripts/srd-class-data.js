@@ -6,7 +6,9 @@ export async function registerSrdData (){
     cleric: {
       name: 'cleric',
       menu: 'Cleric',
-      title: 'Acolyte',
+      pack: "osr-character-builder.osr-srd-class-options",
+      title: ['Acolyte', 'Adept', 'Priest(ess)','Vicar', 'Curate', 'Elder', 'Bishop', 'Lama', 'Patriarch (Matriarch)'],
+      hdArr:['1d6','2d6','3d6','4d6','5d6','6d6','7d6','8d6','9d6','9d6+1','9d6+2','9d6+3','9d6+4','9d6+5'],
       hd: 6,
       hdMod: [1,2,3,4,5],
       saves: {
@@ -51,7 +53,8 @@ export async function registerSrdData (){
     <b>Weapons</b>: Any blunt weapons<br>
     <b>Languages</b>: Alignment, Common<br>`,
       notes:
-        'Clerics are adventurers who have sworn to serve a deity. They are trained for battle and channel the power of their deity.',
+        `Clerics are adventurers who have sworn to serve a deity. They are trained for battle and channel the power of their deity.
+        <br><br><b>Journal Entry</b>: @Compendium[${OSRCB.moduleName}.osr-srd-classes.MxTAGtazZxJfvF7M]{Cleric}<br>`,
       languages: ['Alignment', 'Common'],
       journal: `<br><br><b>Journal Entry</b>: @Compendium[${OSRCB.moduleName}.osr-srd-classes.MxTAGtazZxJfvF7M]{Cleric}<br>`,
       maxLvl: 14,
@@ -60,7 +63,9 @@ export async function registerSrdData (){
     dwarf: {
       name: 'dwarf',
       menu: 'Dwarf',
-      title: ' Dwarven Veteran',
+      pack: "osr-character-builder.osr-srd-class-options",
+      title: ['Dwarven Veteran', 'Dwarven Warrior', 'Dwarven Swordmaster', 'Dwarven Hero', 'Dwarven Swashbuckler', 'Dwarven Myrmidon', 'Dwarven Champion', 'Dwarven Superhero', 'Dwarven Lord (Lady)'],
+      hdArr:['1d8','2d8','3d8','4d8','5d8','6d8','7d8','8d8','9d8','9d8+3','9d8+6','9d8+9'],
       hd: 8,
       hdMod: [3, 6, 9],
       saves: {
@@ -87,7 +92,8 @@ export async function registerSrdData (){
     <b>Languages</b>: Alignment, Common,<br>
     Dwarvish, Gnomish, Goblin, Kobold<br>`,
       notes:
-        'Dwarves are stout, bearded demihumans, about 4’ tall and weighing about 150 pounds. Dwarves typically live underground and love fine craftsmanship, gold, hearty food, and strong drink. They have skin, hair, and eye colours in earth tones. Dwarves are known for their stubbornness and practicality. They are a hardy people and have a strong resistance to magic, as reflected in their saving throws.',
+        `Dwarves are stout, bearded demihumans, about 4’ tall and weighing about 150 pounds. Dwarves typically live underground and love fine craftsmanship, gold, hearty food, and strong drink. They have skin, hair, and eye colours in earth tones. Dwarves are known for their stubbornness and practicality. They are a hardy people and have a strong resistance to magic, as reflected in their saving throws.
+        <br><br><b>Journal Entry</b>: @Compendium[${OSRCB.moduleName}.osr-srd-classes.8FaYQ5BwGMxlWJA7]{Dwarf}<br>`,
       languages: ['Alignment', 'Common', 'Dwarvish', 'Gnomish', 'Goblin', 'Kobold'],
       journal: `<br><br><b>Journal Entry</b>: @Compendium[${OSRCB.moduleName}.osr-srd-classes.8FaYQ5BwGMxlWJA7]{Dwarf}<br>`,
       maxLvl: 12,
@@ -96,7 +102,9 @@ export async function registerSrdData (){
     elf: {
       name: 'elf',
       menu: 'Elf',
-      title: 'Medium/Veteran',
+      pack: "osr-character-builder.osr-srd-class-options",
+      title: ['Medium/Veteran', 'Seer/Warrior', 'Conjurer/Swordmaster', 'Magician/Hero', 'Enchanter (Enchantress)/Swashbuckler', 'Warlock (Witch)/Myrmidon', 'Sorcerer (Sorceress)/Champion', 'Necromancer/ Superhero', 'Wizard/Lord (Lady)'],
+      hdArr:['1d6','2d6','3d6','4d6','5d6','6d6','7d6','8d6','9d6','9d6+2'],
       hd: 6,
       hdMod: [2],
       saves: {
@@ -136,7 +144,8 @@ export async function registerSrdData (){
     <b>Weapons</b>: Any<br>
     <b>Languages</b>: Alignment, Common, Elvish, Gnoll, Hobgoblin, Orcish<br>`,
       notes: `Elves are slender, fey demihumans with pointed ears. They typically weigh about 120 pounds and are between 5 and 5½ feet tall. Elves are seldom met in human settlements, preferring to feast and make merry in the woods. If crossed, they are dangerous enemies, as they are masters of both sword and spell. Elves are fascinated by spells and beautifully constructed magic items and love to collect both.<br>
-    <b>Prime requisites</b>: An elf with at least 13 INT and STR gains a 5% bonus to experience. An elf with an INT of at least 16 and a STR of at least 13 receives a +10% XP bonus.`,
+    <b>Prime requisites</b>: An elf with at least 13 INT and STR gains a 5% bonus to experience. An elf with an INT of at least 16 and a STR of at least 13 receives a +10% XP bonus.
+    <br><br><b>Journal Entry</b>: @Compendium[${OSRCB.moduleName}.osr-srd-classes.iH341o9KMs0jx96z]{Elf}<br>`,
       languages: ['Alignment', 'Common', 'Elvish', 'Gnoll', 'Hobgoblin', 'Orcish'],
       journal: `<br><br><b>Journal Entry</b>: @Compendium[${OSRCB.moduleName}.osr-srd-classes.iH341o9KMs0jx96z]{Elf}<br>`,
       maxLvl: 10,
@@ -145,7 +154,9 @@ export async function registerSrdData (){
     fighter: {
       name: 'fighter',
       menu: 'Fighter',
-      title: 'Veteran',
+      pack: "osr-character-builder.osr-srd-class-options",
+      title: ['Veteran', 'Warrior', 'Sword-master', 'Hero', 'Swashbuckler', 'Myrmidon','Champion', 'Superhero', 'Lord (Lady)'],
+      hdArr:['1d8','2d8','3d8','4d8','5d8','6d8','7d8','8d8','9d8','9d8+2','9d8+4','9d8+6','9d8+8','9d8+10'],
       hd: 8,
       hdMod: [2, 4, 6, 8, 10],
       saves: {
@@ -173,7 +184,8 @@ export async function registerSrdData (){
     <b>Weapons</b>: Any<br>
     <b>Languages</b>: Alignment, Common<br>`,
       notes:
-        'Fighters are adventurers dedicated to mastering the arts of combat and war. In a group of adventurers, the role of fighters is to battle monsters and to defend other characters.',
+        `Fighters are adventurers dedicated to mastering the arts of combat and war. In a group of adventurers, the role of fighters is to battle monsters and to defend other characters.
+        <br><br><b>Journal Entry</b>: @Compendium[${OSRCB.moduleName}.osr-srd-classes.tuxYnX5oQOhSkHrp]{Fighter}<br>`,
       languages: ['Alignment', 'Common'],
       journal: `<br><br><b>Journal Entry</b>: @Compendium[${OSRCB.moduleName}.osr-srd-classes.tuxYnX5oQOhSkHrp]{Fighter}<br>`,
       maxLvl: 14,
@@ -182,7 +194,9 @@ export async function registerSrdData (){
     halfling: {
       name: 'halfling',
       menu: 'Halfling',
-      title: 'Halfling Veteran',
+      pack: "osr-character-builder.osr-srd-class-options",
+      title: [ 'Halfling Veteran', 'Halfling Warrior', 'Halfling Swordmaster', 'Halfling Hero', 'Halfling Swashbuckler', 'Halfling Myrmidon', 'Halfling Champion', 'Sherif'],
+      hdArr:['1d6','2d6','3d6','4d6','5d6','6d6','7d6','8d6'],
       hd: 6,
       hdMod: [],
       saves: {
@@ -206,7 +220,8 @@ export async function registerSrdData (){
     <b>Weapons</b>: Any appropriate to size<br>
     <b>Languages</b>: Alignment, Common, Halfling<br>`,
       notes: `Halflings are small, rotund demihumans with furry feet and curly hair. They weigh about 60 pounds and are around 3’ tall. Halflings are a friendly and welcoming folk. Above all, they love the comforts of home and are not known for their bravery. Halflings who gain treasure through adventuring will often use their wealth in pursuit of a quiet, comfortable life. <br>
-      <b>Prime requisites</b>: A halfling with at least 13 in one prime requisite gains a 5% bonus to experience. If both DEX and STR are 13 or higher, the halfling gets a +10% bonus.`,
+      <b>Prime requisites</b>: A halfling with at least 13 in one prime requisite gains a 5% bonus to experience. If both DEX and STR are 13 or higher, the halfling gets a +10% bonus.
+      <br><br><b>Journal Entry</b>: @Compendium[${OSRCB.moduleName}.osr-srd-classes.56pppv5spL3hnIbc]{Halfling}<br>`,
       languages: ['Alignment', 'Common', 'Halfling'],
       journal: `<br><br><b>Journal Entry</b>: @Compendium[${OSRCB.moduleName}.osr-srd-classes.56pppv5spL3hnIbc]{Halfling}<br>`,
       maxLvl: 8,
@@ -215,7 +230,9 @@ export async function registerSrdData (){
     'magic-user': {
       name: 'magic-user',
       menu: 'Magic User',
-      title: 'Medium',
+      pack: "osr-character-builder.osr-srd-class-options",
+      title: [ 'Medium', 'Seer', 'Conjurer', 'Magician', 'Enchanter (Enchantress)', 'Warlock (Witch)', 'Sorcerer (Sorceress)', 'Necromancer', 'Wizard'],
+      hdArr:['1d4','2d4','3d4','4d4','5d4','6d4','7d4','8d4','9d4','9d4+1','9d4+2','9d4+3','9d4+4','9d4+5'],
       hd: 4,
       hdMod: [1, 2, 3, 4, 5],
       saves: {
@@ -257,7 +274,8 @@ export async function registerSrdData (){
     <b>Weapons</b>: Dagger, staff (optional)<br>
     <b>Languages</b>: Alignment, Common<br>`,
       notes:
-        'Magic-users are adventurers whose study of arcane secrets has taught them how to cast spells. Magic-users are able to cast a greater number of increasingly powerful spells as they advance in level.',
+        `Magic-users are adventurers whose study of arcane secrets has taught them how to cast spells. Magic-users are able to cast a greater number of increasingly powerful spells as they advance in level.
+        <br><br><b>Journal Entry</b>: @Compendium[${OSRCB.moduleName}.osr-srd-classes.8xWQ2MGa2LPMA43Z]{Magic-User}<br>`,
       languages: ['Alignment', 'Common'],
       journal: `<br><br><b>Journal Entry</b>: @Compendium[${OSRCB.moduleName}.osr-srd-classes.8xWQ2MGa2LPMA43Z]{Magic-User}<br>`,
       maxLvl: 14,
@@ -266,7 +284,9 @@ export async function registerSrdData (){
     thief: {
       name: 'thief',
       menu: 'Thief',
-      title: 'Apprentice',
+      pack: "osr-character-builder.osr-srd-class-options",
+      title: ['Apprentice', 'Footpad', 'Robber', 'Burglar', 'Cutpurse', 'Sharper', 'Pilferer', 'Thief', 'Master Thief'],
+      hdArr:['1d4','2d4','3d4','4d4','5d4','6d4','7d4','8d4','9d4','9d4+2','9d4+4','9d4+6','9d4+8','9d4+10'],
       hd: 4,
       hdMod: [2, 4, 6, 8, 10],
       saves: {
@@ -292,7 +312,8 @@ export async function registerSrdData (){
     <b>Weapons</b>: Any<br>
     <b>Languages</b>: Alignment, Common<br>`,
       notes: `Thieves are adventurers who live by their skills of deception and stealth. Their range of unique skills makes them very handy companions in adventures. However, thieves are not always to be trusted.
-    Adjust ability scores: In step 3 of character creation, thieves may not lower STR.`,
+    Adjust ability scores: In step 3 of character creation, thieves may not lower STR.
+    <br><br><b>Journal Entry</b>: @Compendium[${OSRCB.moduleName}.osr-srd-classes.aTfwtSoLj0EYkOR7]{Thief}<br>`,
       languages: ['Alignment', 'Common'],
       journal: `<br><br><b>Journal Entry</b>: @Compendium[${OSRCB.moduleName}.osr-srd-classes.aTfwtSoLj0EYkOR7]{Thief}<br>`,
       maxLvl: 14,

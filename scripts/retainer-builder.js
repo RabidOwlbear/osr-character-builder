@@ -13,7 +13,7 @@ export async function registerRetainerBuilder() {
         return mergeObject(super.defaultOptions, {
           classes: ['retainer-builder'],
           popOut: true,
-          template: `modules/${OSRCB.moduleName}/template/retainerBuilder.html`,
+          template: `modules/${OSRCB.moduleName}/template/retainerBuilder.hbs`,
           height: 220,
           width: 300,
           id: 'retainer-builder',
@@ -92,8 +92,6 @@ export async function registerRetainerBuilder() {
             
             const dataObj = OSRCB.util.getClassOptionObj(classType).classes;
             const classObj = dataObj[classOption];
-            // const classObj = await OSRCB.util.getClassOptionObj(classType).classes[classOption];
-            
             if(lvlInput.valueAsNumber > classObj.maxLvl){
               lvlInput.value = classObj.maxLvl
             }
@@ -120,10 +118,11 @@ export async function registerRetainerBuilder() {
         formData.level = this.html.find('#level')[0].valueAsNumber;
         formData.spellCheck = this.html.find('#spells')[0].checked;
         formData.itemsCheck = this.html.find('#items')[0].checked;
-        formData.randName = this.html.find('#randName')[0].checked;
+        formData.randName = this.html.find('#randName')[0]?.checked;
         let selectData = formData['class-select'].split('.')
         formData.classType = selectData[0];
         formData.classOption = selectData[1]
+        formData.source = selectData[0]
         formData.retainer= true;
           const newRetainer = await OSRCB.util.retainerGen(formData);
           console.log(newRetainer)
@@ -155,7 +154,7 @@ export async function registerRetainerBuilder() {
       return null
     }
     if(data.classType == 'SRD' ){
-      data.classType = OSRCB.util.oseActive() ? 'basic' : 'SRD'
+      data.classType = OSRCB.util.oseActive() ? '' : 'SRD'
     }
     let statObj = await OSRCB.util.osrRollStats(false, true);
     
@@ -184,11 +183,13 @@ export async function registerRetainerBuilder() {
   OSRCB.util.randomSpells = async function (data, actor){
     
     const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
-    let {classType, classOption, level} = data
-    if(classType == 'SRD'){
-      classType = OSRCB.util.oseActive() ? 'basic' : 'SRD'
+    let {source, classOption, level} = data
+    
+    console.log(data)
+    if(source == 'SRD'){
+      source = OSRCB.util.oseActive() ? 'basic' : 'SRD'
     }
-    const typeData = await OSRCB.util.getClassOptionObj(classType)
+    const typeData = await OSRCB.util.getClassOptionObj(source)
     console.log(typeData)
     const classData = typeData.classes[classOption];
     //break out if not spellcaster
@@ -198,7 +199,6 @@ export async function registerRetainerBuilder() {
     } 
     const magicType = classData?.spellType
     const spellList = OSRCB.spells.mergedList[magicType];
-    console.log('hdhdhdhdhdhdhdhdhdd',classType,magicType, spellList, OSRCB.spells.mergedList)
     const slotData = classData?.spellSlot[level]
     const compendium = await game.packs.get(classData.spellPackName);
     for(let key in slotData){
@@ -312,14 +312,14 @@ export async function registerRetainerBuilder() {
       }
   */
 
-  OSRCB.util.randomRetainers = async function (data, classType = 'SRD'){
+  OSRCB.util.randomRetainers = async function (data, classSource = 'SRD'){
     
     const advanced = ['acrobat','assassin','barbarian','bard','drow','druid','duergar','gnome','half-elf','half-orc','illusionist','knight','paladin','ranger','svirfneblin']
     const basic = ['cleric', 'dwarf', 'elf', 'fighter', 'halfling','magic-user', 'thief']
     let classOptions = basic
-    let type = classType
-    if(classType == 'advanced' && OSRCB.util.oseActive())classOptions = advanced;
-    if(classType == 'mixed' && OSRCB.util.oseActive())  classOptions = advanced.concat(basic);
+    let source = classSource
+    if(classSource == 'advanced' && OSRCB.util.oseActive())classOptions = advanced;
+    if(classSource == 'mixed' && OSRCB.util.oseActive())  classOptions = advanced.concat(basic);
 
     let {number, randomNumber, maxLvl, minLvl, items, spells, randomName } = data;
     
@@ -334,7 +334,7 @@ export async function registerRetainerBuilder() {
     let randLvl = randNum == 0 ? 1 : randNum;
     const data = {
       level: minLvl == maxLvl ? minLvl : randNum,
-      classType: type,
+      source: source,
       classOption: classOptions[Math.floor(Math.random() * classOptions.length)]
     }
     console.log('data', data)  
@@ -342,7 +342,7 @@ export async function registerRetainerBuilder() {
     data.level = newRetainer.system.details.level;
     // random name support
     if(randomName && game.modules.get("osr-helper")?.active){
-      let classObj  = OSRCB.util.getClassOptionObj(data.classType).classes[data.classOption]
+      let classObj  = OSRCB.util.getClassOptionObj(data.source).classes[data.classOption]
       console.log(classObj, classObj.nameType)
       let name = OSRH.util.randomName(classObj.nameType)
       console.log(newRetainer, name, newRetainer.name)
