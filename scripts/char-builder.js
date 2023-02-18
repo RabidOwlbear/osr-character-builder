@@ -1,12 +1,11 @@
-import { mergeClassOptions } from "./util.mjs";
+import { mergeClassOptions, multiLvlHp } from './util.mjs';
 export async function registerCharacterBuilder() {
   OSRCB.util.renderCharacterBuilder = async function (actor, dataObj) {
-    
     class OSRCharBuilder extends FormApplication {
       constructor(actor, dataObj) {
         super();
         this.actor = actor;
-        this.dataObj = dataObj
+        this.dataObj = dataObj;
         this.html;
       }
 
@@ -46,7 +45,7 @@ export async function registerCharacterBuilder() {
         context.choose = game.i18n.localize(`${OSRCB.moduleName}.formBtnChoose`);
         // context.classTypeContent = OSRCB.util.renderClassTypes(this.dataObj);
         context.data = this.dataObj;
-        return context; 
+        return context;
       }
       activateListeners(html) {
         super.activateListeners(html);
@@ -73,12 +72,11 @@ export async function registerCharacterBuilder() {
 
         lvlInput.addEventListener('change', async () => {
           const classSource = html.find("input[type='radio'][name='source']:checked")[0]?.value;
-          const dataObj = OSRCB.util.getClassOptionObj(classSource).classes;
+          const dataObj = OSRCB.util.getClassOptionObj(classSource)?.classes;
           const classOption = html.find("input[type='radio'][name='classOption']:checked")[0]?.value;
           const classObj = dataObj[classOption];
           // const classObj = await OSRCB.util.getClassOptionObj(classSource).classes[classOption];
-
-          if (lvlInput.valueAsNumber > classObj.maxLvl) {
+          if (lvlInput.valueAsNumber > classObj?.maxLvl) {
             lvlInput.value = classObj.maxLvl;
           }
         });
@@ -102,7 +100,8 @@ export async function registerCharacterBuilder() {
         }
 
         // end fix
-        console.log(formData)
+
+
         await OSRCB.util.osrUpdateSheet(formData, this.actor);
         if (formData.spellCheck) {
           OSRCB.util.randomSpells(formData, this.actor);
@@ -115,7 +114,6 @@ export async function registerCharacterBuilder() {
 
   //compile html for class source selection
   OSRCB.util.renderclassSources = function (dataObj) {
-
     //if dataObj has key of 'OSE' use basic as the default checked option, else use 'SRD'
     const defaultCheck = dataObj?.OSE ? 'basic' : 'SRD';
     //output html content
@@ -282,6 +280,11 @@ export async function registerCharacterBuilder() {
     let classListHtml = ``;
     //hacky swap between ose data object and carcass crawler object
     //const dataObj = classSource == 'carcassCrawler' ? crawlerData.cc0 : oseClasses[classSource];
+    if(source === 'none'){
+      classListDiv.innerHTML = ''
+      classInfoTop.innerHTML = ''
+      classInfoBody.innerHTML = ''
+    }else {
     const dataObj = OSRCB.util.getClassOptionObj(source).classes;
 
     let length = Object.keys(dataObj).length;
@@ -291,12 +294,12 @@ export async function registerCharacterBuilder() {
       let checked = pick == count ? 'checked' : '';
       const obj = dataObj[entry];
       classListHtml += `<div class="fx-sb cb-list">
-    <label for"${obj.name}">${obj.name}</label>
+    <label for"${obj.name}">${obj.menu}</label>
     <input type="radio" name="classOption" id="${obj.name} - ${obj.req}" value="${obj.name}" + ${checked}>
     </div>`;
       if (checked === 'checked') {
         classInfoTop.innerHTML = obj.description;
-        classInfoBody.innerHTML = TextEditor.enrichHTML(obj.notes, {async:false});
+        classInfoBody.innerHTML = TextEditor.enrichHTML(obj.notes, { async: false });
       }
       count++;
     }
@@ -307,44 +310,39 @@ export async function registerCharacterBuilder() {
       input.addEventListener('input', () => {
         const classObj = dataObj[input.value];
         classInfoTop.innerHTML = classObj.description;
-        classInfoBody.innerHTML = TextEditor.enrichHTML(classObj.notes, {async:false});
+        classInfoBody.innerHTML = TextEditor.enrichHTML(classObj.notes, { async: false });
         if (lvlInput.valueAsNumber > classObj.maxLvl) {
           lvlInput.value = classObj.maxLvl;
         }
       });
-    }
+    }}
   };
   //retrieve the relevant class option data object from the game settings option object. requires source category name.
   //eg. basic, advanced, SRD
   OSRCB.util.getClassOptionObj = function (classSource) {
-    // const optionObj = game.settings.get(`${OSRCB.moduleName}`, 'characterClasses');
-    // const optionObj = game.settings.get(`${OSRCB.moduleName}`, 'defaultClasses');
+
     const optionObj = mergeClassOptions();
-    console.log(classSource, optionObj)
-    let sourceObj = optionObj.find(s=>s.name.toLowerCase()===classSource.toLowerCase());
-    console.log(sourceObj)
-    return sourceObj
-    // for (let key of Object.keys(optionObj)) {
-    //   let options = optionObj[key].options;
-    //   for (let i = 0; i < options.length; i++) {
-    //     let obj = options[i];
-    //     if (obj.name == classSource) {
-    //       return obj;
-    //     }
-    //   }
-    // }
+    let sourceObj = optionObj.find((s) => s.name.toLowerCase() === classSource.toLowerCase());
+    return sourceObj;
+    
   };
 
   OSRCB.util.osrUpdateSheet = async function (dataObj, actor) {
     const optionObj = await game.settings.get(`${OSRCB.moduleName}`, 'characterClasses');
     let { source, level } = dataObj;
+    let updateData = {};
     const className = dataObj.classOption;
-    const classData = OSRCB.util.getClassOptionObj(source);
-    const classObj = classData.classes[className];
-    const packName = classObj.pack;
-    const titles = classObj.title
+    const isNone = source === 'none'
+    const classData = !isNone ? OSRCB.util.getClassOptionObj(source) : null;
+    const classObj = !isNone ? classData.classes[className] : null;
+    const packName = !isNone ? classObj.pack : null;
+    const titles = !isNone ? classObj.title : null;
     let goldItem = actor.items.getName('GP');
-    
+    let packExists = !isNone ? await game.packs.get(packName): null;
+    if (!isNone && !packExists) {
+      ui.notifications.warn('Compendum pack not found. Ending character creation.');
+      return;
+    }
     // return saves array for level
     const getObj = (multiObj) => {
       let keys = [];
@@ -361,7 +359,7 @@ export async function registerCharacterBuilder() {
       }
     };
 
-    if (level > classObj.maxLvl) {
+    if (!isNone && level > classObj.maxLvl) {
       level = classObj.maxLvl;
       await actor.update({ data: { details: { level: level } } });
     }
@@ -373,16 +371,33 @@ export async function registerCharacterBuilder() {
     }
     if (className == 'default') {
       ui.notifications.warn('Please Choose A Class');
+    } else if (source == 'none') {
+      updateData = {
+        system: {
+          details: {
+            alignment: dataObj.alignment,
+            level: level
+          },
+          scores: {
+            str: { value: dataObj.str },
+            int: { value: dataObj.int },
+            wis: { value: dataObj.wis },
+            dex: { value: dataObj.dex },
+            con: { value: dataObj.con },
+            cha: { value: dataObj.cha }
+          }
+        }
+      };
     } else {
       const saves = getObj(classObj.saves);
       const thac0 = getObj(classObj['thac0']);
       const xpValue = level === classObj.maxLvl ? 'Max Level' : classObj.xp[level - 1];
-      let updateData = {
+      updateData = {
         system: {
           details: {
             class: classObj.menu,
             // get current tile or last title listed
-            title: level -1 < titles.length ? titles[level - 1] : titles[titles.length-1],
+            title: level - 1 < titles.length ? titles[level - 1] : titles[titles.length - 1],
             xp: {
               next: xpValue,
               share: 100
@@ -429,119 +444,51 @@ export async function registerCharacterBuilder() {
           }
         }
       };
-      async function multiLvlHp(level, classObj, con, msg = false, whisper) {
-        const conMod = [
-          [3,-3], [5,-2],[8,-1],[12, 0],[15,1],[17,2],[18,3]
-        ]
-        let hpMod = 0
-        for(let val of conMod){
-          hpMod = val[1]
-          if(con===3)break
-          if(con <= val[0] ){
-           break           
-          }
-        }
-        
-        let { hd} = classObj;
-        let hpTotal = 0;
-        let hpBonus = 0;
-        let bonus = 0
-        let hpMsg = ``;
-        let hdArr = classObj.hdArr;
-        let rollArr = []
 
-        if(level<10){
-            hpBonus = level * hpMod;
-            let formula = `${hdArr[level-1]} + ${hpBonus}`
-            let roll = await new Roll(formula).evaluate({async:true})
-            hpMsg += `<p><b>roll</b>: ${roll.formula} = ${roll.total}</p>`
-            hpTotal+= roll.total + hpMod;
-            msg = true;
-        }else{
-          let modArr = hdArr.slice(9);
-          console.log(modArr);
-          hpBonus = 9 * hpMod;
-          modArr.map(i=>{
-            let num = parseInt(i.slice(i.indexOf('+') + 1));
-            bonus+= num;
-          })
-          let formula = `${level}d${hd}+ ${hpBonus} + ${bonus}`;
-          let roll = await new Roll(formula).evaluate({async:true});
-          hpMsg += `<p><b>roll</b>: ${roll.formula} = ${roll.total}</p>`;
-          hpTotal+= roll.total;
-          msg = true;
-        }
-        
-        if(msg == true){
-          let msgData = {
-            speaker: ChatMessage.getSpeaker(),
-            content: `
-            <details>
-  
-            <summary>
-             <b>${actor.name} HP Rolls:</b>
-            </summary>
-            </br>
-            <div>
-            ${hpMsg}
-            </div>
-            </details>
-            `,
-          }
-          if(whisper) msgData.whisper = [...game.users.filter((u) => u.isGM), game.user];
-          ChatMessage.create(msgData)
-        }
-        return hpTotal;
-      }
-      // let hd = `1d${classObj.hd}`;
       let hd = classObj.hdArr[level - 1];
-      // if (level >= 10) {
-      //   let idx = level - 10;
-      //   hd = `9d${classObj.hd}+${classObj.hdMod[idx]}`;
-      // }
-      let hpMsg = await game.settings.get(`${OSRCB.moduleName}`, 'statRollMessage')
-      let wHpMsg = await game.settings.get(`${OSRCB.moduleName}`, 'statRollMessage')
+      let hpMsg = await game.settings.get(`${OSRCB.moduleName}`, 'statRollMessage');
+      let wHpMsg = await game.settings.get(`${OSRCB.moduleName}`, 'statRollMessage');
       let mod = actor.system.scores.con.mod;
-      let hp = await multiLvlHp(level, classObj, dataObj.con, hpMsg, wHpMsg);
+      let hp = await multiLvlHp(actor, level, classObj, dataObj.con, hpMsg, wHpMsg);
       updateData.system.hp = {
         hd: hd,
         value: hp,
         max: hp
       };
-      if (dataObj.retainer) {
-        updateData.system.retainer = { enabled: true };
-        updateData.system.details.xp.share = 50;
-      }
-      if (classObj.spellCaster) {
-        updateData.system.spells = classObj.spellSlot[level];
-        updateData.system.spells.enabled = true;
-      }
-      await actor.update(updateData);
-      //if no gold item exists create one then update, else update gold amount
-      // check for currency items
-      let types = ['PP', 'GP', 'EP', 'SP', 'CP'];
-      let curCheck = async (type) => {
-        let itemExists = actor.items.getName(type);
-        let pack = game.packs.get(`${OSRCB.moduleName}.osr-srd-items`);
-        if (!itemExists) {
-          let curItem = await pack.getDocument(pack.index.getName(type)._id);
-          let itemData = curItem.clone();
-          await actor.createEmbeddedDocuments('Item', [itemData]);
-          if (type == 'GP') {
-            goldItem = actor.items.getName('GP');
-          }
+    }
+    if (dataObj.retainer) {
+      updateData.system.retainer = { enabled: true };
+      updateData.system.details.xp.share = 50;
+    }
+    if (!isNone && classObj.spellCaster) {
+      updateData.system.spells = classObj.spellSlot[level];
+      updateData.system.spells.enabled = true;
+    }
+    await actor.update(updateData);
+    //if no gold item exists create one then update, else update gold amount
+    // check for currency items
+    let types = ['PP', 'GP', 'EP', 'SP', 'CP'];
+    let curCheck = async (type) => {
+      let itemExists = actor.items.getName(type);
+      let pack = game.packs.get(`${OSRCB.moduleName}.osr-srd-items`);
+      if (!itemExists) {
+        let curItem = await pack.getDocument(pack.index.getName(type)._id);
+        let itemData = curItem.clone();
+        await actor.createEmbeddedDocuments('Item', [itemData]);
+        if (type == 'GP') {
+          goldItem = actor.items.getName('GP');
         }
-      };
-      for (let type of types) {
-        await curCheck(type);
       }
-      await goldItem.update({ data: { quantity: { value: dataObj.goldAmount } } });
-      await OSRCB.util.osrAddClassAbilities(className, actor, packName);
-      await actor.setFlag(`${OSRCB.moduleName}`, 'classSelected', true);
+    };
+    for (let type of types) {
+      await curCheck(type);
+    }
+    await goldItem.update({ data: { quantity: { value: dataObj.goldAmount } } });
+    if(source != 'none') await OSRCB.util.osrAddClassAbilities(classObj.menu, actor, packName);
+    await actor.setFlag(`${OSRCB.moduleName}`, 'classSelected', true);
 
-      if (dataObj.shopCheck) {
-        OSRIS.shop.RUIS(actor._id)
-      }
+    if (dataObj.shopCheck) {
+      OSRIS.shop.RUIS(actor._id);
     }
   };
 

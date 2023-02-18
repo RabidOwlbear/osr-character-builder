@@ -34,12 +34,7 @@ Hooks.once('init', async () => {
       default: [],
       scope: 'world'
     });
-    await game.settings.register(`${OSRCB.moduleName}`, 'customClasses', {
-      name: 'customClasses',
-      type: Array,
-      default: [],
-      scope: 'world'
-    });
+    
     await game.settings.register(`${OSRCB.moduleName}`, 'spellList', {
       name: 'spellList',
       type: Object,
@@ -69,7 +64,7 @@ Hooks.once('ready', async () => {
   const srdObj = {};
   if (game.user.role >= 4) {
     
-
+    
     let oseActive = await game.modules.get(oseModName)?.active;
     console.log(oseActive);
     if (oseActive) {
@@ -96,9 +91,9 @@ Hooks.once('ready', async () => {
     }
 
     // await game.settings.set(`${OSRCB.moduleName}`, 'spellList', {})
-    let customClasses = await game.settings.get(`${OSRCB.moduleName}`, 'customClasses');
-    const data = mergeObject(srdObj, customClasses);
-    await game.settings.set(`${OSRCB.moduleName}`, 'characterClasses', data);
+    // let customClasses = await game.settings.get(`${OSRCB.moduleName}`, 'customClasses');
+    // const data = mergeObject(srdObj, customClasses);
+    // await game.settings.set(`${OSRCB.moduleName}`, 'characterClasses', data);
     Hooks.callAll('OseCharacterClassAdded');
   }
 });

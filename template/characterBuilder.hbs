@@ -69,6 +69,11 @@
             <input type="radio" name="source" id="{{source.name}}" value="{{source.name}}" {{#if source.default}}checked{{/if}}/>
             </div>
           {{/each}}
+          {{!-- no class --}}
+          <div class="fx-sb cb-list">
+            <label for="none">None</label>
+            <input type="radio" name="source" id="none" value="none"/>
+          </div>
       </div>
       <div class="cb-div pr5 pl5" id="cb-align-select">
         <h3 class="">{{alignment}}</h3>
