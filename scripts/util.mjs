@@ -1,7 +1,7 @@
 export function mergeClassOptions(){
   let defaultClasses = game.settings.get('osr-character-builder', 'defaultClasses');
   let osrCCBActive =  game.modules.get('osr-ccb')?.active
-  const mergeClasses = game.settings.get('osr-ccb', 'displayCustomClasses');
+  const mergeClasses = osrCCBActive ? game.settings.get('osr-ccb', 'displayCustomClasses'): [];
  if(osrCCBActive && mergeClasses){
   let customClasses = game.settings.get('osr-ccb', 'customClasses');
   return defaultClasses.concat(customClasses);
