@@ -1,0 +1,157 @@
+<form id='char-builder-form'>
+  <section class='top'>
+    <div class='name-cont'>
+      <input id='name-inp' type='text' placeholder='Name' name='name' value='{{actor.name}}' />
+      <div class='lvl-cont'>
+        <label for='level-inp'>Level</label>
+        <input type='number' data-dtype='Number' value='{{actor.system.details.level}}' name='level' id='level-inp' />
+        <label
+          for='hero-roll-inp'
+          title='If selected, stat rolls are rolled with 4d6 dropping lowest value.'
+        >Hero?</label>
+        <input type='checkbox' id='hero-roll-inp' />
+      </div>
+
+    </div>
+    <div class='stat-cont'>
+      <div class='stat-input-col'>
+        <label for='str'>Str</label>
+        <input
+          class='stat-inp'
+          type='number'
+          name='str'
+          id='str'
+          value='{{actor.system.scores.str.value}}'
+          data-stat='str'
+          data-dtype='Number'
+        />
+        <a class='single-stat-roll-btn'>
+          <i class='fa-solid fa-dice-six'></i>
+        </a>
+      </div>
+      <div class='stat-input-col'>
+        <label for='int'>Int</label>
+        <input
+          class='stat-inp'
+          type='number'
+          name='int'
+          id='int'
+          value='{{actor.system.scores.int.value}}'
+          data-stat='int'
+          data-dtype='Number'
+        />
+        <a class='single-stat-roll-btn'>
+          <i class='fa-solid fa-dice-six'></i>
+        </a>
+      </div>
+      <div class='stat-input-col'>
+        <label for='wis'>Wis</label>
+        <input
+          class='stat-inp'
+          type='number'
+          name='wis'
+          id='wis'
+          value='{{actor.system.scores.wis.value}}'
+          data-stat='wis'
+          data-dtype='Number'
+        />
+        <a class='single-stat-roll-btn'>
+          <i class='fa-solid fa-dice-six'></i>
+        </a>
+      </div>
+      <div class='stat-input-col'>
+        <label for='dex'>Dex</label>
+        <input
+          class='stat-inp'
+          type='number'
+          name='dex'
+          id='dex'
+          value='{{actor.system.scores.dex.value}}'
+          data-stat='dex'
+          data-dtype='Number'
+        />
+        <a class='single-stat-roll-btn'>
+          <i class='fa-solid fa-dice-six'></i>
+        </a>
+      </div>
+      <div class='stat-input-col'>
+        <label for='con'>Con</label>
+        <input
+          class='stat-inp'
+          type='number'
+          name='con'
+          id='con'
+          value='{{actor.system.scores.con.value}}'
+          data-stat='con'
+          data-dtype='Number'
+        />
+        <a class='single-stat-roll-btn'>
+          <i class='fa-solid fa-dice-six'></i>
+        </a>
+      </div>
+      <div class='stat-input-col'>
+        <label for='cha'>Cha</label>
+        <input
+          class='stat-inp'
+          type='number'
+          name='cha'
+          id='cha'
+          value='{{actor.system.scores.cha.value}}'
+          data-stat='cha'
+          data-dtype='Number'
+        />
+        <a class='single-stat-roll-btn'>
+          <i class='fa-solid fa-dice-six'></i>
+        </a>
+      </div>
+      <div class='stat-roll-cont'>
+        <a class='roll-stats-btn'>
+          <i class='fa-solid fa-dice-six'></i>
+        </a>
+      </div>
+    </div>
+
+  </section>
+  <section class='middle'>
+    <div class='class-select-cont'>
+      <select name='source' id='source-select' class='source-select'>
+        {{#each classData as |source idx|}}
+          <option value='{{source.name}}'>{{source.menu}}</option>
+        {{/each}}
+        <option value='none'>None</option>
+      </select>
+
+      <select name='classOption' id='class-select' class='class-select'>
+        <option value='none'>Choose Source</option>
+      </select>
+
+    </div>
+    <div class='info-cont'>
+      <div id='bio'></div>
+      <div id='notes'></div>
+    </div>
+  </section>
+  <section class='bottom'>
+    <div class='gp-cont'>
+      <label for='gold-inp'>GP:</label>
+      <input type='number' id='gold-inp' value='{{gp}}' name='goldAmount' />
+      <a class='roll-gp-btn'>
+        <i class='fa-solid fa-dice-six'></i>
+      </a>
+    </div>
+    {{#if addShopCheck}}
+      <label for='shop-check-inp'>Open Shop?</label>
+      <input type='checkbox' id='shop-check-inp' name='shopCheck' />
+    {{else}}
+      <div class='empty'></div>
+      <div class='empty'></div>
+    {{/if}}
+    <label for='spell-check-inp'>Random Spells?</label>
+    <input type='checkbox' id='spellp-check-inp' name='spellCheck' />
+  </section>
+  <section class='footer'>
+    <button type='button' id='close-btn'>Close</button>
+    <button type='button' id='choose-btn'>Choose</button>
+  </section>
+
+</form>

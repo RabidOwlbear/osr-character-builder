@@ -1,7 +1,8 @@
-import { registerCharacterBuilder } from './char-builder.js';
+//import { registerCharacterBuilder } from './char-builder.js';
 import { registerSrdData } from './srd-class-data.js';
 import { registerRetainerBuilder } from './retainer-builder.js';
-import { mergeClassOptions } from './util.mjs';
+import { initializeUtils } from './util.mjs';
+import { osrCharacterBuilder } from './character-builder/character-builder.mjs';
 window.OSRCB = window.OSRCB || {
   moduleName: `osr-character-builder`
 };
@@ -12,14 +13,14 @@ Hooks.once('init', async () => {
   OSRCB.data = OSRCB.data || {};
   OSRCB.spells = OSRCB.spells || { mergedList: {} };
   OSRCB.spells.mergedList = {};
-  OSRCB.util.mergeClassOptions = mergeClassOptions;
+  OSRCB.characterBuilder = osrCharacterBuilder;
   Hooks.call('OSRCB Registered');
 
   // import modules
-  registerCharacterBuilder();
+  //registerCharacterBuilder();
   registerSrdData();
   registerRetainerBuilder();
-
+  initializeUtils()
 
     console.log('OSR-Character-Builder Loaded.<-----------------------------');
     await game.settings.register(`${OSRCB.moduleName}`, 'characterClasses', {
@@ -66,7 +67,7 @@ Hooks.once('ready', async () => {
     
     
     let oseActive = await game.modules.get(oseModName)?.active;
-    console.log(oseActive);
+    
     if (oseActive) {
       game.settings.set('osr-character-builder', 'defaultClasses', [{
         name: 'OSE-basic',
@@ -112,9 +113,10 @@ Hooks.on('renderActorSheet', (actorObj, html) => {
       `<a class="osr-icon osr-choose-class" title="Character Builder"><i class="fas fa-user-shield"></i></a>`
     );
     modBox.on('click', '.osr-choose-class', async (event) => {
-      const dataObj = mergeClassOptions();
-      console.log(dataObj);
+      const dataObj = OSRCB.util.mergeClassOptions();
+      
       OSRCB.util.renderCharacterBuilder(actor, dataObj);
+      // new OSRCB.characterBuilder(actor, dataObj).render(true);
     });
     // }
   }

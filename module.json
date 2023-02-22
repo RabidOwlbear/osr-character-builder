@@ -10,13 +10,13 @@
       "url": "https://github.com/RabidOwlbear"
     }
   ],
-  "version": "0.1.23",
+  "version": "0.2.0",
   "compatibility": {
     "minimum": "10",
     "verified": "10.284",
     "maximum": "10"
   },
-  "styles": ["./styles/main.css"],
+  "styles": ["./styles/main.css","./styles/char-builder.css"],
   "esmodules": ["./scripts/init.js"],
   "packs": [
     {
