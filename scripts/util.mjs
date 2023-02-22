@@ -95,8 +95,9 @@ export function initializeUtils() {
         ui.notifications.warn('Window Already Open.')
         return false
       }
-      new OSRCB.characterBuilder(actor, dataObj).render(true)
+      
     }
+    new OSRCB.characterBuilder(actor, dataObj).render(true)
   }
   OSRCB.util.statsToMsg = async function (data, single=false) {
     let { stats, actor, type } = data;
