@@ -3,7 +3,7 @@
 
 A module that adds a basic character builder to the Foundry Vtt implementation of the 'Old School Essentials' system.
 
-Supprted via patreon: https://patreon.com/owlbear_aviary
+Supprted via patreon: https://patreon.com/RabidOwlbear
 
 ### Important Notice
 
