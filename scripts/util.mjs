@@ -369,7 +369,6 @@ export function initializeUtils() {
     }
   };
   OSRCB.util.addClassAbilities = async function (className, actor, pack) {
-    
     const compendium = game.packs.get(pack);
     const contents = await compendium.getDocuments()
     const items = contents.filter(i=> i?.system?.requirements?.toLowerCase() === className?.toLowerCase());
@@ -394,44 +393,27 @@ export function initializeUtils() {
       return;
     }
     const magicType = classData?.spellType;
-    const spellList = OSRCB.spells.mergedList[magicType];
     const slotData = classData?.spellSlot[level];
-    const compendium = await game.packs.get(classData.spellPackName);
+    const spells = await game.packs.get(classData.spellPackName)?.getDocuments();
+    const classSpells = spells.filter(sp => sp?.system?.class?.toLowerCase() === magicType.toLowerCase());
+    const pickedSpells = []
     for (let key in slotData) {
       if (slotData[key].max > 0) {
-        let picked = [];
-        let list = spellList[key];
-
-        while (picked.length < slotData[key].max) {
+        let count = 0 
+        let list = classSpells.filter(s=>s.system.lvl === parseInt(key));
+        while(count < slotData[key].max){
           let idx = Math.floor(Math.random() * list.length);
-
-          if (!picked.includes(list[idx])) {
-            picked.push(list[idx]);
+          let picked = list[idx];
+          let existing = pickedSpells.filter(s=>s.name === picked.name).length
+          if(!existing){
+            pickedSpells.push(picked);            
           }
-        }
-        for (let spell of picked) {
-          await sleep(20);
-          const compSpellList = compendium.index.filter((s) => s.name == spell);
-          if (compSpellList.length > 1) {
-            for (let s of compSpellList) {
-              let spellObj = await compendium.getDocument(s._id);
-
-              if (spellObj.system.class.toLowerCase() == classData.spellType.toLowerCase()) {
-                const data = spellObj.clone();
-                await actor.createEmbeddedDocuments('Item', [data]);
-              }
-            }
-          } else {
-            const itemData = await compendium.index.getName(spell);
-
-            const itemObj = await compendium.getDocument(itemData._id);
-
-            const data = itemObj.clone();
-            await actor.createEmbeddedDocuments('Item', [data]);
-          }
+          count++
         }
       }
     }
+
+    await actor.createEmbeddedDocuments('Item', pickedSpells)
   };
   OSRCB.util.randomItems = async function (data, actor) {
     const oseActive = OSRCB.util.oseActive();
