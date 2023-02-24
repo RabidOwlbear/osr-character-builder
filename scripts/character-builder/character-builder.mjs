@@ -43,7 +43,8 @@ export class osrCharacterBuilder extends FormApplication {
     const classSelect = html.find('#class-select')[0];
     const gpInput = html.find('#gold-inp')[0];
     const rollGpBtn = html.find('.roll-gp-btn')[0];
-    const heroCheck = html.find('#hero-roll-inp')[0];
+    const heroCheck = game.settings.get(`${OSRCB.moduleName}`, 'heroStat');
+    // const heroCheck = html.find('#hero-roll-inp')[0];
     const chooseBtn = html.find('#choose-btn')[0];
     const closeBtn = html.find('#close-btn')[0];
 
@@ -78,8 +79,8 @@ export class osrCharacterBuilder extends FormApplication {
         e.preventDefault();
         let container = e.target.closest('.stat-input-col');
         let input = container.querySelector('.stat-inp');
-        
-        this._rollSingleScore(input, heroCheck.checked);
+        this._rollSingleScore(input, heroCheck);
+        // this._rollSingleScore(input, heroCheck.checked);
       });
     }
     for (let input of statInps) {
@@ -176,7 +177,7 @@ export class osrCharacterBuilder extends FormApplication {
     const selectedClass = classSelect.value;
     const gpInput = html.find('#gold-inp')[0];
     const statInps = html.find('.stat-inp');
-    
+    const shopCheck =html.find('#shop-check-inp')[0]?.checked;
     const classData = this.dataObj.find(i=> i.name === source).classes[selectedClass]
     for(let input of statInps){
       let value = parseInt(input.value);
@@ -192,7 +193,7 @@ export class osrCharacterBuilder extends FormApplication {
     if(parseInt(levelInp.value) > classData.maxLvl){
       levelInp.value = classData.maxLvl
     }
-    if(parseInt(gpInput.value) === 0){
+    if(shopCheck && parseInt(gpInput.value) === 0){
       ui.notifications.warn(`Don't forget to roll for gold.`);
       return
     }
@@ -229,7 +230,8 @@ export class osrCharacterBuilder extends FormApplication {
     }
   }
   async _rollAbilScores(html, actor) {
-    const heroCheck = html.find('#hero-roll-inp')[0].checked;
+    const heroCheck = game.settings.get(`${OSRCB.moduleName}`, 'heroStat');
+    // const heroCheck = html.find('#hero-roll-inp')[0].checked;
     const scoreObj = await OSRCB.util.rollStats(heroCheck);
     const statInputs = html.find("input[type='number'][ class='stat-inp']");
     for (let input of statInputs) {

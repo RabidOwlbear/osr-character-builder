@@ -43,7 +43,7 @@ Hooks.once('init', async () => {
       scope: 'world'
     });
     await game.settings.register(`${OSRCB.moduleName}`, 'statRollMessage', {
-      name: 'Send Character Builder Stat Rolls To Chat',
+      name: 'Rolls To Chat',
       hint: 'Sends stat roll results from the character builder to chat.',
       scope: 'world',
       type: Boolean,
@@ -51,11 +51,19 @@ Hooks.once('init', async () => {
       config: true
     });
     await game.settings.register(`${OSRCB.moduleName}`, 'whisperStatRollMessage', {
-      name: 'Whisper Character Builder Stat Rolls To GM',
+      name: 'Whisper Rolls To GM',
       hint: 'Whispers stat roll result message to GM istead of sending to chat.',
       scope: 'world',
       type: Boolean,
       default: true,
+      config: true
+    });
+    await game.settings.register(`${OSRCB.moduleName}`, 'heroStat', {
+      name: 'Roll Heroic Stats',
+      hint: 'Roll 4d6 drop lowest for ability scores on the character creator.',
+      scope: 'world',
+      type: Boolean,
+      default: false,
       config: true
     });
 });
