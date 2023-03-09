@@ -10,7 +10,7 @@
       "url": "https://github.com/RabidOwlbear"
     }
   ],
-  "version": "0.2.3",
+  "version": "0.3.0",
   "compatibility": {
     "minimum": "10",
     "verified": "10.284",
@@ -73,7 +73,7 @@
     }
   ],
   "relationships": {
-    "systems": [{ "id": "ose" }, { "id": "ose-dev" }],
+    "systems": [{ "id": "ose" }, { "id": "ose-dev" },{ "id": "bfs" }],
     "requires": [
       {
         "id": "compendium-folders",

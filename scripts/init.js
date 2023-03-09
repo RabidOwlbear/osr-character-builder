@@ -14,7 +14,7 @@ Hooks.once('init', async () => {
   OSRCB.spells = OSRCB.spells || { mergedList: {} };
   OSRCB.spells.mergedList = {};
   OSRCB.characterBuilder = osrCharacterBuilder;
-  Hooks.call('OSRCB Registered');
+  
 
   // import modules
   //registerCharacterBuilder();
@@ -22,11 +22,11 @@ Hooks.once('init', async () => {
   registerRetainerBuilder();
   initializeUtils()
 
-    console.log('OSR-Character-Builder Loaded.<-----------------------------');
-    await game.settings.register(`${OSRCB.moduleName}`, 'characterClasses', {
-      name: 'characterClasses',
-      type: Object,
-      default: {},
+    console.log('OSR-Character-Builder Loaded.');
+    await game.settings.register(`${OSRCB.moduleName}`, 'externalClasses', {
+      name: 'externalClasses',
+      type: Array,
+      default: [],
       scope: 'world'
     });
     await game.settings.register(`${OSRCB.moduleName}`, 'defaultClasses', {
@@ -69,6 +69,7 @@ Hooks.once('init', async () => {
 });
 
 Hooks.once('ready', async () => {
+  Hooks.call('OSRCB Registered');
   const oseModName = 'old-school-essentials';
   const srdObj = {};
   if (game.user.role >= 4) {

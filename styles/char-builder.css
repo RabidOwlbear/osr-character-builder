@@ -89,11 +89,11 @@
   display: none
 }
 .osrcb .middle #bio::-webkit-scrollbar,
-.osrcb .middle #notes::-webkit-scrollbar{
+.osrcb .middle #description::-webkit-scrollbar{
   display: none;
 }
 .osrcb .middle #bio,
-.osrcb .middle #notes{
+.osrcb .middle #description{
   max-height: 280px;
   overflow-y: scroll;
   scrollbar-width: none;

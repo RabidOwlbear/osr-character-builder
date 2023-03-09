@@ -8,13 +8,15 @@ export function initializeUtils() {
   };
   OSRCB.util.mergeClassOptions = function () {
     let defaultClasses = game.settings.get('osr-character-builder', 'defaultClasses');
+    let externalClasses = game.settings.get('osr-character-builder', 'externalClasses');
+    let classOptions = defaultClasses.concat(externalClasses);
     let osrCCBActive = game.modules.get('osr-ccb')?.active;
     const mergeClasses = osrCCBActive ? game.settings.get('osr-ccb', 'displayCustomClasses') : [];
     if (osrCCBActive && mergeClasses) {
       let customClasses = game.settings.get('osr-ccb', 'customClasses');
-      return defaultClasses.concat(customClasses);
+      return classOptions.concat(customClasses);
     } else {
-      return defaultClasses;
+      return classOptions;
     }
   };
 
@@ -104,24 +106,7 @@ export function initializeUtils() {
     let content
     if(single){
       let template = `modules/osr-character-builder/template/chat/single-stat-roll.hbs`
-      
-      // `
-      // <details>
 
-      // <summary>
-      //   <h4 style="display: inline">${game.user.name} Rolled Stats For ${actor.name} - ${data.stat}</h4>
-      // </summary>
-      // </br>
-      // <div><b>Roll Type:</b> ${type}</div>
-      // </br>
-      // <div style="border-bottom: 2px solid black; margin-bottom: 3px;">Results:</div>
-      // <div style="display: flex; justify-content: space-between; width: 150px">
-      //   <div style"width: 75px"><b>Str:</b></div>
-      //   <div> ${data.result}</div>
-      // </div>
-      // </details>
-  
-      // `;
       let templateData = {
         actor: data.actor,
         stat: data.stat,
@@ -172,27 +157,6 @@ export function initializeUtils() {
     let roll = new Roll(formula).evaluate({async:false});
     if(showRoll)game?.dice3d.showForRoll(roll);
     rollResult = roll.total
-    // for (let i = 0; i < dieCount; i++) {
-    //   rollArr.push(Math.floor(Math.random() * 6 + 1));
-    // }
-    // if (hero) {
-    //   let dropLowest = [];
-    //   rollArr.reduce((prev, cur) => {
-    //     let retVal = 0;
-    //     if (prev >= cur) {
-    //       retVal = cur;
-    //       dropLowest.push(prev);
-    //     } else {
-    //       retVal = prev;
-    //       dropLowest.push(cur);
-    //     }
-    //     return retVal;
-    //   });
-    //   rollArr = dropLowest;
-    // }
-    // for (let die of rollArr) {
-    //   rollResult += die;
-    // }
     return rollResult;
   };
 
@@ -279,8 +243,8 @@ export function initializeUtils() {
               next: xpValue,
               share: 100
             },
-            biography: classObj.description,
-            notes: classObj.notes,
+            biography: OSRCB.util.generateBio(classObj),
+            notes: classObj.description,
             alignment: dataObj.alignment,
             level: level
           },
@@ -522,4 +486,16 @@ export function initializeUtils() {
     const newEntity = await entity.clone();
     actor.createEmbeddedDocuments('Item', [newEntity]);
   };
+  OSRCB.util.generateBio = function(classObj){
+    const biography = `
+    <b>Requirements</b>: ${classObj.req} <br>
+    <b>Prime requisite</b>: ${classObj.primeReq} <br>
+    <b>Hit Dice</b>: ${classObj.hd} <br>
+    <b>Maximum level</b>:${classObj.maxLvl} <br>
+    <b>Armour</b>: ${classObj.armorTypes} <br>
+    <b>Weapons</b>: ${classObj.weaponTypes} <br>
+    <b>Languages</b>: ${classObj.languages} <br>
+    `
+    return biography
+  }
 }

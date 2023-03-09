@@ -19,14 +19,10 @@ export class osrCharacterBuilder extends FormApplication {
   getData() {
     const itemShop = game.modules?.get('osr-item-shop').active;
     const context = super.getData();
-    context.addShopCheck = itemShop ? game.modules?.get('osr-item-shop', 'charBuilderCheck') : false;
+    context.addShopCheck = itemShop //? game.modules?.get('osr-item-shop', 'charBuilderCheck') : false;
     context.actor = this.actor;
     context.classData = this.dataObj;
     context.gp = this.actor.items.getName('GP')?.system.quantity.value || 0;
-
-
-
-    
     return context;
   }
   activateListeners(html) {
@@ -245,7 +241,7 @@ export class osrCharacterBuilder extends FormApplication {
   _renderClassOptions(selectEl, sourceName) {
     selectEl.innerHTML = '';
     let classInfo = this.actor.flags['osr-character-builder']?.classInfo
-
+    console.log(selectEl, sourceName)
     if (sourceName !== 'none') {
       const classList = this.dataObj.find((s) => s.name === sourceName)?.classes;
       
@@ -265,16 +261,20 @@ export class osrCharacterBuilder extends FormApplication {
     }
   }
   _renderClassInfo(html, sourceName, className) {
-    
+    console.log(this, sourceName, className)
     const bioEl = html.find(`#bio`)[0];
-    const notesEl = html.find(`#notes`)[0];
+    const descripEl = html.find(`#description`)[0];
     if (sourceName === 'none') {
       bioEl.innerHTML = '';
       notesEl.innerHTML = '';
     } else {
-      const classData = this.dataObj.find((s) => s.name === sourceName).classes[className];
-      bioEl.innerHTML = TextEditor.enrichHTML(classData.description, { async: false });
-      notesEl.innerHTML = TextEditor.enrichHTML(classData.notes, { async: false });
+      const classData = this.dataObj.find((s) => s.name === sourceName)?.classes?.[className];
+      if(!classData){
+        ui.notifications.warn('Class Data Object not Found.');
+        return
+      }
+      bioEl.innerHTML = TextEditor.enrichHTML(OSRCB.util.generateBio(classData), { async: false });
+      descripEl.innerHTML = TextEditor.enrichHTML(classData.description, { async: false });
     }
   }
   _rollGold = function (gpInput) {
