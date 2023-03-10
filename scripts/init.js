@@ -69,6 +69,7 @@ Hooks.once('init', async () => {
 });
 
 Hooks.once('ready', async () => {
+  await game.settings.set(`${OSRCB.moduleName}`, 'externalClasses', [])
   Hooks.call('OSRCB Registered');
   const oseModName = 'old-school-essentials';
   const srdObj = {};
@@ -100,10 +101,6 @@ Hooks.once('ready', async () => {
       }]);
     }
 
-    // await game.settings.set(`${OSRCB.moduleName}`, 'spellList', {})
-    // let customClasses = await game.settings.get(`${OSRCB.moduleName}`, 'customClasses');
-    // const data = mergeObject(srdObj, customClasses);
-    // await game.settings.set(`${OSRCB.moduleName}`, 'characterClasses', data);
     Hooks.callAll('OseCharacterClassAdded');
   }
 });

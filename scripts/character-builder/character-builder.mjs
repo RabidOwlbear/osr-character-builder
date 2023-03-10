@@ -266,7 +266,7 @@ export class osrCharacterBuilder extends FormApplication {
     const descripEl = html.find(`#description`)[0];
     if (sourceName === 'none') {
       bioEl.innerHTML = '';
-      notesEl.innerHTML = '';
+      descripEl.innerHTML = '';
     } else {
       const classData = this.dataObj.find((s) => s.name === sourceName)?.classes?.[className];
       if(!classData){
