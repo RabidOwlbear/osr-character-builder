@@ -169,7 +169,6 @@ export function initializeUtils() {
   };
 
   OSRCB.util.osrUpdateSheet = async function (dataObj, actor) {
-    const optionObj = await game.settings.get(`${OSRCB.moduleName}`, 'characterClasses');
     let { source, level } = dataObj;
     let updateData = {};
     const className = dataObj.classOption;
