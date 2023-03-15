@@ -52,7 +52,7 @@ export function initializeUtils() {
       let formula = `${hdArr[level - 1]} + ${hpBonus}`;
       let roll = await new Roll(formula).evaluate({ async: true });
       hpMsg += `<p><b>roll</b>: ${roll.formula} = ${roll.total}</p>`;
-      hpTotal += roll.total + hpMod;
+      hpTotal += roll.total;
       msg = true;
     } else {
       let modArr = hdArr.slice(9);
