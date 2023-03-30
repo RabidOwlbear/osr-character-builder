@@ -280,7 +280,7 @@ export class osrCharacterBuilder extends FormApplication {
   _rollGold = function (gpInput) {
     let amt = 0;
     const roll = new Roll('3d6').evaluate({ async: false });
-    game?.dice3d.showForRoll(roll);
+    game?.dice3d?.showForRoll(roll);
     amt = roll.total * 10;
     // for (let i = 0; i < 3; i++) {
     //   amt += Math.floor(Math.random() * 6 + 1) * 10;

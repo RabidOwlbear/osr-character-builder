@@ -155,7 +155,7 @@ export function initializeUtils() {
     let formula = hero ? '4d6dl': '3d6'
     const dieCount = hero === true ? 4 : 3;
     let roll = new Roll(formula).evaluate({async:false});
-    if(showRoll)game?.dice3d.showForRoll(roll);
+    if(showRoll)game?.dice3d?.showForRoll(roll);
     rollResult = roll.total
     return rollResult;
   };
