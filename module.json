@@ -1,13 +1,12 @@
 {
   "id": "osr-character-builder",
-  "name": "osr-character-builder",
   "title": "OSR Character Builder",
   "description": "A character builder for OSE",
-  "author": "Rabid Owlbear",
   "authors": [
     {
       "name": "Rabid Owlbear",
-      "url": "https://github.com/RabidOwlbear"
+      "url": "https://github.com/RabidOwlbear",
+      "flags": {}
     }
   ],
   "version": "0.3.5",
@@ -16,77 +15,100 @@
     "verified": "10.284",
     "maximum": "10"
   },
-  "styles": ["./styles/main.css","./styles/char-builder.css"],
-  "esmodules": ["./scripts/init.js"],
+  "styles": [
+    "styles/main.css",
+    "styles/char-builder.css"
+  ],
+  "esmodules": [
+    "scripts/init.js"
+  ],
   "packs": [
     {
       "name": "osr-srd-class-options",
       "label": "OSE SRD Class Options",
       "path": "packs/osr-srd-class-options.db",
       "type": "Item",
-      "entity": "Item",
-      "module": "osr-character-builder",
-      "system": ["ose"]
+      "system": "ose",
+      "private": false,
+      "flags": {}
     },
     {
       "name": "osr-srd-items",
       "label": "OSE SRD items",
       "path": "packs/osr-srd-items.db",
       "type": "Item",
-      "entity": "Item",
-      "module": "osr-character-builder",
-      "system": ["ose"]
+      "system": "ose",
+      "private": false,
+      "flags": {}
     },
     {
       "name": "osr-srd-spells",
       "label": "OSE SRD Spells",
       "path": "packs/osr-srd-spells.db",
       "type": "Item",
-      "entity": "Item",
-      "module": "osr-character-builder",
-      "system": ["ose"]
+      "system": "ose",
+      "private": false,
+      "flags": {}
     },
     {
       "name": "osr-srd-classes",
       "label": "OSE SRD Classes",
       "path": "packs/osr-srd-classes.db",
       "type": "JournalEntry",
-      "entity": "JournalEntry",
-      "module": "osr-character-builder",
-      "system": ["ose"]
+      "system": "ose",
+      "private": false,
+      "flags": {}
     },
     {
       "name": "osr-character-builder-macros",
       "label": "osr-character-builder Macros",
       "path": "packs/macros.db",
       "type": "Macro",
-      "entity": "Macro",
-      "module": "osr-character-builder",
-      "system": ["ose"]
+      "system": "ose",
+      "private": false,
+      "flags": {}
     }
   ],
   "languages": [
     {
       "lang": "en",
       "name": "English",
-      "path": "./lang/en.json"
+      "path": "lang/en.json",
+      "flags": {}
     }
   ],
   "relationships": {
-    "systems": [{ "id": "ose" }, { "id": "ose-dev" },{ "id": "bfs" }],
+    "systems": [
+      {
+        "id": "ose",
+        "type": "system",
+        "compatibility": {}
+      },
+      {
+        "id": "ose-dev",
+        "type": "system",
+        "compatibility": {}
+      },
+      {
+        "id": "bfs",
+        "type": "system",
+        "compatibility": {}
+      }
+    ],
     "requires": [
       {
         "id": "compendium-folders",
         "manifest": "https://raw.githubusercontent.com/earlSt1/vtt-compendium-folders/0.1.1/module.json",
-        "type": "module"
+        "type": "module",
+        "compatibility": {}
       },
       {
         "id": "lib-wrapper",
         "manifest": "https://github.com/ruipin/fvtt-lib-wrapper/releases/latest/download/module.json",
-        "type": "module"
+        "type": "module",
+        "compatibility": {}
       }
     ]
-    
   },
   "url": "https://github.com/RabidOwlbear/osr-character-builder",
   "manifest": "https://raw.githubusercontent.com/RabidOwlbear/osr-character-builder/main/module.json",
