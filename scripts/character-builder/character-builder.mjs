@@ -241,7 +241,7 @@ export class osrCharacterBuilder extends FormApplication {
   _renderClassOptions(selectEl, sourceName) {
     selectEl.innerHTML = '';
     let classInfo = this.actor.flags['osr-character-builder']?.classInfo
-    console.log(selectEl, sourceName)
+
     if (sourceName !== 'none') {
       const classList = this.dataObj.find((s) => s.name === sourceName)?.classes;
       
@@ -261,7 +261,7 @@ export class osrCharacterBuilder extends FormApplication {
     }
   }
   _renderClassInfo(html, sourceName, className) {
-    console.log(this, sourceName, className)
+
     const bioEl = html.find(`#bio`)[0];
     const descripEl = html.find(`#description`)[0];
     if (sourceName === 'none') {
