@@ -323,7 +323,7 @@ export function initializeUtils() {
     for (let type of types) {
       await curCheck(type);
     }
-    await goldItem.update({ data: { quantity: { value: dataObj.goldAmount } } });
+    await goldItem.update({ system: { quantity: { value: dataObj.goldAmount } } });
     if(source != 'none') await OSRCB.util.addClassAbilities(classObj.name, actor, packName);
     await actor.setFlag(`${OSRCB.moduleName}`, 'classSelected', true);
     await actor.setFlag(`${OSRCB.moduleName}`, 'classInfo', {source: source, class: className});
