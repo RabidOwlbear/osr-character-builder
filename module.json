@@ -9,11 +9,11 @@
       "flags": {}
     }
   ],
-  "version": "0.3.6",
+  "version": "0.3.7",
   "compatibility": {
     "minimum": "10",
-    "verified": "10.284",
-    "maximum": "10"
+    "verified": "11.299",
+    "maximum": "11.299"
   },
   "styles": [
     "styles/main.css",
@@ -96,12 +96,6 @@
       }
     ],
     "requires": [
-      {
-        "id": "compendium-folders",
-        "manifest": "https://raw.githubusercontent.com/earlSt1/vtt-compendium-folders/0.1.1/module.json",
-        "type": "module",
-        "compatibility": {}
-      },
       {
         "id": "lib-wrapper",
         "manifest": "https://github.com/ruipin/fvtt-lib-wrapper/releases/latest/download/module.json",
