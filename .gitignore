@@ -1,3 +1,4 @@
 # temporary file retention
 temp-bak/
 packs/
+.gitignore
