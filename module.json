@@ -9,7 +9,7 @@
       "flags": {}
     }
   ],
-  "version": "0.3.7",
+  "version": "0.3.8",
   "compatibility": {
     "minimum": "10",
     "verified": "11.299",
@@ -26,7 +26,7 @@
     {
       "name": "osr-srd-class-options",
       "label": "OSE SRD Class Options",
-      "path": "packs/osr-srd-class-options.db",
+      "path": "packs/osr-srd-class-options",
       "type": "Item",
       "system": "ose",
       "private": false,
@@ -35,7 +35,7 @@
     {
       "name": "osr-srd-items",
       "label": "OSE SRD items",
-      "path": "packs/osr-srd-items.db",
+      "path": "packs/osr-srd-items",
       "type": "Item",
       "system": "ose",
       "private": false,
@@ -44,7 +44,7 @@
     {
       "name": "osr-srd-spells",
       "label": "OSE SRD Spells",
-      "path": "packs/osr-srd-spells.db",
+      "path": "packs/osr-srd-spells",
       "type": "Item",
       "system": "ose",
       "private": false,
@@ -53,7 +53,7 @@
     {
       "name": "osr-srd-classes",
       "label": "OSE SRD Classes",
-      "path": "packs/osr-srd-classes.db",
+      "path": "packs/osr-srd-classes",
       "type": "JournalEntry",
       "system": "ose",
       "private": false,
@@ -62,7 +62,7 @@
     {
       "name": "osr-character-builder-macros",
       "label": "osr-character-builder Macros",
-      "path": "packs/macros.db",
+      "path": "packs/macros",
       "type": "Macro",
       "system": "ose",
       "private": false,
@@ -95,14 +95,7 @@
         "compatibility": {}
       }
     ],
-    "requires": [
-      {
-        "id": "lib-wrapper",
-        "manifest": "https://github.com/ruipin/fvtt-lib-wrapper/releases/latest/download/module.json",
-        "type": "module",
-        "compatibility": {}
-      }
-    ]
+    "requires": []
   },
   "url": "https://github.com/RabidOwlbear/osr-character-builder",
   "manifest": "https://raw.githubusercontent.com/RabidOwlbear/osr-character-builder/main/module.json",
