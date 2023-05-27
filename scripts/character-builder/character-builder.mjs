@@ -17,7 +17,7 @@ export class osrCharacterBuilder extends FormApplication {
     });
   }
   getData() {
-    const itemShop = game.modules?.get('osr-item-shop').active;
+    const itemShop = game.modules?.get('osr-item-shop')?.active;
     const context = super.getData();
     context.addShopCheck = itemShop //? game.modules?.get('osr-item-shop', 'charBuilderCheck') : false;
     context.actor = this.actor;
