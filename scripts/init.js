@@ -79,13 +79,13 @@ Hooks.once('ready', async () => {
     
     if (oseActive) {
       game.settings.set('osr-character-builder', 'defaultClasses', [{
-        name: 'OSE-basic',
+        name: 'basic',
         menu: 'OSE Basic',
         default: true,
         classes:OSE.data.classes.basic
       },
       {
-        name: 'OSE-advanced',
+        name: 'advanced',
         menu: 'OSE Advanced',
         default: false,
         classes: OSE.data.classes.advanced

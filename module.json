@@ -9,7 +9,7 @@
       "flags": {}
     }
   ],
-  "version": "0.3.11",
+  "version": "0.3.12",
   "compatibility": {
     "minimum": "10",
     "verified": "11.299",
@@ -26,7 +26,7 @@
     {
       "name": "osr-srd-class-options",
       "label": "OSE SRD Class Options",
-      "path": "packs/osr-srd-class-options",
+      "path": "packs/osr-srd-class-options.db",
       "type": "Item",
       "system": "ose",
       "private": false,
@@ -35,7 +35,7 @@
     {
       "name": "osr-srd-items",
       "label": "OSE SRD items",
-      "path": "packs/osr-srd-items",
+      "path": "packs/osr-srd-items.db",
       "type": "Item",
       "system": "ose",
       "private": false,
@@ -44,7 +44,7 @@
     {
       "name": "osr-srd-spells",
       "label": "OSE SRD Spells",
-      "path": "packs/osr-srd-spells",
+      "path": "packs/osr-srd-spells.db",
       "type": "Item",
       "system": "ose",
       "private": false,
@@ -53,7 +53,7 @@
     {
       "name": "osr-srd-classes",
       "label": "OSE SRD Classes",
-      "path": "packs/osr-srd-classes",
+      "path": "packs/osr-srd-classes.db",
       "type": "JournalEntry",
       "system": "ose",
       "private": false,
@@ -62,7 +62,7 @@
     {
       "name": "osr-character-builder-macros",
       "label": "osr-character-builder Macros",
-      "path": "packs/macros",
+      "path": "packs/macros.db",
       "type": "Macro",
       "system": "ose",
       "private": false,
