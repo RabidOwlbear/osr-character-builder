@@ -66,19 +66,21 @@ Hooks.once('init', async () => {
       default: false,
       config: true
     });
+    
 });
 
 Hooks.once('ready', async () => {
-  
-  Hooks.call('OSRCB Registered');
+  //reset external classes
+  await game.settings.set(`${OSRCB.moduleName}`, 'externalClasses', [])
+  Hooks.callAll('OSRCB Registered');
   const oseModName = 'old-school-essentials';
   const srdObj = {};
   if (game.user.role >= 4) {
 
     let oseActive = await game.modules.get(oseModName)?.active;
-    
+    console.log('ose active?', oseActive)
     if (oseActive) {
-      game.settings.set('osr-character-builder', 'defaultClasses', [{
+      await game.settings.set('osr-character-builder', 'defaultClasses', [{
         name: 'basic',
         menu: 'OSE Basic',
         default: true,
@@ -92,14 +94,14 @@ Hooks.once('ready', async () => {
       }]);
      
     } else{
-      game.settings.set('osr-character-builder', 'defaultClasses', [{
+      await game.settings.set('osr-character-builder', 'defaultClasses', [{
         name: 'SRD',
         menu: 'SRD',
         default: true,
         classes: OSRCB.data.SRDClassData
       }]);
     }
-    await game.settings.set(`${OSRCB.moduleName}`, 'externalClasses', [])
+    
     Hooks.callAll('OseCharacterClassAdded');
   }
 });
