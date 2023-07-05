@@ -1,8 +1,9 @@
-//import { registerCharacterBuilder } from './char-builder.js';
-import { registerSrdData } from './srd-class-data.js';
 import { registerRetainerBuilder } from './retainer-builder.js';
 import { initializeUtils } from './util.mjs';
 import { osrCharacterBuilder } from './character-builder/character-builder.mjs';
+import { registerSrdDataEn } from './data/srd-data-en.mjs';
+import { registerSrdDataEs } from './data/srd-data-es.mjs';
+import { hideForeignPacks } from './util.mjs';
 window.OSRCB = window.OSRCB || {
   moduleName: `osr-character-builder`
 };
@@ -14,94 +15,112 @@ Hooks.once('init', async () => {
   OSRCB.spells = OSRCB.spells || { mergedList: {} };
   OSRCB.spells.mergedList = {};
   OSRCB.characterBuilder = osrCharacterBuilder;
-  
 
   // import modules
   //registerCharacterBuilder();
-  registerSrdData();
-  registerRetainerBuilder();
-  initializeUtils()
 
-    console.log('OSR-Character-Builder Loaded.');
-    await game.settings.register(`${OSRCB.moduleName}`, 'externalClasses', {
-      name: 'externalClasses',
-      type: Array,
-      default: [],
-      scope: 'world'
-    });
-    await game.settings.register(`${OSRCB.moduleName}`, 'defaultClasses', {
-      name: 'defaultClasses',
-      type: Array,
-      default: [],
-      scope: 'world'
-    });
-    
-    await game.settings.register(`${OSRCB.moduleName}`, 'spellList', {
-      name: 'spellList',
-      type: Object,
-      default: {},
-      scope: 'world'
-    });
-    await game.settings.register(`${OSRCB.moduleName}`, 'statRollMessage', {
-      name: 'Rolls To Chat',
-      hint: 'Sends stat roll results from the character builder to chat.',
-      scope: 'world',
-      type: Boolean,
-      default: false,
-      config: true
-    });
-    await game.settings.register(`${OSRCB.moduleName}`, 'whisperStatRollMessage', {
-      name: 'Whisper Rolls To GM',
-      hint: 'Whispers stat roll result message to GM istead of sending to chat.',
-      scope: 'world',
-      type: Boolean,
-      default: true,
-      config: true
-    });
-    await game.settings.register(`${OSRCB.moduleName}`, 'heroStat', {
-      name: 'Roll Heroic Stats',
-      hint: 'Roll 4d6 drop lowest for ability scores on the character creator.',
-      scope: 'world',
-      type: Boolean,
-      default: false,
-      config: true
-    });
-    
+  registerRetainerBuilder();
+  initializeUtils();
+
+  console.log('OSR-Character-Builder Loaded.');
+  await game.settings.register(`${OSRCB.moduleName}`, 'externalClasses', {
+    name: 'externalClasses',
+    type: Array,
+    default: [],
+    scope: 'world'
+  });
+  await game.settings.register(`${OSRCB.moduleName}`, 'defaultClasses', {
+    name: 'defaultClasses',
+    type: Array,
+    default: [],
+    scope: 'world'
+  });
+
+  await game.settings.register(`${OSRCB.moduleName}`, 'spellList', {
+    name: 'spellList',
+    type: Object,
+    default: {},
+    scope: 'world'
+  });
+  await game.settings.register(`${OSRCB.moduleName}`, 'statRollMessage', {
+    name: game.i18n.localize("osr-character-builder.setting.chatRoll"),
+    hint: game.i18n.localize("osr-character-builder.setting.chatRollHint"),
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true
+  });
+  await game.settings.register(`${OSRCB.moduleName}`, 'whisperStatRollMessage', {
+    name: game.i18n.localize("osr-character-builder.setting.gmRoll"),
+    hint: game.i18n.localize("osr-character-builder.setting.gmRollHint"),
+    scope: 'world',
+    type: Boolean,
+    default: true,
+    config: true
+  });
+  await game.settings.register(`${OSRCB.moduleName}`, 'heroStat', {
+    name: game.i18n.localize("osr-character-builder.setting.heroStats"),
+    hint: game.i18n.localize("osr-character-builder.setting.heroStatsHint"),
+    scope: 'world',
+    type: Boolean,
+    default: false,
+    config: true
+  });
+  await game.settings.register(`${OSRCB.moduleName}`, 'hideForeignPacks', {
+    name: "osr-character-builder.settings.hideForeignPackName",
+    hint: "osr-character-builder.settings.hideForeignPackHint",
+    scope: 'client',
+    type: Boolean,
+    default: true,
+    config: true
+  });
 });
 
 Hooks.once('ready', async () => {
+  switch (game.i18n.lang) {
+    case 'en':
+      registerSrdDataEn();     
+      console.log('en')
+      break;
+    case 'es':
+      registerSrdDataEs();
+      console.log('es')
+      break
+  }
+  // set hook to hide display of foreign language packs
+  hideForeignPacks()
   //reset external classes
-  await game.settings.set(`${OSRCB.moduleName}`, 'externalClasses', [])
+  await game.settings.set(`${OSRCB.moduleName}`, 'externalClasses', []);
   Hooks.callAll('OSRCB Registered');
   const oseModName = 'old-school-essentials';
   const srdObj = {};
   if (game.user.role >= 4) {
-
     let oseActive = await game.modules.get(oseModName)?.active;
-    console.log('ose active?', oseActive)
     if (oseActive) {
-      await game.settings.set('osr-character-builder', 'defaultClasses', [{
-        name: 'basic',
-        menu: 'OSE Basic',
-        default: true,
-        classes:OSE.data.classes.basic
-      },
-      {
-        name: 'advanced',
-        menu: 'OSE Advanced',
-        default: false,
-        classes: OSE.data.classes.advanced
-      }]);
-     
-    } else{
-      await game.settings.set('osr-character-builder', 'defaultClasses', [{
-        name: 'SRD',
-        menu: 'SRD',
-        default: true,
-        classes: OSRCB.data.SRDClassData
-      }]);
+      await game.settings.set('osr-character-builder', 'defaultClasses', [
+        {
+          name: 'basic',
+          menu: 'OSE Basic',
+          default: true,
+          classes: OSE.data.classes.basic
+        },
+        {
+          name: 'advanced',
+          menu: 'OSE Advanced',
+          default: false,
+          classes: OSE.data.classes.advanced
+        }
+      ]);
+    } else {
+      await game.settings.set('osr-character-builder', 'defaultClasses', [
+        {
+          name: 'SRD',
+          menu: 'SRD',
+          default: true,
+          classes: OSRCB.data.SRDClassData
+        }
+      ]);
     }
-    
     Hooks.callAll('OseCharacterClassAdded');
   }
 });
@@ -121,7 +140,7 @@ Hooks.on('renderActorSheet', (actorObj, html) => {
     );
     modBox.on('click', '.osr-choose-class', async (event) => {
       const dataObj = OSRCB.util.mergeClassOptions();
-      
+
       OSRCB.util.renderCharacterBuilder(actor, dataObj);
       // new OSRCB.characterBuilder(actor, dataObj).render(true);
     });

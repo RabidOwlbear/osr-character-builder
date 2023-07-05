@@ -3,14 +3,14 @@
     <div class='name-cont'>
       <input id='name-inp' type='text' placeholder='Name' name='name' value='{{actor.name}}' />
       <div class='lvl-cont'>
-        <label for='level-inp'>Level</label>
+        <label for='level-inp'>{{localize "osr-character-builder.lvl"}}</label>
         <input type='number' data-dtype='Number' value='{{actor.system.details.level}}' name='level' id='level-inp' />
       </div>
 
     </div>
     <div class='stat-cont'>
       <div class='stat-input-col'>
-        <label for='str'>Str</label>
+        <label for='str'>{{localize "osr-character-builder.formStr"}}</label>
         <input
           class='stat-inp'
           type='number'
@@ -25,7 +25,7 @@
         </a>
       </div>
       <div class='stat-input-col'>
-        <label for='int'>Int</label>
+        <label for='int'>{{localize "osr-character-builder.formInt"}}</label>
         <input
           class='stat-inp'
           type='number'
@@ -40,7 +40,7 @@
         </a>
       </div>
       <div class='stat-input-col'>
-        <label for='wis'>Wis</label>
+        <label for='wis'>{{localize "osr-character-builder.formWis"}}</label>
         <input
           class='stat-inp'
           type='number'
@@ -55,7 +55,7 @@
         </a>
       </div>
       <div class='stat-input-col'>
-        <label for='dex'>Dex</label>
+        <label for='dex'>{{localize "osr-character-builder.formDex"}}</label>
         <input
           class='stat-inp'
           type='number'
@@ -70,7 +70,7 @@
         </a>
       </div>
       <div class='stat-input-col'>
-        <label for='con'>Con</label>
+        <label for='con'>{{localize "osr-character-builder.formCon"}}</label>
         <input
           class='stat-inp'
           type='number'
@@ -85,7 +85,7 @@
         </a>
       </div>
       <div class='stat-input-col'>
-        <label for='cha'>Cha</label>
+        <label for='cha'>{{localize "osr-character-builder.formCha"}}</label>
         <input
           class='stat-inp'
           type='number'
@@ -113,11 +113,11 @@
         {{#each classData as |source idx|}}
           <option value='{{source.name}}'>{{source.menu}}</option>
         {{/each}}
-        <option value='none'>None</option>
+        <option value='none'>{{localize "osr-character-builder.none"}}</option>
       </select>
 
       <select name='classOption' id='class-select' class='class-select'>
-        <option value='none'>Choose Source</option>
+        <option value='none'>{{localize "osr-character-builder.chooseSource"}}</option>
       </select>
 
     </div>
@@ -128,25 +128,25 @@
   </section>
   <section class='bottom'>
     <div class='gp-cont'>
-      <label for='gold-inp'>GP:</label>
+      <label for='gold-inp'>{{localize "osr-character-builder.gp"}}:</label>
       <input type='number' id='gold-inp' value='{{gp}}' name='goldAmount' />
       <a class='roll-gp-btn'>
         <i class='fa-solid fa-dice-six'></i>
       </a>
     </div>
     {{#if addShopCheck}}
-      <label for='shop-check-inp'>Open Shop?</label>
+      <label for='shop-check-inp'>{{localize "osr-character-builder.openShop"}}</label>
       <input type='checkbox' id='shop-check-inp' name='shopCheck' />
     {{else}}
       <div class='empty'></div>
       <div class='empty'></div>
     {{/if}}
-    <label for='spell-check-inp'>Random Spells?</label>
+    <label for='spell-check-inp'>{{localize "osr-character-builder.randomSpells"}}</label>
     <input type='checkbox' id='spellp-check-inp' name='spellCheck' />
   </section>
   <section class='footer'>
-    <button type='button' id='close-btn'>Close</button>
-    <button type='button' id='choose-btn'>Choose</button>
+    <button type='button' id='close-btn'>{{localize "osr-character-builder.formBtnClose"}}</button>
+    <button type='button' id='choose-btn'>{{localize "osr-character-builder.formBtnChoose"}}</button>
   </section>
 
 </form>

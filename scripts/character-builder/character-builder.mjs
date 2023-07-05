@@ -11,7 +11,7 @@ export class osrCharacterBuilder extends FormApplication {
       popOut: true,
       template: `modules/${OSRCB.moduleName}/template/character-builder/character-builder.hbs`,
       id: 'osr-character-builder',
-      title: 'Character Builder',
+      title: game.i18n.localize("osr-character-builder.cb"),
       width: 500,
       height: 500
     });
@@ -22,7 +22,7 @@ export class osrCharacterBuilder extends FormApplication {
     context.addShopCheck = itemShop //? game.modules?.get('osr-item-shop', 'charBuilderCheck') : false;
     context.actor = this.actor;
     context.classData = this.dataObj;
-    context.gp = this.actor.items.getName('GP')?.system.quantity.value || 0;
+    context.gp = this.actor.items.getName(game.i18n.localize("osr-character-builder.gp"))?.system.quantity.value || 0;
     return context;
   }
   activateListeners(html) {
@@ -47,8 +47,8 @@ export class osrCharacterBuilder extends FormApplication {
     nameInp.addEventListener('change', (e) => {
       e.preventDefault();
       if (!nameInp.value.length) {
-        ui.notifications.warn('Invalid Name. Cannot be empty.');
-        nameInp.value = 'Character Name';
+        ui.notifications.warn(game.i18n.localize("osr-character-builder.notification.invalidName"));
+        nameInp.value = game.i18n.localize("osr-character-builder.characterName");
       }
     });
 
@@ -56,14 +56,14 @@ export class osrCharacterBuilder extends FormApplication {
       e.preventDefault();
       
       if (!parseInt(levelInp.value)) {
-        ui.notifications.warn('Invalid Level input. Must be a number between one and the selected classes max level.');
+        ui.notifications.warn(game.i18n.localize("osr-character-builder.notification.invalidLvl"));
         levelInp.value = 1;
         return;
       }
       if (classSelect.value != 'none') {
         const source = OSRCB.util.getClassOptionObj(sourceSelect.value);
         const classObj = source.classes[classSelect.value];
-        
+        console.log(source, classSelect.value, source.classes)
         if (parseInt(levelInp.value) > parseInt(classObj.maxLvl)) {
           levelInp.value = classObj.maxLvl;
         }
@@ -82,7 +82,7 @@ export class osrCharacterBuilder extends FormApplication {
     for (let input of statInps) {
       input.addEventListener('change', (e) => {
         e.preventDefault();
-        let warning = `Invalid ${input.dataset.stat.toUpperCase()} stat entry. Must be a number between 3 and 18`;
+        let warning = `${game.i18n.localize("osr-character-builder.notification.invalid")} ${input.dataset.stat.toUpperCase()} ${game.i18n.localize("osr-character-builder.notification.invalidStatEntry")}`;
         let val = parseInt(input.value);
         if (!val && val !== 0) {
           ui.notifications.warn(warning);
@@ -118,7 +118,7 @@ export class osrCharacterBuilder extends FormApplication {
       e.preventDefault;
       let value = parseInt(gpInput.value);
       if (!value) {
-        ui.notifications.warn('Invalid GP input. Must be a valid number.');
+        ui.notifications.warn(game.i18n.localize("osr-character-builder.notification.invalidGp"));
         gpInput.value = 0;
       }
     });
@@ -178,19 +178,19 @@ export class osrCharacterBuilder extends FormApplication {
     for(let input of statInps){
       let value = parseInt(input.value);
       if(!value || value < 3 || value > 18){
-        ui.notifications.warn(`Invalid ${input.dataset.stat} stat input. Value must be a number between 3 and 18.`);
+        ui.notifications.warn(`${game.i18n.localize("osr-character-builder.notification.invalid")} ${input.dataset.stat} ${game.i18n.localize("osr-character-builder.notification.invalidStatEntry")}`);
         return
       }
     }
     if(!nameInp.value.length){
-      ui.notifications.warn(`Invalid name input. Please enter a valid name.`);
+      ui.notifications.warn(game.i18n.localize("osr-character-builder.notification.invalidNameB"));
       return
     }
     if(parseInt(levelInp.value) > classData.maxLvl){
       levelInp.value = classData.maxLvl
     }
     if(shopCheck && parseInt(gpInput.value) === 0){
-      ui.notifications.warn(`Don't forget to roll for gold.`);
+      ui.notifications.warn(game.i18n.localize("osr-character-builder.notification.rollGold"));
       return
     }
     this.submit();
@@ -220,7 +220,7 @@ export class osrCharacterBuilder extends FormApplication {
     
     if (statsToMsg) {
       OSRCB.util.statsToMsg(
-        { stat: input.name, actor: this.actor, result: roll, type: hero ? '4d6 Drop Lowest' : '3d6 Standard' },
+        { stat: input.name, actor: this.actor, result: roll, type: hero ? game.i18n.localize("osr-character-builder.4d6DL") : game.i18n.localize("osr-character-builder.3d6S") },
         true
       );
     }
@@ -235,7 +235,7 @@ export class osrCharacterBuilder extends FormApplication {
     }
     const statsToMsg = await game.settings.get(`${OSRCB.moduleName}`, 'statRollMessage');
     if (statsToMsg) {
-      OSRCB.util.statsToMsg({ stats: scoreObj, actor: actor, type: heroCheck ? '4d6 Drop Lowest' : '3d6 Standard' });
+      OSRCB.util.statsToMsg({ stats: scoreObj, actor: actor, type: heroCheck ? game.i18n.localize("osr-character-builder.4d6DL") : game.i18n.localize("osr-character-builder.3d6S") });
     }
   }
   _renderClassOptions(selectEl, sourceName) {
@@ -246,7 +246,7 @@ export class osrCharacterBuilder extends FormApplication {
       const classList = this.dataObj.find((s) => s.name === sourceName)?.classes;
       
       if (!classList) {
-        ui.notifications.warn('Class Options Not Found');
+        ui.notifications.warn(game.i18n.localize("osr-character-builder.notification.classOptsNotFound"));
         return;
       }
       for (let option in classList) {
@@ -270,7 +270,7 @@ export class osrCharacterBuilder extends FormApplication {
     } else {
       const classData = this.dataObj.find((s) => s.name === sourceName)?.classes?.[className];
       if(!classData){
-        ui.notifications.warn('Class Data Object not Found.');
+        ui.notifications.warn(game.i18n.localize("osr-character-builder.notification.classDataNotFound"));
         return
       }
       bioEl.innerHTML = TextEditor.enrichHTML(OSRCB.util.generateBio(classData), { async: false });
@@ -285,7 +285,7 @@ export class osrCharacterBuilder extends FormApplication {
     // for (let i = 0; i < 3; i++) {
     //   amt += Math.floor(Math.random() * 6 + 1) * 10;
     // }
-    const content = `<details><summary>${game.user.name} rolled gold for ${this.actor.name}</summary><br><br><div><b>Result:</b> ${roll.total} x 10 = ${parseInt(roll.total) *10 }</details>`;
+    const content = `<details><summary>${game.user.name} ${game.i18n.localize("osr-character-builder.rolledGold")} ${this.actor.name}</summary><br><br><div><b>${game.i18n.localize("osr-character-builder.result")}:</b> ${roll.total} x 10 = ${parseInt(roll.total) *10 }</details>`;
     gpInput.value = amt;
     ChatMessage.create({
       user: game.user._id,

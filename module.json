@@ -9,7 +9,7 @@
       "flags": {}
     }
   ],
-  "version": "0.3.14",
+  "version": "0.3.15",
   "compatibility": {
     "minimum": "10",
     "verified": "11.300",
@@ -24,8 +24,8 @@
   ],
   "packs": [
     {
-      "name": "osr-srd-class-options",
-      "label": "OSE SRD Class Options",
+      "name": "osr-srd-class-options-en",
+      "label": "OSE SRD Class Options (en)",
       "path": "packs/osr-srd-class-options.db",
       "type": "Item",
       "system": "ose",
@@ -33,8 +33,17 @@
       "flags": {}
     },
     {
-      "name": "osr-srd-items",
-      "label": "OSE SRD items",
+      "name": "osr-srd-class-options-es",
+      "label": "OSE SRD Class Options (es)",
+      "path": "packs/osr-srd-class-options-es.db",
+      "type": "Item",
+      "system": "ose",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "osr-srd-items-en",
+      "label": "OSE SRD items (en)",
       "path": "packs/osr-srd-items.db",
       "type": "Item",
       "system": "ose",
@@ -42,8 +51,17 @@
       "flags": {}
     },
     {
-      "name": "osr-srd-spells",
-      "label": "OSE SRD Spells",
+      "name": "osr-srd-items-es",
+      "label": "OSE SRD items (es)",
+      "path": "packs/osr-srd-items-es.db",
+      "type": "Item",
+      "system": "ose",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "osr-srd-spells-en",
+      "label": "OSE SRD Spells (en)",
       "path": "packs/osr-srd-spells.db",
       "type": "Item",
       "system": "ose",
@@ -51,9 +69,27 @@
       "flags": {}
     },
     {
+      "name": "osr-srd-spells-es",
+      "label": "OSE SRD Spells (es)",
+      "path": "packs/osr-srd-spells-es.db",
+      "type": "Item",
+      "system": "ose",
+      "private": false,
+      "flags": {}
+    },
+    {
       "name": "osr-srd-classes",
-      "label": "OSE SRD Classes",
+      "label": "OSE SRD Classes (en)",
       "path": "packs/osr-srd-classes.db",
+      "type": "JournalEntry",
+      "system": "ose",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "osr-srd-classes-es",
+      "label": "OSE SRD Classes (es)",
+      "path": "packs/osr-srd-classes-es.db",
       "type": "JournalEntry",
       "system": "ose",
       "private": false,
@@ -75,6 +111,12 @@
       "name": "English",
       "path": "lang/en.json",
       "flags": {}
+    },
+    {
+      "lang": "es",
+      "name": "Spanish",
+      "path": "lang/es.json",
+      "flags": {}
     }
   ],
   "relationships": {
@@ -94,6 +136,7 @@
         "type": "system",
         "compatibility": {}
       }
+
     ],
     "requires": []
   },

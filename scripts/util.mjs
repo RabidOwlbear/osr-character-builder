@@ -51,7 +51,7 @@ export function initializeUtils() {
       hpBonus = level * hpMod;
       let formula = `${hdArr[level - 1]} + ${hpBonus}`;
       let roll = await new Roll(formula).evaluate({ async: true });
-      hpMsg += `<p><b>roll</b>: ${roll.formula} = ${roll.total}</p>`;
+      hpMsg += `<p><b>${game.i18n.localize("osr-character-builder.roll")}</b>: ${roll.formula} = ${roll.total}</p>`;
       hpTotal += roll.total;
       msg = true;
     } else {
@@ -64,7 +64,7 @@ export function initializeUtils() {
       });
       let formula = `${level}d${hd}+ ${hpBonus} + ${bonus}`;
       let roll = await new Roll(formula).evaluate({ async: true });
-      hpMsg += `<p><b>roll</b>: ${roll.formula} = ${roll.total}</p>`;
+      hpMsg += `<p><b>${game.i18n.localize("osr-character-builder.roll")}</b>: ${roll.formula} = ${roll.total}</p>`;
       hpTotal += roll.total;
       msg = true;
     }
@@ -76,7 +76,7 @@ export function initializeUtils() {
       <details>
 
       <summary>
-       <b>${actor.name} HP Rolls:</b>
+       <b>${actor.name} ${game.i18n.localize("osr-character-builder.HProlls")}:</b>
       </summary>
       </br>
       <div>
@@ -94,7 +94,7 @@ export function initializeUtils() {
     for(let form in ui.windows){
       form = ui.windows[form];
       if(form.options.id === 'osr-character-builder' && form?.actor?.id === actor.id){
-        ui.notifications.warn('Window Already Open.')
+        ui.notifications.warn(game.i18n.localize("osr-character-builder.notification.windowOpen"))
         return false
       }
       
@@ -173,14 +173,14 @@ export function initializeUtils() {
     let updateData = {};
     const className = dataObj.classOption;
     const isNone = source === 'none'
-    const classData = !isNone ? OSRCB.util.getClassOptionObj(source) : null;
-    const classObj = !isNone ? classData.classes[className] : null;
+    const sourceData = !isNone ? OSRCB.util.getClassOptionObj(source) : null;
+    const classObj = !isNone ? sourceData.classes[className] : null;
     const packName = !isNone ? classObj.pack : null;
     const titles = !isNone ? classObj.title : null;
-    let goldItem = actor.items.getName('GP');
+    let goldItem = actor.items.getName(game.i18n.localize("osr-character-builder.gp"));
     let packExists = !isNone ? await game.packs.get(packName): null;
     if (!isNone && !packExists) {
-      ui.notifications.warn('Compendum pack not found. Ending character creation.');
+      ui.notifications.warn(game.i18n.localize("osr-character-builder.notification.packNotFound"));
       return;
     }
     // return saves array for level
@@ -210,7 +210,7 @@ export function initializeUtils() {
       });
     }
     if (className == 'default') {
-      ui.notifications.warn('Please Choose A Class');
+      ui.notifications.warn(game.i18n.localize("osr-character-builder.notification.chooseClass"));
     } else if (source == 'none') {
       updateData = {
         system: {
@@ -231,7 +231,7 @@ export function initializeUtils() {
     } else {
       const saves = getObj(classObj.saves);
       const thac0 = getObj(classObj['thac0']);
-      const xpValue = level === classObj.maxLvl ? 'Max Level' : classObj.xp[level - 1];
+      const xpValue = level === classObj.maxLvl ? game.i18n.localize("osr-character-builder.maxLvl") : classObj.xp[level - 1];
       updateData = {
         system: {
           details: {
@@ -307,16 +307,32 @@ export function initializeUtils() {
     await actor.update(updateData);
     //if no gold item exists create one then update, else update gold amount
     // check for currency items
-    let types = ['PP', 'GP', 'EP', 'SP', 'CP'];
+    let types = [
+      game.i18n.localize("osr-character-builder.pp"),
+      game.i18n.localize("osr-character-builder.gp"),
+      game.i18n.localize("osr-character-builder.ep"),
+      game.i18n.localize("osr-character-builder.sp"),
+      game.i18n.localize("osr-character-builder.cp")
+    ];
     let curCheck = async (type) => {
       let itemExists = actor.items.getName(type);
-      let pack = game.packs.get(`${OSRCB.moduleName}.osr-srd-items`);
+      let packName;
+      switch(game.i18n.lang){
+        case 'en':
+          packName = `${OSRCB.moduleName}.osr-srd-items-en`
+          break;
+        case 'es':
+          packName = `${OSRCB.moduleName}.osr-srd-items-es`
+          break;
+      }
+      let pack = await game.packs.get(packName);
       if (!itemExists) {
         let curItem = await pack.getDocument(pack.index.getName(type)._id);
         let itemData = curItem.clone();
         await actor.createEmbeddedDocuments('Item', [itemData]);
-        if (type == 'GP') {
-          goldItem = actor.items.getName('GP');
+        let gp = game.i18n.localize("osr-character-builder.gp")
+        if (type == gp) {
+          goldItem = actor.items.getName(game.i18n.localize("osr-character-builder.gp"));
         }
       }
     };
@@ -324,7 +340,7 @@ export function initializeUtils() {
       await curCheck(type);
     }
     await goldItem.update({ system: { quantity: { value: dataObj.goldAmount } } });
-    if(source != 'none') await OSRCB.util.addClassAbilities(classObj.name, actor, packName);
+    if(source != 'none') await OSRCB.util.addClassAbilities(classObj.menu, actor, packName);//test menu instead of name fr ability item selection
     await actor.setFlag(`${OSRCB.moduleName}`, 'classSelected', true);
     await actor.setFlag(`${OSRCB.moduleName}`, 'classInfo', {source: source, class: className});
     if (dataObj.shopCheck) {
@@ -332,7 +348,7 @@ export function initializeUtils() {
     }
   };
   OSRCB.util.addClassAbilities = async function (className, actor, pack) {
-    const compendium = game.packs.get(pack);
+    const compendium = await game.packs.get(pack);
     const contents = await compendium.getDocuments()
     const items = contents.filter(i=> i?.system?.requirements?.toLowerCase() === className?.toLowerCase());
     
@@ -357,6 +373,7 @@ export function initializeUtils() {
     }
     const magicType = classData?.spellType;
     const slotData = classData?.spellSlot[level];
+    console.log(classData.spellPackName)
     const spells = await game.packs.get(classData.spellPackName)?.getDocuments();
     const classSpells = spells.filter(sp => sp?.system?.class?.toLowerCase() === magicType.toLowerCase());
     const pickedSpells = []
@@ -384,35 +401,33 @@ export function initializeUtils() {
 
     const compendium = await game.packs.get(`${OSRCB.moduleName}.osr-srd-items`);
     const gearList = [
-      'Backpack',
-      'Crowbar',
-      'Garlic',
-      'Grappling Hook',
-      'Hammer (small)',
-      'Holy Symbol',
-      'Holy Water (vial)',
-      'Iron Spikes (12)',
-      'Lantern',
-      'Mirror (hand sized, steel)',
-      'Oil (1 flask)',
-      "Pole (10' long, wooden)",
-      'Rations (iron, 7 days)',
-      'Rations (standard, 7 days)',
-      "Rope (50')",
-      'Sack (large)',
-      'Sack (small)',
-      'Stakes (3) and Mallet',
-      'Thieves Tools',
-      'Tinder Box (flint and steel)',
-      'Torches (6)',
-      'Waterskin',
-      'Wine (2 pints)',
-      'Wolfsbane (1 bunch)'
+      game.i18n.localize("osr-character-builder.backpack"),
+      game.i18n.localize("osr-character-builder.crowbar"),
+      game.i18n.localize("osr-character-builder.garlic"),
+      game.i18n.localize("osr-character-builder.gHook"),
+      game.i18n.localize("osr-character-builder.hammer"),
+      game.i18n.localize("osr-character-builder.holySymbo"),
+      game.i18n.localize("osr-character-builder.holyWater"),
+      game.i18n.localize("osr-character-builder.ironSpikes"),
+      game.i18n.localize("osr-character-builder.lantern"),
+      game.i18n.localize("osr-character-builder.mirror"),
+      game.i18n.localize("osr-character-builder.oil"),
+      game.i18n.localize("osr-character-builder.pole"),
+      game.i18n.localize("osr-character-builder.rationsI"),
+      game.i18n.localize("osr-character-builder.rationsS"),
+      game.i18n.localize("osr-character-builder.rope"),
+      game.i18n.localize("osr-character-builder.sackL"),
+      game.i18n.localize("osr-character-builder.sackS"),
+      game.i18n.localize("osr-character-builder.stakes"),
+      game.i18n.localize("osr-character-builder.thieves Tools"),
+      game.i18n.localize("osr-character-builder.tinder Box"),
+      game.i18n.localize("osr-character-builder.torches"),
+      game.i18n.localize("osr-character-builder.waterskin"),
+      game.i18n.localize("osr-character-builder.wine"),
+      game.i18n.localize("osr-character-builder.wolfsbane"),
     ];
-    const armorList = oseActive ? OSE.data.retainerGear[classOption].armor : OSRCB.data.retainerGear[classOption].armor;
-    const weaponList = oseActive
-      ? OSE.data.retainerGear[classOption].weapons
-      : OSRCB.data.retainerGear[classOption].weapons;
+    const armorList = OSRCB.data.retainerGear[classOption].armor;
+    const weaponList = OSRCB.data.retainerGear[classOption].weapons;
     const weaponPick = [];
     let weaponCount = Math.floor(Math.random() * 2 + 1);
     if (weaponCount > weaponList.length) weaponCount = weaponList.length;
@@ -486,15 +501,40 @@ export function initializeUtils() {
     actor.createEmbeddedDocuments('Item', [newEntity]);
   };
   OSRCB.util.generateBio = function(classObj){
+    let languages = ``
+    classObj.languages.map(i=>languages += `${i}, `)
     const biography = `
-    <b>Requirements</b>: ${classObj.req} <br>
-    <b>Prime requisite</b>: ${classObj.primeReq} <br>
-    <b>Hit Dice</b>: ${classObj.hd} <br>
-    <b>Maximum level</b>:${classObj.maxLvl} <br>
-    <b>Armour</b>: ${classObj.armorTypes} <br>
-    <b>Weapons</b>: ${classObj.weaponTypes} <br>
-    <b>Languages</b>: ${classObj.languages} <br>
+    <b>${game.i18n.localize("osr-character-builder.requirements")}</b>: ${classObj.req} <br>
+    <b>${game.i18n.localize("osr-character-builder.primeRequisite")}</b>: ${classObj.primeReq} <br>
+    <b>${game.i18n.localize("osr-character-builder.hitDice")}</b>: ${classObj.hd} <br>
+    <b>${game.i18n.localize("osr-character-builder.maxLevel")}</b>:${classObj.maxLvl} <br>
+    <b>${game.i18n.localize("osr-character-builder.armour")}</b>: ${classObj.armorTypes} <br>
+    <b>${game.i18n.localize("osr-character-builder.weapons")}</b>: ${classObj.weaponTypes} <br>
+    <b>${game.i18n.localize("osr-character-builder.languages")}</b>: ${languages} <br>
     `
     return biography
   }
 }
+export const hideForeignPacks = () => {
+  Hooks.on('changeSidebarTab', async  (tab) => {
+    if(await game.settings.get(`osr-character-builder`, 'hideForeignPacks')){
+      if (tab._element[0].id === 'compendium') {
+        const lis = document.querySelectorAll("li.compendium");
+        const osrcbPacks = [...lis].filter(li=>{
+          const send = li.querySelector('span.source').innerText.includes('osr-character-builder');
+          return send ? send : false;
+        })
+        if(osrcbPacks.length){
+          const langstring = `(${game.i18n.lang})`
+          osrcbPacks.forEach(p=>{
+            const title = p.querySelector('h3.compendium-name').innerText;
+            if(!title.includes(langstring)){ 
+              console.log('spanish pack', title);
+              p.style.display = 'none'}
+          })
+        }
+      }
+    }
+
+  });
+};
