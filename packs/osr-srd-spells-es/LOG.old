@@ -1,3 +1,7 @@
-2023/07/02-11:38:33.337 178 Recovering log #72
-2023/07/02-11:38:33.344 178 Delete type=0 #72
-2023/07/02-11:38:33.344 178 Delete type=3 #70
+2023/07/14-00:47:16.060 2b10 Recovering log #107
+2023/07/14-00:47:16.066 2b10 Delete type=0 #107
+2023/07/14-00:47:16.066 2b10 Delete type=3 #106
+2023/07/14-00:47:29.706 3b94 Level-0 table #111: started
+2023/07/14-00:47:29.706 3b94 Level-0 table #111: 0 bytes OK
+2023/07/14-00:47:29.707 3b94 Delete type=0 #109
+2023/07/14-00:47:29.707 3b94 Manual compaction at level-0 from '!folders!1lWP9XdtHMPzAYpr' @ 72057594037927935 : 1 .. '!items!zTAZ9xxCXwE740ap' @ 0 : 0; will stop at (end)

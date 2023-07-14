@@ -98,7 +98,6 @@ export async function registerRetainerBuilder() {
             if (classType == 'SRD') {
               classType = OSRCB.util.oseActive() ? 'basic' : 'SRD';
             }
-            console.log("class type", classType)
             const dataObj = OSRCB.util.getClassOptionObj(classType).classes;
             const classObj = dataObj[classOption];
             if (lvlInput.valueAsNumber > classObj.maxLvl) {

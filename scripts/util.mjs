@@ -175,7 +175,10 @@ export function initializeUtils() {
     const isNone = source === 'none'
     const sourceData = !isNone ? OSRCB.util.getClassOptionObj(source) : null;
     const classObj = !isNone ? sourceData.classes[className] : null;
-    const packName = !isNone ? classObj.pack : null;
+    let packName = !isNone ? classObj.pack : null;
+    if(packName === 'osr-character-builder.osr-srd-class-options'){
+      packName = `osr-character-builder.osr-srd-class-options-${game.i18n.lang}`
+    }
     const titles = !isNone ? classObj.title : null;
     let goldItem = actor.items.getName(game.i18n.localize("osr-character-builder.gp"));
     let packExists = !isNone ? await game.packs.get(packName): null;
@@ -304,6 +307,7 @@ export function initializeUtils() {
       updateData.system.spells = classObj.spellSlot[level];
       updateData.system.spells.enabled = true;
     }
+    
     await actor.update(updateData);
     //if no gold item exists create one then update, else update gold amount
     // check for currency items
@@ -340,7 +344,7 @@ export function initializeUtils() {
       await curCheck(type);
     }
     await goldItem.update({ system: { quantity: { value: dataObj.goldAmount } } });
-    if(source != 'none') await OSRCB.util.addClassAbilities(classObj.menu, actor, packName);//test menu instead of name fr ability item selection
+    if(source != 'none') await OSRCB.util.addClassAbilities(classObj.name, actor, packName);//test menu instead of name fr ability item selection
     await actor.setFlag(`${OSRCB.moduleName}`, 'classSelected', true);
     await actor.setFlag(`${OSRCB.moduleName}`, 'classInfo', {source: source, class: className});
     if (dataObj.shopCheck) {
@@ -351,7 +355,6 @@ export function initializeUtils() {
     const compendium = await game.packs.get(pack);
     const contents = await compendium.getDocuments()
     const items = contents.filter(i=> i?.system?.requirements?.toLowerCase() === className?.toLowerCase());
-    
     ui.notifications.warn(game.i18n.localize(`${OSRCB.moduleName}.addClassWarn`));
     
     await actor.createEmbeddedDocuments('Item', items);
@@ -373,7 +376,6 @@ export function initializeUtils() {
     }
     const magicType = classData?.spellType;
     const slotData = classData?.spellSlot[level];
-    console.log(classData.spellPackName)
     const spells = await game.packs.get(classData.spellPackName)?.getDocuments();
     const classSpells = spells.filter(sp => sp?.system?.class?.toLowerCase() === magicType.toLowerCase());
     const pickedSpells = []
@@ -529,7 +531,6 @@ export const hideForeignPacks = () => {
           osrcbPacks.forEach(p=>{
             const title = p.querySelector('h3.compendium-name').innerText;
             if(!title.includes(langstring)){ 
-              console.log('spanish pack', title);
               p.style.display = 'none'}
           })
         }

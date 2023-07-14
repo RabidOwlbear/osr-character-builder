@@ -63,7 +63,6 @@ export class osrCharacterBuilder extends FormApplication {
       if (classSelect.value != 'none') {
         const source = OSRCB.util.getClassOptionObj(sourceSelect.value);
         const classObj = source.classes[classSelect.value];
-        console.log(source, classSelect.value, source.classes)
         if (parseInt(levelInp.value) > parseInt(classObj.maxLvl)) {
           levelInp.value = classObj.maxLvl;
         }
@@ -141,7 +140,7 @@ export class osrCharacterBuilder extends FormApplication {
     if(selectedClass){
       const ose = game.modules.get("old-school-essentials").active;
       if(ose && selectedClass.source == 'SRD') selectedClass.source = 'OSE-basic'
-      this._renderClassOptions(classSelect, sourceSelect.value);
+      this._renderClassOptions(classSelect, selectedClass.source);
       this._renderClassInfo(html, selectedClass.source, selectedClass.class);
       sourceSelect.value = selectedClass.source;
       classSelect.value = selectedClass.class;
@@ -241,7 +240,6 @@ export class osrCharacterBuilder extends FormApplication {
   _renderClassOptions(selectEl, sourceName) {
     selectEl.innerHTML = '';
     let classInfo = this.actor.flags['osr-character-builder']?.classInfo
-
     if (sourceName !== 'none') {
       const classList = this.dataObj.find((s) => s.name === sourceName)?.classes;
       
