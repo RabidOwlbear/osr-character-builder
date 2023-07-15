@@ -9,10 +9,10 @@
       "flags": {}
     }
   ],
-  "version": "0.3.16",
+  "version": "0.3.17",
   "compatibility": {
     "minimum": "10",
-    "verified": "11.300",
+    "verified": "11.305",
     "maximum": "11"
   },
   "styles": [
@@ -96,8 +96,8 @@
       "flags": {}
     },
     {
-      "name": "osr-character-builder-macros",
-      "label": "osr-character-builder Macros",
+      "name": "osr-character-builder-macros-en",
+      "label": "OSR Character Builder Macros (en)",
       "path": "packs/macros.db",
       "type": "Macro",
       "system": "ose",

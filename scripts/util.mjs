@@ -1,10 +1,8 @@
 export function initializeUtils() {
   OSRCB.util.getClassOptionObj = function (classSource) {
-
     const optionObj = OSRCB.util.mergeClassOptions();
     let sourceObj = optionObj.find((s) => s.name.toLowerCase() === classSource.toLowerCase());
     return sourceObj;
-    
   };
   OSRCB.util.mergeClassOptions = function () {
     let defaultClasses = game.settings.get('osr-character-builder', 'defaultClasses');
@@ -51,12 +49,12 @@ export function initializeUtils() {
       hpBonus = level * hpMod;
       let formula = `${hdArr[level - 1]} + ${hpBonus}`;
       let roll = await new Roll(formula).evaluate({ async: true });
-      hpMsg += `<p><b>${game.i18n.localize("osr-character-builder.roll")}</b>: ${roll.formula} = ${roll.total}</p>`;
+      hpMsg += `<p><b>${game.i18n.localize('osr-character-builder.roll')}</b>: ${roll.formula} = ${roll.total}</p>`;
       hpTotal += roll.total;
       msg = true;
     } else {
       let modArr = hdArr.slice(9);
-      
+
       hpBonus = 9 * hpMod;
       modArr.map((i) => {
         let num = parseInt(i.slice(i.indexOf('+') + 1));
@@ -64,7 +62,7 @@ export function initializeUtils() {
       });
       let formula = `${level}d${hd}+ ${hpBonus} + ${bonus}`;
       let roll = await new Roll(formula).evaluate({ async: true });
-      hpMsg += `<p><b>${game.i18n.localize("osr-character-builder.roll")}</b>: ${roll.formula} = ${roll.total}</p>`;
+      hpMsg += `<p><b>${game.i18n.localize('osr-character-builder.roll')}</b>: ${roll.formula} = ${roll.total}</p>`;
       hpTotal += roll.total;
       msg = true;
     }
@@ -76,7 +74,7 @@ export function initializeUtils() {
       <details>
 
       <summary>
-       <b>${actor.name} ${game.i18n.localize("osr-character-builder.HProlls")}:</b>
+       <b>${actor.name} ${game.i18n.localize('osr-character-builder.HProlls')}:</b>
       </summary>
       </br>
       <div>
@@ -90,38 +88,37 @@ export function initializeUtils() {
     }
     return hpTotal;
   };
-  OSRCB.util.renderCharacterBuilder = function(actor, dataObj){
-    for(let form in ui.windows){
+  OSRCB.util.renderCharacterBuilder = function (actor, dataObj) {
+    for (let form in ui.windows) {
       form = ui.windows[form];
-      if(form.options.id === 'osr-character-builder' && form?.actor?.id === actor.id){
-        ui.notifications.warn(game.i18n.localize("osr-character-builder.notification.windowOpen"))
-        return false
+      if (form.options.id === 'osr-character-builder' && form?.actor?.id === actor.id) {
+        ui.notifications.warn(game.i18n.localize('osr-character-builder.notification.windowOpen'));
+        return false;
       }
-      
     }
-    new OSRCB.characterBuilder(actor, dataObj).render(true)
-  }
-  OSRCB.util.statsToMsg = async function (data, single=false) {
+    new OSRCB.characterBuilder(actor, dataObj).render(true);
+  };
+  OSRCB.util.statsToMsg = async function (data, single = false) {
     let { stats, actor, type } = data;
-    let content
-    if(single){
-      let template = `modules/osr-character-builder/template/chat/single-stat-roll.hbs`
+    let content;
+    if (single) {
+      let template = `modules/osr-character-builder/template/chat/single-stat-roll.hbs`;
 
       let templateData = {
         actor: data.actor,
         stat: data.stat,
         type: data.type,
         result: data.result
-      }
-      content = await renderTemplate(template, templateData)
-    }else{
+      };
+      content = await renderTemplate(template, templateData);
+    } else {
       let templateData = {
         user: game.user,
         actor,
         stats,
         type
-      }
-       content = await renderTemplate(`modules/osr-character-builder/template/chat/stat-msg.hbs`, templateData);
+      };
+      content = await renderTemplate(`modules/osr-character-builder/template/chat/stat-msg.hbs`, templateData);
     }
     ChatMessage.create({
       user: game.user._id,
@@ -133,7 +130,7 @@ export function initializeUtils() {
     });
   };
 
-  OSRCB.util.rollStats =  async function (hero = false, simple = false) {
+  OSRCB.util.rollStats = async function (hero = false, simple = false) {
     let statArr = ['str', 'int', 'wis', 'con', 'dex', 'cha'];
     const retObj = {};
     if (simple) {
@@ -152,11 +149,11 @@ export function initializeUtils() {
   OSRCB.util.rollSingleStat = async (hero = false, showRoll = false) => {
     let rollArr = [];
     let rollResult = 0;
-    let formula = hero ? '4d6dl': '3d6'
+    let formula = hero ? '4d6dl' : '3d6';
     const dieCount = hero === true ? 4 : 3;
-    let roll = new Roll(formula).evaluate({async:false});
-    if(showRoll)game?.dice3d?.showForRoll(roll);
-    rollResult = roll.total
+    let roll = new Roll(formula).evaluate({ async: false });
+    if (showRoll) game?.dice3d?.showForRoll(roll);
+    rollResult = roll.total;
     return rollResult;
   };
 
@@ -172,18 +169,18 @@ export function initializeUtils() {
     let { source, level } = dataObj;
     let updateData = {};
     const className = dataObj.classOption;
-    const isNone = source === 'none'
+    const isNone = source === 'none';
     const sourceData = !isNone ? OSRCB.util.getClassOptionObj(source) : null;
     const classObj = !isNone ? sourceData.classes[className] : null;
     let packName = !isNone ? classObj.pack : null;
-    if(packName === 'osr-character-builder.osr-srd-class-options'){
-      packName = `osr-character-builder.osr-srd-class-options-${game.i18n.lang}`
+    if (packName === 'osr-character-builder.osr-srd-class-options') {
+      packName = `osr-character-builder.osr-srd-class-options-${game.i18n.lang}`;
     }
     const titles = !isNone ? classObj.title : null;
-    let goldItem = actor.items.getName(game.i18n.localize("osr-character-builder.gp"));
-    let packExists = !isNone ? await game.packs.get(packName): null;
+    let goldItem = actor.items.getName(game.i18n.localize('osr-character-builder.gp'));
+    let packExists = !isNone ? await game.packs.get(packName) : null;
     if (!isNone && !packExists) {
-      ui.notifications.warn(game.i18n.localize("osr-character-builder.notification.packNotFound"));
+      ui.notifications.warn(game.i18n.localize('osr-character-builder.notification.packNotFound'));
       return;
     }
     // return saves array for level
@@ -213,7 +210,7 @@ export function initializeUtils() {
       });
     }
     if (className == 'default') {
-      ui.notifications.warn(game.i18n.localize("osr-character-builder.notification.chooseClass"));
+      ui.notifications.warn(game.i18n.localize('osr-character-builder.notification.chooseClass'));
     } else if (source == 'none') {
       updateData = {
         system: {
@@ -234,7 +231,8 @@ export function initializeUtils() {
     } else {
       const saves = getObj(classObj.saves);
       const thac0 = getObj(classObj['thac0']);
-      const xpValue = level === classObj.maxLvl ? game.i18n.localize("osr-character-builder.maxLvl") : classObj.xp[level - 1];
+      const xpValue =
+        level === classObj.maxLvl ? game.i18n.localize('osr-character-builder.maxLvl') : classObj.xp[level - 1];
       updateData = {
         system: {
           details: {
@@ -307,26 +305,26 @@ export function initializeUtils() {
       updateData.system.spells = classObj.spellSlot[level];
       updateData.system.spells.enabled = true;
     }
-    
+
     await actor.update(updateData);
     //if no gold item exists create one then update, else update gold amount
     // check for currency items
     let types = [
-      game.i18n.localize("osr-character-builder.pp"),
-      game.i18n.localize("osr-character-builder.gp"),
-      game.i18n.localize("osr-character-builder.ep"),
-      game.i18n.localize("osr-character-builder.sp"),
-      game.i18n.localize("osr-character-builder.cp")
+      game.i18n.localize('osr-character-builder.pp'),
+      game.i18n.localize('osr-character-builder.gp'),
+      game.i18n.localize('osr-character-builder.ep'),
+      game.i18n.localize('osr-character-builder.sp'),
+      game.i18n.localize('osr-character-builder.cp')
     ];
     let curCheck = async (type) => {
       let itemExists = actor.items.getName(type);
       let packName;
-      switch(game.i18n.lang){
+      switch (game.i18n.lang) {
         case 'en':
-          packName = `${OSRCB.moduleName}.osr-srd-items-en`
+          packName = `${OSRCB.moduleName}.osr-srd-items-en`;
           break;
         case 'es':
-          packName = `${OSRCB.moduleName}.osr-srd-items-es`
+          packName = `${OSRCB.moduleName}.osr-srd-items-es`;
           break;
       }
       let pack = await game.packs.get(packName);
@@ -334,9 +332,9 @@ export function initializeUtils() {
         let curItem = await pack.getDocument(pack.index.getName(type)._id);
         let itemData = curItem.clone();
         await actor.createEmbeddedDocuments('Item', [itemData]);
-        let gp = game.i18n.localize("osr-character-builder.gp")
+        let gp = game.i18n.localize('osr-character-builder.gp');
         if (type == gp) {
-          goldItem = actor.items.getName(game.i18n.localize("osr-character-builder.gp"));
+          goldItem = actor.items.getName(game.i18n.localize('osr-character-builder.gp'));
         }
       }
     };
@@ -344,31 +342,30 @@ export function initializeUtils() {
       await curCheck(type);
     }
     await goldItem.update({ system: { quantity: { value: dataObj.goldAmount } } });
-    if(source != 'none') await OSRCB.util.addClassAbilities(classObj.name, actor, packName);//test menu instead of name fr ability item selection
+    if (source != 'none') await OSRCB.util.addClassAbilities(classObj.name, actor, packName); //test menu instead of name fr ability item selection
     await actor.setFlag(`${OSRCB.moduleName}`, 'classSelected', true);
-    await actor.setFlag(`${OSRCB.moduleName}`, 'classInfo', {source: source, class: className});
+    await actor.setFlag(`${OSRCB.moduleName}`, 'classInfo', { source: source, class: className });
     if (dataObj.shopCheck) {
       OSRIS.shop.RUIS(actor._id);
     }
   };
   OSRCB.util.addClassAbilities = async function (className, actor, pack) {
     const compendium = await game.packs.get(pack);
-    const contents = await compendium.getDocuments()
-    const items = contents.filter(i=> i?.system?.requirements?.toLowerCase() === className?.toLowerCase());
+    const contents = await compendium.getDocuments();
+    const items = contents.filter((i) => i?.system?.requirements?.toLowerCase() === className?.toLowerCase());
     ui.notifications.warn(game.i18n.localize(`${OSRCB.moduleName}.addClassWarn`));
-    
+
     await actor.createEmbeddedDocuments('Item', items);
   };
   OSRCB.util.randomSpells = async function (data, actor) {
     const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
     let { source, classOption, level } = data;
 
-    
     if (source == 'SRD') {
       source = OSRCB.util.oseActive() ? 'basic' : 'SRD';
     }
     const typeData = await OSRCB.util.getClassOptionObj(source);
-    
+
     const classData = typeData.classes[classOption];
     //break out if not spellcaster
     if (!classData.spellCaster) {
@@ -377,25 +374,25 @@ export function initializeUtils() {
     const magicType = classData?.spellType;
     const slotData = classData?.spellSlot[level];
     const spells = await game.packs.get(classData.spellPackName)?.getDocuments();
-    const classSpells = spells.filter(sp => sp?.system?.class?.toLowerCase() === magicType.toLowerCase());
-    const pickedSpells = []
+    const classSpells = spells.filter((sp) => sp?.system?.class?.toLowerCase() === magicType.toLowerCase());
+    const pickedSpells = [];
     for (let key in slotData) {
       if (slotData[key].max > 0) {
-        let count = 0 
-        let list = classSpells.filter(s=>s.system.lvl === parseInt(key));
-        while(count < slotData[key].max){
+        let count = 0;
+        let list = classSpells.filter((s) => s.system.lvl === parseInt(key));
+        while (count < slotData[key].max) {
           let idx = Math.floor(Math.random() * list.length);
           let picked = list[idx];
-          let existing = pickedSpells.filter(s=>s.name === picked.name).length
-          if(!existing){
-            pickedSpells.push(picked);            
+          let existing = pickedSpells.filter((s) => s.name === picked.name).length;
+          if (!existing) {
+            pickedSpells.push(picked);
           }
-          count++
+          count++;
         }
       }
     }
 
-    await actor.createEmbeddedDocuments('Item', pickedSpells)
+    await actor.createEmbeddedDocuments('Item', pickedSpells);
   };
   OSRCB.util.randomItems = async function (data, actor) {
     const oseActive = OSRCB.util.oseActive();
@@ -403,30 +400,30 @@ export function initializeUtils() {
 
     const compendium = await game.packs.get(`${OSRCB.moduleName}.osr-srd-items`);
     const gearList = [
-      game.i18n.localize("osr-character-builder.backpack"),
-      game.i18n.localize("osr-character-builder.crowbar"),
-      game.i18n.localize("osr-character-builder.garlic"),
-      game.i18n.localize("osr-character-builder.gHook"),
-      game.i18n.localize("osr-character-builder.hammer"),
-      game.i18n.localize("osr-character-builder.holySymbo"),
-      game.i18n.localize("osr-character-builder.holyWater"),
-      game.i18n.localize("osr-character-builder.ironSpikes"),
-      game.i18n.localize("osr-character-builder.lantern"),
-      game.i18n.localize("osr-character-builder.mirror"),
-      game.i18n.localize("osr-character-builder.oil"),
-      game.i18n.localize("osr-character-builder.pole"),
-      game.i18n.localize("osr-character-builder.rationsI"),
-      game.i18n.localize("osr-character-builder.rationsS"),
-      game.i18n.localize("osr-character-builder.rope"),
-      game.i18n.localize("osr-character-builder.sackL"),
-      game.i18n.localize("osr-character-builder.sackS"),
-      game.i18n.localize("osr-character-builder.stakes"),
-      game.i18n.localize("osr-character-builder.thieves Tools"),
-      game.i18n.localize("osr-character-builder.tinder Box"),
-      game.i18n.localize("osr-character-builder.torches"),
-      game.i18n.localize("osr-character-builder.waterskin"),
-      game.i18n.localize("osr-character-builder.wine"),
-      game.i18n.localize("osr-character-builder.wolfsbane"),
+      game.i18n.localize('osr-character-builder.backpack'),
+      game.i18n.localize('osr-character-builder.crowbar'),
+      game.i18n.localize('osr-character-builder.garlic'),
+      game.i18n.localize('osr-character-builder.gHook'),
+      game.i18n.localize('osr-character-builder.hammer'),
+      game.i18n.localize('osr-character-builder.holySymbo'),
+      game.i18n.localize('osr-character-builder.holyWater'),
+      game.i18n.localize('osr-character-builder.ironSpikes'),
+      game.i18n.localize('osr-character-builder.lantern'),
+      game.i18n.localize('osr-character-builder.mirror'),
+      game.i18n.localize('osr-character-builder.oil'),
+      game.i18n.localize('osr-character-builder.pole'),
+      game.i18n.localize('osr-character-builder.rationsI'),
+      game.i18n.localize('osr-character-builder.rationsS'),
+      game.i18n.localize('osr-character-builder.rope'),
+      game.i18n.localize('osr-character-builder.sackL'),
+      game.i18n.localize('osr-character-builder.sackS'),
+      game.i18n.localize('osr-character-builder.stakes'),
+      game.i18n.localize('osr-character-builder.thieves Tools'),
+      game.i18n.localize('osr-character-builder.tinder Box'),
+      game.i18n.localize('osr-character-builder.torches'),
+      game.i18n.localize('osr-character-builder.waterskin'),
+      game.i18n.localize('osr-character-builder.wine'),
+      game.i18n.localize('osr-character-builder.wolfsbane')
     ];
     const armorList = OSRCB.data.retainerGear[classOption].armor;
     const weaponList = OSRCB.data.retainerGear[classOption].weapons;
@@ -483,7 +480,7 @@ export function initializeUtils() {
       return true;
     } else return false;
   };
-    //capitalize first letter in string
+  //capitalize first letter in string
   OSRCB.util.capitalize = function (s) {
     if (typeof s !== 'string') return '';
     return s.charAt(0).toUpperCase() + s.slice(1);
@@ -502,40 +499,83 @@ export function initializeUtils() {
     const newEntity = await entity.clone();
     actor.createEmbeddedDocuments('Item', [newEntity]);
   };
-  OSRCB.util.generateBio = function(classObj){
-    let languages = ``
-    classObj.languages.map(i=>languages += `${i}, `)
+  OSRCB.util.generateBio = function (classObj) {
+    let languages = ``;
+    classObj.languages.map((i) => (languages += `${i}, `));
     const biography = `
-    <b>${game.i18n.localize("osr-character-builder.requirements")}</b>: ${classObj.req} <br>
-    <b>${game.i18n.localize("osr-character-builder.primeRequisite")}</b>: ${classObj.primeReq} <br>
-    <b>${game.i18n.localize("osr-character-builder.hitDice")}</b>: ${classObj.hd} <br>
-    <b>${game.i18n.localize("osr-character-builder.maxLevel")}</b>:${classObj.maxLvl} <br>
-    <b>${game.i18n.localize("osr-character-builder.armour")}</b>: ${classObj.armorTypes} <br>
-    <b>${game.i18n.localize("osr-character-builder.weapons")}</b>: ${classObj.weaponTypes} <br>
-    <b>${game.i18n.localize("osr-character-builder.languages")}</b>: ${languages} <br>
-    `
-    return biography
-  }
+    <b>${game.i18n.localize('osr-character-builder.requirements')}</b>: ${classObj.req} <br>
+    <b>${game.i18n.localize('osr-character-builder.primeRequisite')}</b>: ${classObj.primeReq} <br>
+    <b>${game.i18n.localize('osr-character-builder.hitDice')}</b>: ${classObj.hd} <br>
+    <b>${game.i18n.localize('osr-character-builder.maxLevel')}</b>:${classObj.maxLvl} <br>
+    <b>${game.i18n.localize('osr-character-builder.armour')}</b>: ${classObj.armorTypes} <br>
+    <b>${game.i18n.localize('osr-character-builder.weapons')}</b>: ${classObj.weaponTypes} <br>
+    <b>${game.i18n.localize('osr-character-builder.languages')}</b>: ${languages} <br>
+    `;
+    return biography;
+  };
 }
-export const hideForeignPacks = () => {
-  Hooks.on('changeSidebarTab', async  (tab) => {
-    if(await game.settings.get(`osr-character-builder`, 'hideForeignPacks')){
-      if (tab._element[0].id === 'compendium') {
-        const lis = document.querySelectorAll("li.compendium");
-        const osrcbPacks = [...lis].filter(li=>{
-          const send = li.querySelector('span.source').innerText.includes('osr-character-builder');
-          return send ? send : false;
-        })
-        if(osrcbPacks.length){
-          const langstring = `(${game.i18n.lang})`
-          osrcbPacks.forEach(p=>{
-            const title = p.querySelector('h3.compendium-name').innerText;
-            if(!title.includes(langstring)){ 
-              p.style.display = 'none'}
-          })
-        }
-      }
+export const intializePackFolders = async () => {
+  let singleGM = false;
+  if (game.user.isGM && game.users.filter((u) => u.role == 4)[0]?.id === game.user.id) {
+    singleGM = true;
+  }
+  if (singleGM) {
+    const movePacks = await game.settings.get('osr-character-builder', 'makePackFolder');
+    const folderName = await game.settings.get('osr-character-builder', 'packFolderName');
+    const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
+    const packnames = [
+      'osr-srd-class-options-en',
+      'osr-srd-class-options-es',
+      'osr-srd-items-en',
+      'osr-srd-items-es',
+      'osr-srd-spells-en',
+      'osr-srd-spells-es',
+      'osr-srd-classes',
+      'osr-srd-classes-es',
+      'osr-character-builder-macros-en'
+    ];
+    let folder = game.folders.getName(folderName);
+    if (!folder && movePacks) {
+      folder = await Folder.create([{ name: folderName, type: 'Compendium', color: '#713289' }]);
+      packnames.forEach(async (pn) => {
+        console.log(`osr-character-builder.${pn}`);
+        const pack = await game.packs.get(`osr-character-builder.${pn}`);
+        if (pack) await pack.setFolder(folder[0]);
+      });
+      await sleep(150);
+      ui.sidebar.render();
     }
-
+  }
+};
+export const hideForeignPacks = () => {
+  const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
+  Hooks.on('changeSidebarTab', async (tab) => {
+    if (await game.settings.get(`osr-character-builder`, 'hideForeignPacks')) {
+      hfp(tab);
+    }
+  });
+  Hooks.on('renderSidebarTab', async (tab) => {
+    await sleep(250);
+    if (await game.settings.get(`osr-character-builder`, 'hideForeignPacks')) {
+      hfp(tab);
+    }
   });
 };
+function hfp(tab) {
+  if (tab?._element[0]?.id === 'compendium') {
+    const lis = document.querySelectorAll('li.compendium');
+    const osrcbPacks = [...lis].filter((li) => {
+      const send = li.dataset.entryId.includes('osr-character-builder');
+      return send ? send : false;
+    });
+    if (osrcbPacks.length) {
+      const langstring = `(${game.i18n.lang})`;
+      osrcbPacks.forEach((p) => {
+        const title = p.querySelector('h3.compendium-name').innerText;
+        if (!title.includes(langstring)) {
+          p.style.display = 'none';
+        }
+      });
+    }
+  }
+}

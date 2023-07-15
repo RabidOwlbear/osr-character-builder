@@ -7,7 +7,10 @@
   "osr-character-builder.setting.heroStatsHint":"Roll 4d6 drop lowest for ability scores on the character creator.",
   "osr-character-builder.settings.hideForeignPackName": "Hide Foreign Language Compendiums",
   "osr-character-builder.settings.hideForeignPackHint": "Hides display of foreign language compendium packs",
-
+  "osr-character-builder.settings.makePackFolder":"Create Compendium Pack Folder",
+  "osr-character-builder.settings.makePackFolderHint":"When selected a folder will be created and included compendiums will be moved to this folder.",
+  "osr-character-builder.settings.packFolderName":"Compendium Pack Folder Name",
+  "osr-character-builder.settings.packFolderNameHint":"Name to use for the compendium folder.",
 
   "osr-character-builder.notification.packNotFound": "Compendum pack not found. Ending character creation.",
   "osr-character-builder.notification.chooseClass": "Please Choose A Class",

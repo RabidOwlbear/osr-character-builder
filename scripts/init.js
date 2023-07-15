@@ -3,7 +3,7 @@ import { initializeUtils } from './util.mjs';
 import { osrCharacterBuilder } from './character-builder/character-builder.mjs';
 import { registerSrdDataEn } from './data/srd-data-en.mjs';
 import { registerSrdDataEs } from './data/srd-data-es.mjs';
-import { hideForeignPacks } from './util.mjs';
+import { hideForeignPacks, intializePackFolders} from './util.mjs';
 window.OSRCB = window.OSRCB || {
   moduleName: `osr-character-builder`
 };
@@ -74,6 +74,22 @@ Hooks.once('init', async () => {
     default: true,
     config: true
   });
+  await game.settings.register(`${OSRCB.moduleName}`, 'makePackFolder', {
+    name: "osr-character-builder.settings.makePackFolder",
+    hint: "osr-character-builder.settings.makePackFolderHint",
+    scope: 'client',
+    type: Boolean,
+    default: true,
+    config: true
+  });
+  await game.settings.register(`${OSRCB.moduleName}`, 'packFolderName', {
+    name: "osr-character-builder.settings.packFolderName",
+    hint: "osr-character-builder.settings.packFolderNameHint",
+    scope: 'world',
+    type: String,
+    default: 'OSRCB Compendiums',
+    config: true
+  });
 });
 
 Hooks.once('ready', async () => {
@@ -88,7 +104,9 @@ Hooks.once('ready', async () => {
       break
   }
   // set hook to hide display of foreign language packs
+  await intializePackFolders()
   hideForeignPacks()
+
   //reset external classes
   await game.settings.set(`${OSRCB.moduleName}`, 'externalClasses', []);
   Hooks.callAll('OSRCB Registered');

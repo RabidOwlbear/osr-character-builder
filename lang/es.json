@@ -7,6 +7,10 @@
   "osr-character-builder.setting.heroStatsHint":"Tira 4d6, obviando el dado más bajo para la puntuación de características en el creador de personajes.",
   "osr-character-builder.settings.hideForeignPackName": "Ocultar compendios de idiomas extranjeros",
   "osr-character-builder.settings.hideForeignPackHint": "Oculta la vista de los paquetes de compendios en idiomas extranjeros",
+  "osr-character-builder.settings.makePackFolder": "Crear carpeta de paquetes de compendios",
+  "osr-character-builder.settings.makePackFolderHint": "Al seleccionar esta opción, se creará una carpeta a la que se trasladarán los compendios incluidos.",
+  "osr-character-builder.settings.packFolderName": "Nombre de la carpeta del paquete de compendios",
+  "osr-character-builder.settings.packFolderNameHint": "Nombre que se utilizará para la carpeta de compendios.",
 
   "osr-character-builder.notification.packNotFound": "No se ha encontrado el paquete de compendio. Finalizando creación de personaje.",
   "osr-character-builder.notification.chooseClass": "Por favor, selecciona una clase",
