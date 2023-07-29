@@ -15,6 +15,7 @@ Hooks.once('init', async () => {
   OSRCB.spells = OSRCB.spells || { mergedList: {} };
   OSRCB.spells.mergedList = {};
   OSRCB.characterBuilder = osrCharacterBuilder;
+  OSRCB.lang = ['en','es'];
 
   // import modules
   //registerCharacterBuilder();

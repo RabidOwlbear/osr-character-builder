@@ -9,7 +9,7 @@
       "flags": {}
     }
   ],
-  "version": "0.3.17",
+  "version": "0.3.18",
   "compatibility": {
     "minimum": "10",
     "verified": "11.305",
@@ -78,7 +78,7 @@
       "flags": {}
     },
     {
-      "name": "osr-srd-classes",
+      "name": "osr-srd-classes-en",
       "label": "OSE SRD Classes (en)",
       "path": "packs/osr-srd-classes.db",
       "type": "JournalEntry",

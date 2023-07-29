@@ -530,7 +530,7 @@ export const intializePackFolders = async () => {
       'osr-srd-items-es',
       'osr-srd-spells-en',
       'osr-srd-spells-es',
-      'osr-srd-classes',
+      'osr-srd-classes-en',
       'osr-srd-classes-es',
       'osr-character-builder-macros-en'
     ];
@@ -569,13 +569,26 @@ function hfp(tab) {
       return send ? send : false;
     });
     if (osrcbPacks.length) {
-      const langstring = `(${game.i18n.lang})`;
-      osrcbPacks.forEach((p) => {
-        const title = p.querySelector('h3.compendium-name').innerText;
-        if (!title.includes(langstring)) {
-          p.style.display = 'none';
-        }
-      });
+      if (OSRCB.lang.includes(game.i18n.lang)) {
+        const langstring = `(${game.i18n.lang})`;
+        osrcbPacks.forEach((p) => {
+          const title = p.querySelector('h3.compendium-name').innerText;
+          if (title.includes('(') && !title.includes(langstring)) {
+            p.style.display = 'none';
+          }
+        });
+      } else {
+        const langs = OSRCB.lang.filter(i=>i != `en`);
+        osrcbPacks.forEach((p) => {
+          const title = p.querySelector('h3.compendium-name').innerText;
+          for (let lang of langs) {
+            if (title.includes(`(${lang})`)) {
+              p.style.display = 'none';
+            }
+          }
+          
+        });
+      }
     }
   }
 }
