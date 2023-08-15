@@ -25,6 +25,7 @@
   "osr-character-builder.notification.classDataNotFound": "No se ha encontrado el objeto de los datos de clase..",
   "osr-character-builder.notification.windowOpen": "Ventana ya abierta.",
   "osr-character-builder.notification.selectClass": "Por favor, selecciona una clase",
+  "osr-character-builder.notification.itemsNotFound": "No se han encontrado opciones de habilidad de clase.",
 
   "osr-character-builder.maxLvl": "Nivel máximo",
   "osr-character-builder.formAttrib": "Características del personaje",

@@ -342,7 +342,7 @@ export function initializeUtils() {
       await curCheck(type);
     }
     await goldItem.update({ system: { quantity: { value: dataObj.goldAmount } } });
-    if (source != 'none') await OSRCB.util.addClassAbilities(classObj.name, actor, packName); //test menu instead of name fr ability item selection
+    if (source != 'none') await OSRCB.util.addClassAbilities(classObj.menu, actor, packName); //test menu instead of name fr ability item selection
     await actor.setFlag(`${OSRCB.moduleName}`, 'classSelected', true);
     await actor.setFlag(`${OSRCB.moduleName}`, 'classInfo', { source: source, class: className });
     if (dataObj.shopCheck) {
@@ -350,9 +350,23 @@ export function initializeUtils() {
     }
   };
   OSRCB.util.addClassAbilities = async function (className, actor, pack) {
+    console.log('Class Name',className);
     const compendium = await game.packs.get(pack);
     const contents = await compendium.getDocuments();
-    const items = contents.filter((i) => i?.system?.requirements?.toLowerCase() === className?.toLowerCase());
+    let items = contents.filter((i) => i?.system?.requirements?.toLowerCase() === className?.toLowerCase());
+    if(!items.length){
+      //old style naming shim
+      const osName = className.replaceAll(' ', '-');
+      items = contents.filter((i) => i?.system?.requirements?.toLowerCase() === osName?.toLowerCase())
+    }
+    if(!items.length){
+      console.error(`
+      ****OSRCB ERROR**** 
+      -------------------
+      No abilities with requirement of: ${className} found in compendium pack: ${pack}
+      ___________________`);
+      ui.notifications.warn(game.i18n.localize(`${OSRCB.moduleName}.itemsNotFound`))
+    }
     ui.notifications.warn(game.i18n.localize(`${OSRCB.moduleName}.addClassWarn`));
 
     await actor.createEmbeddedDocuments('Item', items);
