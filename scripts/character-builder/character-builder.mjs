@@ -128,7 +128,6 @@ export class osrCharacterBuilder extends FormApplication {
       for (const [key, value] of formData) {
         formObj[key] = value;
       }
-      
       this._validateFormInputs(html)
       
     });
@@ -155,7 +154,7 @@ export class osrCharacterBuilder extends FormApplication {
   async _updateObject(event, formData) {
     event.preventDefault();
     
-    
+   
     await OSRCB.util.osrUpdateSheet(formData, this.actor);
     if(formData.spellCheck){
       await OSRCB.util.randomSpells(formData, this.actor)

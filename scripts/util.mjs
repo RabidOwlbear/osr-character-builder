@@ -166,6 +166,10 @@ export function initializeUtils() {
   };
 
   OSRCB.util.osrUpdateSheet = async function (dataObj, actor) {
+    let untranslatedMod = false;
+    const aftActive = await game.modules.get('ose-advancedfantasytome')?.active;
+    const oseActive = await game.modules.get('old-school-essentials')?.active;
+    if(aftActive || oseActive){ untranslatedMod = true;}
     let { source, level } = dataObj;
     let updateData = {};
     const className = dataObj.classOption;
@@ -174,7 +178,13 @@ export function initializeUtils() {
     const classObj = !isNone ? sourceData.classes[className] : null;
     let packName = !isNone ? classObj.pack : null;
     if (packName === 'osr-character-builder.osr-srd-class-options') {
-      packName = `osr-character-builder.osr-srd-class-options-${game.i18n.lang}`;
+      //remove once advanced fantasy is updated
+      if(untranslatedMod){
+        packName = `osr-character-builder.osr-srd-class-options-en`;
+      } else{
+        packName = `osr-character-builder.osr-srd-class-options-${game.i18n.lang}`;
+      }
+      
     }
     const titles = !isNone ? classObj.title : null;
     let goldItem = actor.items.getName(game.i18n.localize('osr-character-builder.gp'));
@@ -350,7 +360,6 @@ export function initializeUtils() {
     }
   };
   OSRCB.util.addClassAbilities = async function (className, actor, pack) {
-    console.log('Class Name',className);
     const compendium = await game.packs.get(pack);
     const contents = await compendium.getDocuments();
     let items = contents.filter((i) => i?.system?.requirements?.toLowerCase() === className?.toLowerCase());
@@ -552,7 +561,6 @@ export const intializePackFolders = async () => {
     if (!folder && movePacks) {
       folder = await Folder.create([{ name: folderName, type: 'Compendium', color: '#713289' }]);
       packnames.forEach(async (pn) => {
-        console.log(`osr-character-builder.${pn}`);
         const pack = await game.packs.get(`osr-character-builder.${pn}`);
         if (pack) await pack.setFolder(folder[0]);
       });
