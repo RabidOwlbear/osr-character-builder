@@ -336,6 +336,8 @@ export function initializeUtils() {
         case 'es':
           packName = `${OSRCB.moduleName}.osr-srd-items-es`;
           break;
+        default: 
+          packName = `${OSRCB.moduleName}.osr-srd-items-en`;
       }
       let pack = await game.packs.get(packName);
       if (!itemExists) {
@@ -536,6 +538,15 @@ export function initializeUtils() {
     `;
     return biography;
   };
+  OSRCB.util.langCheck = function(){
+    const curLang = game.i18n.lang;
+    const langList = OSRCB.lang;
+    let lang = 'en'
+    if(langList.includes(curLang)){
+      lang = curLang;
+    }
+    return lang
+   }
 }
 export const intializePackFolders = async () => {
   let singleGM = false;
@@ -584,6 +595,7 @@ export const hideForeignPacks = () => {
   });
 };
 function hfp(tab) {
+  const language = OSRCB.util.langCheck();
   if (tab?._element[0]?.id === 'compendium') {
     const lis = document.querySelectorAll('li.compendium');
     const osrcbPacks = [...lis].filter((li) => {
@@ -591,8 +603,8 @@ function hfp(tab) {
       return send ? send : false;
     });
     if (osrcbPacks.length) {
-      if (OSRCB.lang.includes(game.i18n.lang)) {
-        const langstring = `(${game.i18n.lang})`;
+      if (OSRCB.lang.includes(language)) {
+        const langstring = `(${language})`;
         osrcbPacks.forEach((p) => {
           const title = p.querySelector('h3.compendium-name').innerText;
           if (title.includes('(') && !title.includes(langstring)) {

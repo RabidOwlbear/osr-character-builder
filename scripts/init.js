@@ -103,6 +103,9 @@ Hooks.once('ready', async () => {
       registerSrdDataEs();
       console.log('es')
       break
+    default:
+      registerSrdDataEn();     
+      console.log('default lang')
   }
   // set hook to hide display of foreign language packs
   await intializePackFolders()
