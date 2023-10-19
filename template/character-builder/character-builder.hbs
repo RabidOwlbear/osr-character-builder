@@ -2,9 +2,19 @@
   <section class='top'>
     <div class='name-cont'>
       <input id='name-inp' type='text' placeholder='Name' name='name' value='{{actor.name}}' />
-      <div class='lvl-cont'>
-        <label for='level-inp'>{{localize "osr-character-builder.lvl"}}</label>
-        <input type='number' data-dtype='Number' value='{{actor.system.details.level}}' name='level' id='level-inp' />
+      <div class="lvl-row">
+        <div class='lvl-cont'>
+          <label for='level-inp'>{{localize "osr-character-builder.lvl"}}</label>
+          <input type='number' data-dtype='Number' value='{{actor.system.details.level}}' name='level' id='level-inp' title="{{localize "osr-character-builder.level"}}"/>
+        </div>
+        <div class="alignment-cont">
+          <label for="alignment-inp">{{localize "osr-character-builder.formAlignment"}}</label>
+          <select name="alignment" id="alignment-inp">
+            <option value="neutral">{{localize "osr-character-builder.formLaw"}}</option>
+            <option value="lawful">{{localize "osr-character-builder.formNeut"}}</option>
+            <option value="chaotic">{{localize "osr-character-builder.formChaos"}}</option>
+          </select>
+        </div>
       </div>
 
     </div>

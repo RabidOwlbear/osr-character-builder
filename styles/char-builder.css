@@ -71,13 +71,26 @@
   display: flex;
   align-items: center;
   margin-right: .3em;
+  /* width: 100%; */
+  font-weight: 600;
+}
+.osrcb .top .alignment-cont{
+  display: flex;
 }
 .osrcb .top .name-cont .lvl-cont{
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  /* justify-content: space-between; */
+  padding: 0 .3;
+  width: 50%;
 }
 .osrcb .top .name-cont .lvl-cont input{
   width: 2em
+}
+.osrcb .top .lvl-row{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
 }
 .osrcb .middle{
   /* background-color: hsl(71, 22%, 54%); */
