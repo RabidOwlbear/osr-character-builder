@@ -224,6 +224,7 @@ export function initializeUtils() {
     } else if (source == 'none') {
       updateData = {
         system: {
+          encumbrance: {max: 1600},
           details: {
             alignment: dataObj.alignment,
             level: level
@@ -423,7 +424,7 @@ export function initializeUtils() {
     const oseActive = OSRCB.util.oseActive();
     const { classOption } = data;
 
-    const compendium = await game.packs.get(`${OSRCB.moduleName}.osr-srd-items`);
+    const compendium = await game.packs.get(`${OSRCB.moduleName}.osr-srd-items-${game.i18n.lang}`);
     const gearList = [
       game.i18n.localize('osr-character-builder.backpack'),
       game.i18n.localize('osr-character-builder.crowbar'),
