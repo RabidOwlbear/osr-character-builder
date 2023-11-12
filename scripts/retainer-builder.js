@@ -211,8 +211,9 @@ export async function registerRetainerBuilder() {
     const basic = ['cleric', 'dwarf', 'elf', 'fighter', 'halfling', 'magic-user', 'thief'];
     let classOptions = basic;
     let source = classSource;
-    if (classSource == 'advanced' && displayAdvanced) classOptions = advanced;
-    if (classSource == 'mixed' && OSRCB.util.oseActive()) classOptions = advanced.concat(basic);
+    if (classSource == 'advanced' && displayAdvanced ||
+      classSource == 'advanced-fantasy' && displayAdvanced) classOptions = advanced;
+    if (classSource == 'mixed' && displayAdvanced) classOptions = advanced.concat(basic);
 
     let { number, randomNumber, maxLvl, minLvl, items, spells, randomName } = options;
 
@@ -232,7 +233,7 @@ export async function registerRetainerBuilder() {
         source: source,
         classOption: classOptions[Math.floor(Math.random() * classOptions.length)]
       };
-      
+      console.log('ujhWEFVASDCJHUVvhujbhjkFVDCAHVJGB', data)
       const newRetainer = await OSRCB.util.retainerGen(data);
       data.level = newRetainer.system.details.level;
       // random name support

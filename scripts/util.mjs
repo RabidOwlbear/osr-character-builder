@@ -2,6 +2,7 @@ export function initializeUtils() {
   OSRCB.util.getClassOptionObj = function (classSource) {
     
     const optionObj = OSRCB.util.mergeClassOptions();
+    
     let sourceObj = optionObj.find((s) => s.name.toLowerCase() === classSource.toLowerCase());
     return sourceObj;
   };
@@ -399,9 +400,12 @@ export function initializeUtils() {
     if (!classData.spellCaster) {
       return;
     }
+
+    const spellPackName = OSRCB.util.oseAfActive() && classData.spellPackName.includes('old-school-essentials.') ? 
+      'ose-advancedfantasytome.spells' : classData.spellPackName
     const magicType = classData?.spellType;
     const slotData = classData?.spellSlot[level];
-    const spells = await game.packs.get(classData.spellPackName)?.getDocuments();
+    const spells = await game.packs.get(spellPackName)?.getDocuments();
     const classSpells = spells.filter((sp) => sp?.system?.class?.toLowerCase() === magicType.toLowerCase());
     const pickedSpells = [];
     for (let key in slotData) {
@@ -485,6 +489,7 @@ export function initializeUtils() {
     }
     let weapCount = 0;
     for (let item of weaponPick) {
+      console.log(item)
       const itemData = await compendium.index.getName(item);
       const itemObj = await compendium.getDocument(itemData._id);
       const data = itemObj.clone();

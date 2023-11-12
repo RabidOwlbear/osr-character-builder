@@ -657,7 +657,7 @@ export async function registerSrdDataEn() {
     },
     acrobat: {
       armor: ['Leather Armor'],
-      weapons: ['Sword', 'Dagger', 'Hand Axe', 'Mace', 'Longbow', 'Shortbow', 'sling']
+      weapons: ['Sword', 'Dagger', 'Hand Axe', 'Mace', 'Longbow', 'Shortbow', 'Sling']
     },
     assassin: {
       armor: ['Leather Armor'],
