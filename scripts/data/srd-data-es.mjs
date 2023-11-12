@@ -652,12 +652,71 @@ export async function registerSrdDataEs() {
     thief: {
       armor: ['Cuero'],
       weapons: ['Espada', 'Daga', 'Hacha de mano', 'Maza', 'Arco largo', 'Arco corto']
+    },
+    acrobat: {
+      armor: ['Cuero'],
+      weapons: ['Espada', 'Daga', 'Hacha de mano', 'Maza', 'Arco largo', 'Arco corto', 'Honda']
+    },
+    assassin: {
+      armor: ['Cuero'],
+      weapons: ['Espada', 'Daga', 'Hacha de mano', 'Maza', 'Arco largo', 'Arco corto']
+    },
+    barbarian: {
+      armor: ['Cuero', 'Cota de malla'],
+      weapons: ['Espada', 'Daga', 'Hacha de mano', 'Maza', 'Espada a dos manos', 'Arco largo', 'Arco corto']
+    },
+    bard: {
+      armor: ['Cuero', 'Cota de malla'],
+      weapons: ['Espada', 'Daga', 'Hacha de mano', 'Maza', 'Arco largo', 'Arco corto']
+    },
+    drow: {
+      armor: ['Cuero', 'Cota de malla', 'Cota de placas'],
+      weapons: ['Espada', 'Daga', 'Hacha de mano', 'Maza', 'Espada a dos manos', 'Arco largo', 'Arco corto']
+    },
+    druid: {
+      armor: ['Cuero'],
+      weapons: ['Garrote', 'Daga', 'Honda', 'Bastón']
+    },
+    duergar: {
+      armor: ['Cuero', 'Cota de malla', 'Cota de placas'],
+      weapons: ['Espada', 'Daga', 'Hacha de mano', 'Maza', 'Espada a dos manos', 'Arco largo', 'Arco corto']
+    },
+    gnome: {
+      armor: ['Cuero'],
+      weapons: ['Espada', 'Daga', 'Hacha de mano', 'Maza', 'Espada a dos manos', 'Arco largo', 'Arco corto']
+    },
+    'half-elf': {
+      armor: ['Cuero', 'Cota de malla', 'Cota de placas'],
+      weapons: ['Espada', 'Daga', 'Hacha de mano', 'Maza', 'Espada a dos manos', 'Arco largo', 'Arco corto']
+    },
+    'half-orc': {
+      armor: ['Cuero', 'Cota de malla', 'Cota de placas'],
+      weapons: ['Espada', 'Daga', 'Hacha de mano', 'Maza', 'Espada a dos manos', 'Arco largo', 'Arco corto']
+    },
+    illusionist: {
+      armor: [],
+      weapons: ['Daga', 'Bastón']
+    },
+    knight: {
+      armor: ['Cota de malla', 'Cota de placas'],
+      weapons: ['Espada', 'Daga', 'Hacha de mano', 'Maza', 'Espada a dos manos']
+    },
+    paladin: {
+      armor: ['Cuero', 'Cota de malla', 'Cota de placas'],
+      weapons: ['Espada', 'Daga', 'Hacha de mano', 'Maza', 'Espada a dos manos', 'Arco largo', 'Arco corto']
+    },
+    ranger: {
+      armor: ['Cuero', 'Cota de malla'],
+      weapons: ['Espada', 'Daga', 'Hacha de mano', 'Maza', 'Espada a dos manos', 'Arco largo', 'Arco corto']
+    },
+    svirfneblin: {
+      armor: ['Cuero', 'Cota de malla', 'Cota de placas'],
+      weapons: ['Espada', 'Daga', 'Hacha de mano', 'Maza', 'Espada a dos manos', 'Arco largo', 'Arco corto']
     }
   };
   await sleep(50);
   OSRCB.spells.mergedList = mergeObject(OSRCB.spells.spellList, OSRCB.spells.mergedList);
 }
-
 
 
 

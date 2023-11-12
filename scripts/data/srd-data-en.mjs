@@ -654,6 +654,66 @@ export async function registerSrdDataEn() {
     thief: {
       armor: ['Leather Armor'],
       weapons: ['Sword', 'Dagger', 'Hand Axe', 'Mace', 'Longbow', 'Shortbow']
+    },
+    acrobat: {
+      armor: ['Leather Armor'],
+      weapons: ['Sword', 'Dagger', 'Hand Axe', 'Mace', 'Longbow', 'Shortbow', 'sling']
+    },
+    assassin: {
+      armor: ['Leather Armor'],
+      weapons: ['Sword', 'Dagger', 'Hand Axe', 'Mace', 'Two-handed Sword', 'Longbow', 'Shortbow']
+    },
+    barbarian: {
+      armor: ['Leather Armor', 'Chain Mail'],
+      weapons: ['Sword', 'Dagger', 'Hand Axe', 'Mace', 'Two-handed Sword', 'Longbow', 'Shortbow']
+    },
+    bard: {
+      armor: ['Leather Armor', 'Chain Mail'],
+      weapons: ['Sword', 'Dagger', 'Hand Axe', 'Mace', 'Longbow', 'Shortbow']
+    },
+    drow: {
+      armor: ['Leather Armor', 'Chain Mail', 'Plate Mail'],
+      weapons: ['Sword', 'Dagger', 'Hand Axe', 'Mace', 'Two-handed Sword', 'Longbow', 'Shortbow']
+    },
+    druid: {
+      armor: ['Leather Armor'],
+      weapons: ['Club', 'Dagger', 'Sling', 'Staff']
+    },
+    duergar: {
+      armor: ['Leather Armor', 'Chain Mail', 'Plate Mail'],
+      weapons: ['Sword', 'Dagger', 'Hand Axe', 'Mace', 'Two-handed Sword', 'Longbow', 'Shortbow']
+    },
+    gnome: {
+      armor: ['Leather Armor'],
+      weapons: ['Sword', 'Dagger', 'Hand Axe', 'Mace', 'Two-handed Sword', 'Longbow', 'Shortbow']
+    },
+    'half-elf': {
+      armor: ['Leather Armor', 'Chain Mail', 'Plate Mail'],
+      weapons: ['Sword', 'Dagger', 'Hand Axe', 'Mace', 'Two-handed Sword', 'Longbow', 'Shortbow']
+    },
+    'half-orc': {
+      armor: ['Leather Armor', 'Chain Mail', 'Plate Mail'],
+      weapons: ['Sword', 'Dagger', 'Hand Axe', 'Mace', 'Two-handed Sword', 'Longbow', 'Shortbow']
+    },
+    illusionist: {
+      armor: [],
+      weapons: ['Dagger', 'Staff']
+    },
+    knight: {
+      armor: ['Chain Mail', 'Plate Mail'],
+      weapons: ['Sword', 'Dagger', 'Hand Axe', 'Mace', 'Two-handed Sword']
+    },
+    paladin: {
+      armor: ['Leather Armor', 'Chain Mail', 'Plate Mail'],
+      weapons: ['Sword', 'Dagger', 'Hand Axe', 'Mace', 'Two-handed Sword', 'Longbow', 'Shortbow']
+    },
+    ranger: {
+      armor: ['Leather Armor', 'Chain Mail'],
+      weapons: ['Sword', 'Dagger', 'Hand Axe', 'Mace', 'Two-handed Sword', 'Longbow', 'Shortbow']
+    },
+    svirfneblin: {
+      armor: ['Leather Armor', 'Chain Mail', 'Plate Mail'],
+      weapons: ['Sword', 'Dagger', 'Hand Axe', 'Mace', 'Two-handed Sword', 'Longbow', 'Shortbow']
     }
   };
   await sleep(50);

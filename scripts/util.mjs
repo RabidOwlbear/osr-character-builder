@@ -1,9 +1,11 @@
 export function initializeUtils() {
   OSRCB.util.getClassOptionObj = function (classSource) {
+    
     const optionObj = OSRCB.util.mergeClassOptions();
     let sourceObj = optionObj.find((s) => s.name.toLowerCase() === classSource.toLowerCase());
     return sourceObj;
   };
+
   OSRCB.util.mergeClassOptions = function () {
     let defaultClasses = game.settings.get('osr-character-builder', 'defaultClasses');
     let externalClasses = game.settings.get('osr-character-builder', 'externalClasses');
@@ -503,6 +505,11 @@ export function initializeUtils() {
   };
   OSRCB.util.oseActive = function () {
     if (game.modules.get('old-school-essentials')?.active) {
+      return true;
+    } else return false;
+  };
+  OSRCB.util.oseAfActive = function () {
+    if (game.modules.get('ose-advancedfantasytome')?.active) {
       return true;
     } else return false;
   };

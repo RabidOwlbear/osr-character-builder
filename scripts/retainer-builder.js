@@ -42,26 +42,30 @@ export async function registerRetainerBuilder() {
           </div>
           `;
         }
-        let ose = OSRCB.util.oseActive();
         
-        if (ose) {
+        let oseAf = OSRCB.util.oseAfActive();
+        let ose = OSRCB.util.oseActive();
+        if (ose || oseAf) {
+          let source =  !ose && oseAf ? 'advanced-fantasy' : 'advanced';
+
+
           let opt = [
-            { name: `--${game.i18n.localize("osr-character-builder.Advanced")}--`, value: 'none.advanced' },
-            { name: `${game.i18n.localize("osr-character-builder.acrobat")}`, value: 'advanced.acrobat' },
-            { name: `${game.i18n.localize("osr-character-builder.assassin")}`, value: 'advanced.assassin' },
-            { name: `${game.i18n.localize("osr-character-builder.barbarian")}`, value: 'advanced.barbarian' },
-            { name: `${game.i18n.localize("osr-character-builder.bard")}`, value: 'advanced.bard' },
-            { name: `${game.i18n.localize("osr-character-builder.drow")}`, value: 'advanced.drow' },
-            { name: `${game.i18n.localize("osr-character-builder.druid")}`, value: 'advanced.druid' },
-            { name: `${game.i18n.localize("osr-character-builder.duergar")}`, value: 'advanced.duergar' },
-            { name: `${game.i18n.localize("osr-character-builder.gnome")}`, value: 'advanced.gnome' },
-            { name: `${game.i18n.localize("osr-character-builder.halfElf")}`, value: 'advanced.half-elf' },
-            { name: `${game.i18n.localize("osr-character-builder.halfOrc")}`, value: 'advanced.half-orc' },
-            { name: `${game.i18n.localize("osr-character-builder.illusionist")}`, value: 'advanced.illusionist' },
-            { name: `${game.i18n.localize("osr-character-builder.knight")}`, value: 'advanced.knight' },
-            { name: `${game.i18n.localize("osr-character-builder.paladin")}`, value: 'advanced.paladin' },
-            { name: `${game.i18n.localize("osr-character-builder.ranger")}`, value: 'advanced.ranger' },
-            { name: `${game.i18n.localize("osr-character-builder.svirfneblin")}`, value: 'advanced.svirfneblin' }
+            { name: `--${game.i18n.localize("osr-character-builder.Advanced")}--`, value: `none.${source}` },
+            { name: `${game.i18n.localize("osr-character-builder.acrobat")}`, value: `${source}.acrobat` },
+            { name: `${game.i18n.localize("osr-character-builder.assassin")}`, value: `${source}.assassin` },
+            { name: `${game.i18n.localize("osr-character-builder.barbarian")}`, value: `${source}.barbarian` },
+            { name: `${game.i18n.localize("osr-character-builder.bard")}`, value: `${source}.bard` },
+            { name: `${game.i18n.localize("osr-character-builder.drow")}`, value: `${source}.drow` },
+            { name: `${game.i18n.localize("osr-character-builder.druid")}`, value: `${source}.druid` },
+            { name: `${game.i18n.localize("osr-character-builder.duergar")}`, value: `${source}.duergar` },
+            { name: `${game.i18n.localize("osr-character-builder.gnome")}`, value: `${source}.gnome` },
+            { name: `${game.i18n.localize("osr-character-builder.halfElf")}`, value: `${source}.half-elf` },
+            { name: `${game.i18n.localize("osr-character-builder.halfOrc")}`, value: `${source}.half-orc` },
+            { name: `${game.i18n.localize("osr-character-builder.illusionist")}`, value: `${source}.illusionist` },
+            { name: `${game.i18n.localize("osr-character-builder.knight")}`, value: `${source}.knight` },
+            { name: `${game.i18n.localize("osr-character-builder.paladin")}`, value: `${source}.paladin` },
+            { name: `${game.i18n.localize("osr-character-builder.ranger")}`, value: `${source}.ranger` },
+            { name: `${game.i18n.localize("osr-character-builder.svirfneblin")}`, value: `${source}.svirfneblin` }
           ];
           tData.option = tData.option.concat(opt);
         }
@@ -98,7 +102,7 @@ export async function registerRetainerBuilder() {
             if (classType == 'SRD') {
               classType = OSRCB.util.oseActive() ? 'basic' : 'SRD';
             }
-            const dataObj = OSRCB.util.getClassOptionObj(classType).classes;
+            const dataObj = OSRCB.util.getClassOptionObj(classType)?.classes;
             const classObj = dataObj[classOption];
             if (lvlInput.valueAsNumber > classObj.maxLvl) {
               lvlInput.value = classObj.maxLvl;
@@ -126,12 +130,12 @@ export async function registerRetainerBuilder() {
         }
         if (formData.randName && newRetainer) {
           
-          let classObj = OSRCB.util.getClassOptionObj(formData.classType).classes[formData.classOption];
+          let classObj = OSRCB.util.getClassOptionObj(formData.classType)?.classes[formData.classOption];
           
           let name = OSRH.util.randomName(classObj.nameType);
           
           const oldName = newRetainer.name;
-          await newRetainer.update({ name: `${name} ${oldName}`, token: { name: name } });
+          await newRetainer.update({ name: `${name} ${oldName}`, prototypeToken: { name: name , actorLink: true} });
         }
       }
     }
@@ -183,6 +187,10 @@ export async function registerRetainerBuilder() {
   */
 
   OSRCB.util.randomRetainers = async function (options, classSource = 'SRD') {
+    const ose = OSRCB.util.oseActive();
+    const oseAf = OSRCB.util.oseAfActive()
+    let displayAdvanced = false;
+    if(ose || oseAf)displayAdvanced = true;
     const advanced = [
       'acrobat',
       'assassin',
@@ -203,7 +211,7 @@ export async function registerRetainerBuilder() {
     const basic = ['cleric', 'dwarf', 'elf', 'fighter', 'halfling', 'magic-user', 'thief'];
     let classOptions = basic;
     let source = classSource;
-    if (classSource == 'advanced' && OSRCB.util.oseActive()) classOptions = advanced;
+    if (classSource == 'advanced' && displayAdvanced) classOptions = advanced;
     if (classSource == 'mixed' && OSRCB.util.oseActive()) classOptions = advanced.concat(basic);
 
     let { number, randomNumber, maxLvl, minLvl, items, spells, randomName } = options;
@@ -234,7 +242,7 @@ export async function registerRetainerBuilder() {
         let name = OSRH.util.randomName(classObj.nameType);
         
         const oldName = newRetainer.name;
-        await newRetainer.update({ name: `${name} ${oldName}`, token: { name: name } });
+        await newRetainer.update({ name: `${name} ${oldName}`, prototypeToken: { name: name, actorLink: true } });
       }
       if (spells) await OSRCB.util.randomSpells(data, newRetainer);
       if (items) await OSRCB.util.randomItems(data, newRetainer);
