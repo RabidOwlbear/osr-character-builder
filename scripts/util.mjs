@@ -178,7 +178,7 @@ export function initializeUtils() {
     const className = dataObj.classOption;
     const isNone = source === 'none';
     const sourceData = !isNone ? OSRCB.util.getClassOptionObj(source) : null;
-    const classObj = !isNone ? sourceData.classes[className] : null;
+    const classObj = !isNone ? sourceData.classes[className] : {menu: 'None'};
     let packName = !isNone ? classObj.pack : null;
     if (packName === 'osr-character-builder.osr-srd-class-options') {
       //remove once advanced fantasy is updated
@@ -196,6 +196,7 @@ export function initializeUtils() {
       ui.notifications.warn(game.i18n.localize('osr-character-builder.notification.packNotFound'));
       return;
     }
+    
     // return saves array for level
     const getObj = (multiObj) => {
       let keys = [];
@@ -211,7 +212,6 @@ export function initializeUtils() {
         }
       }
     };
-
     if (!isNone && level > classObj.maxLvl) {
       level = classObj.maxLvl;
       await actor.update({ data: { details: { level: level } } });
@@ -224,13 +224,32 @@ export function initializeUtils() {
     }
     if (className == 'default') {
       ui.notifications.warn(game.i18n.localize('osr-character-builder.notification.chooseClass'));
-    } else if (source == 'none') {
+      return
+    }  
+    if (isNone || level === 0) {
+      let hpVal 
+      if(level){
+        let total = 0
+        for(let i = 0;i<level;i++){
+          total += Math.floor((Math.random() * 6) + 1)
+        }
+        hpVal = total;
+      } else {
+        hpVal = Math.floor((Math.random() * 4) + 1);
+      }
+
       updateData = {
         system: {
+          hp: {
+            hd: level ? `${level}d6`:'1d4',
+            value: hpVal,
+            max: hpVal
+          },
           encumbrance: {max: 1600},
           details: {
             alignment: dataObj.alignment,
-            level: level
+            level: level,
+            xp: {}
           },
           scores: {
             str: { value: dataObj.str },
@@ -239,6 +258,13 @@ export function initializeUtils() {
             dex: { value: dataObj.dex },
             con: { value: dataObj.con },
             cha: { value: dataObj.cha }
+          },
+          saves: {
+            death: {value:14},
+            wand: {value:15},
+            paralysis: {value:16},
+            breath: {value:17},
+            spell: {value:18},
           }
         }
       };
@@ -310,7 +336,7 @@ export function initializeUtils() {
         value: hp,
         max: hp
       };
-    }
+    }    
     if (dataObj.retainer) {
       updateData.system.retainer = { enabled: true };
       updateData.system.details.xp.share = 50;
@@ -319,7 +345,6 @@ export function initializeUtils() {
       updateData.system.spells = classObj.spellSlot[level];
       updateData.system.spells.enabled = true;
     }
-
     await actor.update(updateData);
     //if no gold item exists create one then update, else update gold amount
     // check for currency items
@@ -429,7 +454,7 @@ export function initializeUtils() {
   OSRCB.util.randomItems = async function (data, actor) {
     const oseActive = OSRCB.util.oseActive();
     const { classOption } = data;
-
+    const isZero = data.level === 0;
     const compendium = await game.packs.get(`${OSRCB.moduleName}.osr-srd-items-${game.i18n.lang}`);
     const gearList = [
       game.i18n.localize('osr-character-builder.backpack'),
@@ -457,8 +482,8 @@ export function initializeUtils() {
       game.i18n.localize('osr-character-builder.wine'),
       game.i18n.localize('osr-character-builder.wolfsbane')
     ];
-    const armorList = OSRCB.data.retainerGear[classOption].armor;
-    const weaponList = OSRCB.data.retainerGear[classOption].weapons;
+    const armorList = isZero ? []:OSRCB.data.retainerGear[classOption].armor;
+    const weaponList = isZero ? []:OSRCB.data.retainerGear[classOption].weapons;
     const weaponPick = [];
     let weaponCount = Math.floor(Math.random() * 2 + 1);
     if (weaponCount > weaponList.length) weaponCount = weaponList.length;
@@ -489,7 +514,6 @@ export function initializeUtils() {
     }
     let weapCount = 0;
     for (let item of weaponPick) {
-      console.log(item)
       const itemData = await compendium.index.getName(item);
       const itemObj = await compendium.getDocument(itemData._id);
       const data = itemObj.clone();
