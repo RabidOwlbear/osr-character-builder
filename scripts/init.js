@@ -112,7 +112,7 @@ Hooks.once('ready', async () => {
   hideForeignPacks()
 
   //reset external classes
-  await game.settings.set(`${OSRCB.moduleName}`, 'externalClasses', []);
+  if(game.user.isGM) await game.settings.set(`${OSRCB.moduleName}`, 'externalClasses', []);
   Hooks.callAll('OSRCB Registered');
   const oseModName = 'old-school-essentials';
   const srdObj = {};
