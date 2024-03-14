@@ -75,7 +75,7 @@ export async function registerSrdDataEs() {
       journal: `<br><br><b>Entrada de diario</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-es.JournalEntry.zvbpm2eYfnWWFglY]{Clérigo}<br>`,
       maxLvl: 14,
       classTables: '',
-      nameType: 'humano'
+      nameType: 'human'
     },
     dwarf: {
       name: 'dwarf',
@@ -126,7 +126,7 @@ export async function registerSrdDataEs() {
       journal: `<br><br><b>Entrada de diario</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-es.JournalEntry.dYIvX6i9noBpK4Ed]{Enano}<br>`,
       maxLvl: 12,
       classTables: '',
-      nameType: 'enano'
+      nameType: 'dwarf'
     },
     elf: {
       name: 'elf',
@@ -192,7 +192,7 @@ export async function registerSrdDataEs() {
       journal: `<br><br><b>Entrada de diario</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-es.JournalEntry.UsY41anXwoh8JbTD]{Elfo}<br>`,
       maxLvl: 10,
       classTables: '',
-      nameType: 'elfo'
+      nameType: 'elf'
     },
     fighter: {
       name: 'fighter',
@@ -259,7 +259,7 @@ export async function registerSrdDataEs() {
       journal: `<br><br><b>Entrada de diario</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-es.JournalEntry.hhPzWrNMmig1wcSA]{Guerrero}<br>`,
       maxLvl: 14,
       classTables: '',
-      nameType: 'humano'
+      nameType: 'human'
     },
     halfling: {
       name: 'halfling',
@@ -390,7 +390,7 @@ export async function registerSrdDataEs() {
       journal: `<br><br><b>Entrada de diario</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-es.JournalEntry.GPCuAn5z6epeQg41]{Mago}<br>`,
       maxLvl: 14,
       classTables: '',
-      nameType: 'humano'
+      nameType: 'human'
     },
     thief: {
       name: 'thief',
@@ -447,7 +447,7 @@ export async function registerSrdDataEs() {
       journal: `<br><br><b>Entrada de diario</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-es.JournalEntry.aPzYP5zD1ueiIv4c]{Ladrón}<br>`,
       maxLvl: 14,
       classTables: '',
-      nameType: 'humano'
+      nameType: 'human'
     }
   };
   OSRCB.gpObj = {

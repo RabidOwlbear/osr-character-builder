@@ -1,9 +1,9 @@
 export function initializeUtils() {
   OSRCB.util.getClassOptionObj = function (classSource) {
-    
     const optionObj = OSRCB.util.mergeClassOptions();
     
-    let sourceObj = optionObj.find((s) => s.name.toLowerCase() === classSource.toLowerCase());
+    let sourceObj
+    sourceObj = optionObj.find((s) => s.name.toLowerCase() === classSource.toLowerCase());
     return sourceObj;
   };
 
@@ -172,22 +172,22 @@ export function initializeUtils() {
     let untranslatedMod = false;
     const aftActive = await game.modules.get('ose-advancedfantasytome')?.active;
     const oseActive = await game.modules.get('old-school-essentials')?.active;
-    if(aftActive || oseActive){ untranslatedMod = true;}
+    if (aftActive || oseActive) { untranslatedMod = true;}
     let { source, level } = dataObj;
     let updateData = {};
     const className = dataObj.classOption;
+    console.log('class option', dataObj, dataObj.classOption)
     const isNone = source === 'none';
     const sourceData = !isNone ? OSRCB.util.getClassOptionObj(source) : null;
-    const classObj = !isNone ? sourceData.classes[className] : {menu: 'None'};
+    const classObj = !isNone ? sourceData.classes[className] : { menu: 'None' };
     let packName = !isNone ? classObj.pack : null;
     if (packName === 'osr-character-builder.osr-srd-class-options') {
       //remove once advanced fantasy is updated
-      if(untranslatedMod){
+      if (untranslatedMod) {
         packName = `osr-character-builder.osr-srd-class-options-en`;
-      } else{
+      } else {
         packName = `osr-character-builder.osr-srd-class-options-${game.i18n.lang}`;
       }
-      
     }
     const titles = !isNone ? classObj.title : null;
     let goldItem = actor.items.getName(game.i18n.localize('osr-character-builder.gp'));
@@ -196,7 +196,7 @@ export function initializeUtils() {
       ui.notifications.warn(game.i18n.localize('osr-character-builder.notification.packNotFound'));
       return;
     }
-    
+
     // return saves array for level
     const getObj = (multiObj) => {
       let keys = [];
@@ -224,28 +224,28 @@ export function initializeUtils() {
     }
     if (className == 'default') {
       ui.notifications.warn(game.i18n.localize('osr-character-builder.notification.chooseClass'));
-      return
-    }  
+      return;
+    }
     if (isNone || level === 0) {
-      let hpVal 
-      if(level){
-        let total = 0
-        for(let i = 0;i<level;i++){
-          total += Math.floor((Math.random() * 6) + 1)
+      let hpVal;
+      if (level) {
+        let total = 0;
+        for (let i = 0; i < level; i++) {
+          total += Math.floor(Math.random() * 6 + 1);
         }
         hpVal = total;
       } else {
-        hpVal = Math.floor((Math.random() * 4) + 1);
+        hpVal = Math.floor(Math.random() * 4 + 1);
       }
 
       updateData = {
         system: {
           hp: {
-            hd: level ? `${level}d6`:'1d4',
+            hd: level ? `${level}d6` : '1d4',
             value: hpVal,
             max: hpVal
           },
-          encumbrance: {max: 1600},
+          encumbrance: { max: 1600 },
           details: {
             alignment: dataObj.alignment,
             level: level,
@@ -260,11 +260,11 @@ export function initializeUtils() {
             cha: { value: dataObj.cha }
           },
           saves: {
-            death: {value:14},
-            wand: {value:15},
-            paralysis: {value:16},
-            breath: {value:17},
-            spell: {value:18},
+            death: { value: 14 },
+            wand: { value: 15 },
+            paralysis: { value: 16 },
+            breath: { value: 17 },
+            spell: { value: 18 }
           }
         }
       };
@@ -336,7 +336,7 @@ export function initializeUtils() {
         value: hp,
         max: hp
       };
-    }    
+    }
     if (dataObj.retainer) {
       updateData.system.retainer = { enabled: true };
       updateData.system.details.xp.share = 50;
@@ -365,7 +365,7 @@ export function initializeUtils() {
         case 'es':
           packName = `${OSRCB.moduleName}.osr-srd-items-es`;
           break;
-        default: 
+        default:
           packName = `${OSRCB.moduleName}.osr-srd-items-en`;
       }
       let pack = await game.packs.get(packName);
@@ -394,18 +394,18 @@ export function initializeUtils() {
     const compendium = await game.packs.get(pack);
     const contents = await compendium.getDocuments();
     let items = contents.filter((i) => i?.system?.requirements?.toLowerCase() === className?.toLowerCase());
-    if(!items.length){
+    if (!items.length) {
       //old style naming shim
       const osName = className.replaceAll(' ', '-');
-      items = contents.filter((i) => i?.system?.requirements?.toLowerCase() === osName?.toLowerCase())
+      items = contents.filter((i) => i?.system?.requirements?.toLowerCase() === osName?.toLowerCase());
     }
-    if(!items.length){
+    if (!items.length) {
       console.error(`
       ****OSRCB ERROR**** 
       -------------------
       No abilities with requirement of: ${className} found in compendium pack: ${pack}
       ___________________`);
-      ui.notifications.warn(game.i18n.localize(`${OSRCB.moduleName}.itemsNotFound`))
+      ui.notifications.warn(game.i18n.localize(`${OSRCB.moduleName}.itemsNotFound`));
     }
     ui.notifications.warn(game.i18n.localize(`${OSRCB.moduleName}.addClassWarn`));
 
@@ -426,8 +426,10 @@ export function initializeUtils() {
       return;
     }
 
-    const spellPackName = OSRCB.util.oseAfActive() && classData.spellPackName.includes('old-school-essentials.') ? 
-      'ose-advancedfantasytome.spells' : classData.spellPackName
+    const spellPackName =
+      OSRCB.util.oseAfActive() && classData.spellPackName.includes('old-school-essentials.')
+        ? 'ose-advancedfantasytome.spells'
+        : classData.spellPackName;
     const magicType = classData?.spellType;
     const slotData = classData?.spellSlot[level];
     const spells = await game.packs.get(spellPackName)?.getDocuments();
@@ -482,8 +484,8 @@ export function initializeUtils() {
       game.i18n.localize('osr-character-builder.wine'),
       game.i18n.localize('osr-character-builder.wolfsbane')
     ];
-    const armorList = isZero ? []:OSRCB.data.retainerGear[classOption].armor;
-    const weaponList = isZero ? []:OSRCB.data.retainerGear[classOption].weapons;
+    const armorList = isZero ? [] : OSRCB.data.retainerGear[classOption].armor;
+    const weaponList = isZero ? [] : OSRCB.data.retainerGear[classOption].weapons;
     const weaponPick = [];
     let weaponCount = Math.floor(Math.random() * 2 + 1);
     if (weaponCount > weaponList.length) weaponCount = weaponList.length;
@@ -525,11 +527,13 @@ export function initializeUtils() {
       weapCount++;
     }
     for (let item of itemPick) {
+      console.log(item);
       const itemData = await compendium.index.getName(item);
-      const itemObj = await compendium.getDocument(itemData._id);
-      const data = itemObj.clone();
-
-      await actor.createEmbeddedDocuments('Item', [data]);
+      const itemObj = await compendium.getDocument(itemData?._id);
+      if (itemObj) {
+        const data = itemObj.clone();
+        await actor.createEmbeddedDocuments('Item', [data]);
+      }
     }
   };
   OSRCB.util.oseActive = function () {
@@ -575,15 +579,15 @@ export function initializeUtils() {
     `;
     return biography;
   };
-  OSRCB.util.langCheck = function(){
+  OSRCB.util.langCheck = function () {
     const curLang = game.i18n.lang;
     const langList = OSRCB.lang;
-    let lang = 'en'
-    if(langList.includes(curLang)){
+    let lang = 'en';
+    if (langList.includes(curLang)) {
       lang = curLang;
     }
-    return lang
-   }
+    return lang;
+  };
 }
 export const intializePackFolders = async () => {
   let singleGM = false;
@@ -649,7 +653,7 @@ function hfp(tab) {
           }
         });
       } else {
-        const langs = OSRCB.lang.filter(i=>i != `en`);
+        const langs = OSRCB.lang.filter((i) => i != `en`);
         osrcbPacks.forEach((p) => {
           const title = p.querySelector('h3.compendium-name').innerText;
           for (let lang of langs) {
@@ -657,7 +661,6 @@ function hfp(tab) {
               p.style.display = 'none';
             }
           }
-          
         });
       }
     }
