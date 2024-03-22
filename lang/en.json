@@ -40,9 +40,9 @@
   "osr-character-builder.formClassSource": "Class Source:",
   "osr-character-builder.classTypeSRD": "SRD",
   "osr-character-builder.formAlignment": "Alignment:",
-  "osr-character-builder.formLaw": "Lawful:",
-  "osr-character-builder.formNeut": "Neutral:",
-  "osr-character-builder.formChaos": "Chaotic:",
+  "osr-character-builder.formLaw": "Lawful",
+  "osr-character-builder.formNeut": "Neutral",
+  "osr-character-builder.formChaos": "Chaotic",
   "osr-character-builder.formGold": "Gold:",
   "osr-character-builder.formClassSelect": "Select A Class:",
   "osr-character-builder.formClassInfo": "Class Information:",
@@ -132,6 +132,10 @@
   "osr-character-builder.knight":"knight",
   "osr-character-builder.paladin":"paladin",
   "osr-character-builder.ranger":"ranger",
-  "osr-character-builder.svirfneblin":"svirfneblin"
+  "osr-character-builder.svirfneblin":"svirfneblin",
 
+  "osr-character-builder.classFeatures":"Class Features",
+  "osr-character-builder.newCharName":"'s new character",
+  "osr-character-builder.allowCharacterMacro":"Allow Use of Create Character Macro",
+  "osr-character-builder.allowCharacterMacroDesc":"When active connected users may create character actors and sheets using the provided New Player Character macro."
 }

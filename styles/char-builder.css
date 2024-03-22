@@ -110,7 +110,21 @@
   max-height: 280px;
   overflow-y: scroll;
   scrollbar-width: none;
-  width: 50%
+  width: 50%;
+  padding-bottom: 1em;
+}
+#bio .bio-abilities{
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 40px;
+}
+.bio-abilities .ability-btn{
+  height: 30px;
+  width: 30px;
+  border-radius: 5px;
+  border: 2px solid rgb(39, 39, 39);
+  margin: 0 0 .2em .2em;
+  overflow: hidden;
 }
 .osrcb .middle .class-select-cont{
   display: flex;

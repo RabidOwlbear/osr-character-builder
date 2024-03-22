@@ -1,0 +1,279 @@
+:root {
+  --border-bar: rgba(53, 14, 14, .2);
+  --glow-a: #55ff55,
+  --glow-b: #1b4e1b
+}
+/*  character sheet - character builder button */
+.osr-choose-class {
+  color: #55ff55;
+  animation-delay: 1s;
+  animation: flash 1.6s infinite;
+  padding: 0 3px;
+}
+@keyframes flash {
+  0% {
+    color: #1b4e1b;
+  }
+  50% {
+    color: #55ff55;
+  }
+  100% {
+    color: #1b4e1b;
+  }
+}
+
+/* character builder sheet styling */
+.fx-sb {
+  display: flex;
+  justify-content: space-between;
+}
+.fx-sb-aic {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.pr5 {
+  padding-right: 5px;
+}
+.pl5 {
+  padding-left: 5px;
+}
+.fx-jc-aic {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.fx-jc {
+  display: flex;
+  justify-content: center;
+}
+.fx-col {
+  display: flex;
+  flex-direction: column;
+}
+.aic {
+  align-items: center;
+}
+.cb-list {
+  padding-bottom: 0.5em;
+}
+.cb-pt {
+  padding-top: 0.3em;
+}
+.cb-mb {
+  margin-bottom: 1em;
+}
+.cb-pb {
+  padding-bottom: 5px;
+}
+.cb-select-heading {
+  padding: 0.5em 0;
+}
+.cb-bl {
+  border-left: 2px solid var(--border-bar);
+}
+.cb-s-cont {
+  padding-right: 0.25em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.cb-s-cont label{
+  font-size: 8pt;
+  font-weight: bold;
+}
+#cb-form input[type=number]{
+  width: 25px;
+  height: 20px;
+}
+
+#cb-form #level{
+  width: 25px;
+}
+#cb-option-block label{
+  padding-right: 5px;
+}
+#cb-option-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 120px;
+  height: 70px;
+  padding: 0 5px;
+}
+#cb-form .lvl-div{
+  padding-bottom: 5px
+}
+.cb-option-div{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.w-full {
+  width: 100%;
+}
+
+#cb-main {
+  width: 100%;
+  height: 575px;
+
+}
+.cb-col {
+  width: 150px;
+  height: 100%;
+
+}
+.cb-list-cat {
+  font-weight: 800;
+  margin: 0 0 0.25em 0;
+}
+#osrCharacterBuilder h3 {
+  text-align: center;
+  font-weight: 650;
+}
+#osrCharacterBuilder .window-content {
+  padding: 5px;
+}
+#cb-buttons {
+  height: 35px;
+  width: 100%;
+  padding: 0 1em;
+}
+.cb-form-btn {
+  margin-top: auto;
+  width: 120px;
+  height: 30px;
+  border-radius: 8px;
+}
+
+#shop-check {
+  margin-top: auto;
+  width: 170px;
+}
+.cb-stat-div {
+  width: 100%;
+
+  display: flex;
+  justify-content: space-between;
+}
+#cb-stats {
+  display: flex;
+ 
+  align-items: center;
+  padding-bottom: 8px;
+  height: 80px;
+  border-bottom: 2px solid var(--border-bar);
+}
+
+#cb-stat-block {
+  width: 200px;
+  margin-left: 15px;
+}
+
+#cb-info-head {
+  width: 100%;
+}
+#cb-info-body {
+  padding-top: 8px;
+  padding-left: 8px;
+  height: 350px;
+  overflow: auto;
+}
+#cb-class-info {
+  height: 225px;
+  overflow: auto;
+  padding-bottom: 0;
+  border-bottom: 2px solid var(--border-bar);
+}
+#cb-type-select {
+  min-height: 150px;
+}
+#cb-align-select {
+  border-top: 2px solid var(--border-bar);
+  padding-top: 5px;
+  width: 100%;
+  height: 150px;
+}
+
+#cb-class-select {
+  width: 150px;
+}
+#cb-class-option {
+  width: 150px;
+}
+#cb-class-description {
+  width: 250px;
+}
+#cb-gold {
+  border-top: 2px solid var(--border-bar);
+  padding-top: 5px;
+  margin-bottom: 1em;
+  width: 100%;
+}
+#cb-gold #cb-gold-input {
+  width: 2.5em;
+  margin-left: 5px;
+}
+#cb-reroll-gold {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+}
+#stat-reroll-block {
+  width: 200px;
+  height: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#stat-reroll-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+}
+.hero-check-div {
+  padding-top: 13px;
+}
+
+
+#crawlerSelect {
+  display: none;
+}
+/* #osrCharacterBuilder .window-content {
+  background-color: rgb(236, 230, 218);
+  background-image: url(../assets/cb-bg.webp);
+} */
+
+/* retainer generator styling */
+
+#retainer-generator.formApp h2 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+#retainer-generator .fxsb {
+  display: flex;
+  justify-content: space-between;
+}
+#retainer-generator .fxjcc {
+  display: flex;
+  justify-content: center;
+}
+#retainer-generator .padh10 {
+  padding: 0 10px;
+}
+#retainer-generator .mt10 {
+  margin-top: 10px;
+}
+#retainer-generator input[type="number"] {
+  width: 25px;
+}
+#retainer-generator input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+#retainer-generator input[type="number"] {
+  -moz-appearance: textfield;
+}

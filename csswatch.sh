@@ -1,0 +1,1 @@
+sass scss/main.scss:styles/main.css -w

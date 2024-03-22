@@ -9,17 +9,18 @@
       "flags": {}
     }
   ],
-  "version": "0.3.29",
+  "version": "0.3.30",
   "compatibility": {
     "minimum": "10",
-    "verified": "11.315"
+    "verified": "11.315",
+    "maximum": "12"
   },
   "styles": [
-    "styles/main.css",
-    "styles/char-builder.css"
+    "styles/main.css"
   ],
+  "socket": true,
   "esmodules": [
-    "scripts/init.js"
+    "scripts/init.mjs"
   ],
   "packs": [
     {

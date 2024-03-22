@@ -40,9 +40,9 @@
   "osr-character-builder.formClassSource": "Fuente de la clase:",
   "osr-character-builder.classTypeSRD": "SRD",
   "osr-character-builder.formAlignment": "Alineamiento:",
-  "osr-character-builder.formLaw": "Legal:",
-  "osr-character-builder.formNeut": "Neutral:",
-  "osr-character-builder.formChaos": "Caótico:",
+  "osr-character-builder.formLaw": "Legal",
+  "osr-character-builder.formNeut": "Neutral",
+  "osr-character-builder.formChaos": "Caótico",
   "osr-character-builder.formGold": "Oro:",
   "osr-character-builder.formClassSelect": "Selecciona una clase:",
   "osr-character-builder.formClassInfo": "Información de clase:",
@@ -74,6 +74,7 @@
   "osr-character-builder.level": "Nivel",
   "osr-character-builder.lvl": "Lvl",
   "osr-character-builder.none": "Ninguno",
+  "osr-character-builder.alignment": "Alineación",
   "osr-character-builder.chooseSource": "Elegir la fuente",
   "osr-character-builder.pp": "MP",
   "osr-character-builder.gp": "MO",
@@ -131,6 +132,10 @@
   "osr-character-builder.knight":"caballero",
   "osr-character-builder.paladin":"paladín",
   "osr-character-builder.ranger":"guardabosques",
-  "osr-character-builder.svirfneblin":"svirfneblin"
+  "osr-character-builder.svirfneblin":"svirfneblin",
 
+  "osr-character-builder.classFeatures": "Características de la clase",
+  "osr-character-builder.newCharName":"'s nuevo carácter",
+  "osr-character-builder.allowCharacterMacro":"Permitir el uso de la macro Crear personaje",
+  "osr-character-builder.allowCharacterMacroDesc":"Cuando está activa, los usuarios conectados pueden crear actores y hojas de personaje utilizando la macro proporcionada Nuevo Personaje de Jugador."
 }

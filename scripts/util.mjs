@@ -1,8 +1,8 @@
 export function initializeUtils() {
   OSRCB.util.getClassOptionObj = function (classSource) {
     const optionObj = OSRCB.util.mergeClassOptions();
-    
-    let sourceObj
+
+    let sourceObj;
     sourceObj = optionObj.find((s) => s.name.toLowerCase() === classSource.toLowerCase());
     return sourceObj;
   };
@@ -51,7 +51,7 @@ export function initializeUtils() {
     if (level < 10) {
       hpBonus = level * hpMod;
       let formula = `${hdArr[level - 1]} + ${hpBonus}`;
-      let roll = await new Roll(formula).evaluate({ async: true });
+      let roll = await new Roll(formula).evaluate();
       hpMsg += `<p><b>${game.i18n.localize('osr-character-builder.roll')}</b>: ${roll.formula} = ${roll.total}</p>`;
       hpTotal += roll.total;
       msg = true;
@@ -64,7 +64,7 @@ export function initializeUtils() {
         bonus += num;
       });
       let formula = `${level}d${hd}+ ${hpBonus} + ${bonus}`;
-      let roll = await new Roll(formula).evaluate({ async: true });
+      let roll = await new Roll(formula).evaluate();
       hpMsg += `<p><b>${game.i18n.localize('osr-character-builder.roll')}</b>: ${roll.formula} = ${roll.total}</p>`;
       hpTotal += roll.total;
       msg = true;
@@ -154,7 +154,7 @@ export function initializeUtils() {
     let rollResult = 0;
     let formula = hero ? '4d6dl' : '3d6';
     const dieCount = hero === true ? 4 : 3;
-    let roll = new Roll(formula).evaluate({ async: false });
+    let roll = await new Roll(formula).evaluate();
     if (showRoll) game?.dice3d?.showForRoll(roll);
     rollResult = roll.total;
     return rollResult;
@@ -172,11 +172,12 @@ export function initializeUtils() {
     let untranslatedMod = false;
     const aftActive = await game.modules.get('ose-advancedfantasytome')?.active;
     const oseActive = await game.modules.get('old-school-essentials')?.active;
-    if (aftActive || oseActive) { untranslatedMod = true;}
+    if (aftActive || oseActive) {
+      untranslatedMod = true;
+    }
     let { source, level } = dataObj;
     let updateData = {};
     const className = dataObj.classOption;
-    console.log('class option', dataObj, dataObj.classOption)
     const isNone = source === 'none';
     const sourceData = !isNone ? OSRCB.util.getClassOptionObj(source) : null;
     const classObj = !isNone ? sourceData.classes[className] : { menu: 'None' };
@@ -239,6 +240,7 @@ export function initializeUtils() {
       }
 
       updateData = {
+        name: dataObj.name,
         system: {
           hp: {
             hd: level ? `${level}d6` : '1d4',
@@ -274,6 +276,7 @@ export function initializeUtils() {
       const xpValue =
         level === classObj.maxLvl ? game.i18n.localize('osr-character-builder.maxLvl') : classObj.xp[level - 1];
       updateData = {
+        name: dataObj.name,
         system: {
           details: {
             class: classObj.menu,
@@ -390,15 +393,19 @@ export function initializeUtils() {
       OSRIS.shop.RUIS(actor._id);
     }
   };
-  OSRCB.util.addClassAbilities = async function (className, actor, pack) {
+  OSRCB.util.getClassAbilities = async (className, pack) => {
     const compendium = await game.packs.get(pack);
     const contents = await compendium.getDocuments();
     let items = contents.filter((i) => i?.system?.requirements?.toLowerCase() === className?.toLowerCase());
+    //old style naming shim
     if (!items.length) {
-      //old style naming shim
       const osName = className.replaceAll(' ', '-');
       items = contents.filter((i) => i?.system?.requirements?.toLowerCase() === osName?.toLowerCase());
     }
+    return items;
+  };
+  OSRCB.util.addClassAbilities = async function (className, actor, pack) {
+    let items = await OSRCB.util.getClassAbilities(className, pack);
     if (!items.length) {
       console.error(`
       ****OSRCB ERROR**** 
@@ -527,7 +534,6 @@ export function initializeUtils() {
       weapCount++;
     }
     for (let item of itemPick) {
-      console.log(item);
       const itemData = await compendium.index.getName(item);
       const itemObj = await compendium.getDocument(itemData?._id);
       if (itemObj) {
@@ -587,6 +593,35 @@ export function initializeUtils() {
       lang = curLang;
     }
     return lang;
+  };
+  OSRCB.util.newPlayerCharacterDialog = () => {
+    new Dialog({
+      title: 'New Player Character Sheet',
+      content: `
+    <span>Character Name</span>
+    <input type="text id="charName">
+    `,
+      buttons: {
+        one: {
+          icon: '<i class="fas fa-check"></i>',
+          label: 'Option One',
+          callback: (a, b) => {
+            const name = a[0].querySelector('#charName').value;
+            OSRCB.util.newPlayerCharacterDialog();
+          }
+        }
+      }
+    }).render(true);
+  };
+  OSRCB.util.newPlayerCharacter = async function () {
+    const hasPermission = await game.settings.get(OSRCB.moduleName, 'allowUserCharacterMacro');
+    if(hasPermission){
+      game.socket.emit('module.osr-character-builder', { type: 'newPlayerCharacter', data: { user: game.user.id } });
+    }
+    
+  };
+  OSRCB.singleGM =  function () {
+    return game.users.filter((u) => u.active && u.isGM)[0].id === game.user.id;
   };
 }
 export const intializePackFolders = async () => {
