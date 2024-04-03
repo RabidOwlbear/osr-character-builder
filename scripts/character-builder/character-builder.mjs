@@ -325,6 +325,7 @@ export class osrCharacterBuilder extends FormApplication {
     return biography;
   };
   _generateBioAbilities(element, items) {
+    if(!items)return
     const container = element.querySelector('.bio-abilities');
     for(let item of items){
       const el = document.createElement('a');

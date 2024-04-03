@@ -44,7 +44,6 @@ Hooks.once('ready', async () => {
 
   //reset external classes
   if (game.user.isGM) await game.settings.set(`${OSRCB.moduleName}`, 'externalClasses', []);
-  Hooks.callAll('OSRCB Registered');
   const oseModName = 'old-school-essentials';
   const srdObj = {};
   if (game.user.role >= 4) {
@@ -76,6 +75,7 @@ Hooks.once('ready', async () => {
     }
     Hooks.callAll('OseCharacterClassAdded');
   }
+  Hooks.callAll('OSRCB Registered');
 });
 
 //on actor sheet load, add helper buttons to sheet

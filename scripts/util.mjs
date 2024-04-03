@@ -394,7 +394,18 @@ export function initializeUtils() {
     }
   };
   OSRCB.util.getClassAbilities = async (className, pack) => {
+    if(pack === 'osr-character-builder.osr-srd-class-options'){ 
+      pack = `osr-character-builder.osr-srd-class-options-${game.i18n.lang}`}
     const compendium = await game.packs.get(pack);
+    if(!compendium){
+      console.error(`
+      OSR CHARACTER BUILDER ERROR
+      ------------------------------
+        compendium pack: "${pack}" not found.
+      ------------------------------
+      `)
+      return
+    }
     const contents = await compendium.getDocuments();
     let items = contents.filter((i) => i?.system?.requirements?.toLowerCase() === className?.toLowerCase());
     //old style naming shim
