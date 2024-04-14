@@ -1,3 +1,8 @@
-2024/04/03-12:27:29.446 5138 Recovering log #967
-2024/04/03-12:27:29.450 5138 Delete type=0 #967
-2024/04/03-12:27:29.450 5138 Delete type=3 #965
+2024/04/10-21:25:20.593 12ec Recovering log #1009
+2024/04/10-21:25:20.597 12ec Delete type=0 #1009
+2024/04/10-21:25:20.598 12ec Delete type=3 #1007
+2024/04/10-21:28:51.846 1cbc Level-0 table #1014: started
+2024/04/10-21:28:51.846 1cbc Level-0 table #1014: 0 bytes OK
+2024/04/10-21:28:51.847 1cbc Delete type=0 #1012
+2024/04/10-21:28:51.847 1cbc Manual compaction at level-0 from '!folders!sOgYT0LKE458KgsZ' @ 72057594037927935 : 1 .. '!journal.pages!zvbpm2eYfnWWFglY.ZwigriramKhUwdUU' @ 0 : 0; will stop at (end)
+2024/04/10-21:28:51.847 1cbc Manual compaction at level-1 from '!folders!sOgYT0LKE458KgsZ' @ 72057594037927935 : 1 .. '!journal.pages!zvbpm2eYfnWWFglY.ZwigriramKhUwdUU' @ 0 : 0; will stop at (end)

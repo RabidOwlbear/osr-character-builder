@@ -1,3 +1,8 @@
-2024/04/03-12:27:29.406 6704 Recovering log #1241
-2024/04/03-12:27:29.410 6704 Delete type=0 #1241
-2024/04/03-12:27:29.410 6704 Delete type=3 #1239
+2024/04/10-21:25:20.552 12ec Recovering log #1283
+2024/04/10-21:25:20.556 12ec Delete type=0 #1283
+2024/04/10-21:25:20.556 12ec Delete type=3 #1281
+2024/04/10-21:28:51.832 1cbc Level-0 table #1288: started
+2024/04/10-21:28:51.833 1cbc Level-0 table #1288: 0 bytes OK
+2024/04/10-21:28:51.834 1cbc Delete type=0 #1286
+2024/04/10-21:28:51.839 1cbc Manual compaction at level-0 from '!folders!4DEU2NIF4oQtef3N' @ 72057594037927935 : 1 .. '!items!zv9V2qdjmAizztdX' @ 0 : 0; will stop at (end)
+2024/04/10-21:28:51.839 1cbc Manual compaction at level-1 from '!folders!4DEU2NIF4oQtef3N' @ 72057594037927935 : 1 .. '!items!zv9V2qdjmAizztdX' @ 0 : 0; will stop at (end)
