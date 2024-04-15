@@ -275,7 +275,8 @@ export class osrCharacterBuilder extends FormApplication {
       descripEl.innerHTML = '';
     } else {
       const classData = this.dataObj.find((s) => s.name === sourceName)?.classes?.[className];
-      const abilities = await OSRCB.util.getClassAbilities(className, classData.pack);
+      const abilities = await OSRCB.util.getClassAbilities(classData.menu, classData.pack);
+      console.log(className)
       if (!classData) {
         ui.notifications.warn(game.i18n.localize('osr-character-builder.notification.classDataNotFound'));
         return;
@@ -325,6 +326,7 @@ export class osrCharacterBuilder extends FormApplication {
     return biography;
   };
   _generateBioAbilities(element, items) {
+    console.log('element-no-items', element, items);
     if(!items)return
     const container = element.querySelector('.bio-abilities');
     for(let item of items){
