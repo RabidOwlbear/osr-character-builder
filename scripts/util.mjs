@@ -6,7 +6,6 @@ export function initializeUtils() {
     sourceObj = optionObj.find((s) => s.name.toLowerCase() === classSource.toLowerCase());
     return sourceObj;
   };
-
   OSRCB.util.mergeClassOptions = function () {
     let defaultClasses = game.settings.get('osr-character-builder', 'defaultClasses');
     let externalClasses = game.settings.get('osr-character-builder', 'externalClasses');
@@ -631,6 +630,15 @@ export function initializeUtils() {
     }
     
   };
+  OSRCB.util.addExternalClasses= async function(classData, modName = 'external'){
+    if(OSRCB.singleGM){
+      for(let option of classData){
+        OSRCB.data.externalClasses.push(option)
+      }
+      console.log(`---- OSRCB: ${modName} classes added. ----`);
+    }
+  }
+  OSRCB.util.sleep = (ms) => new Promise((res) => setTimeout(res, ms));
   OSRCB.singleGM =  function () {
     return game.users.filter((u) => u.active && u.isGM)[0].id === game.user.id;
   };

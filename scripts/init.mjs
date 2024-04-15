@@ -12,7 +12,9 @@ Hooks.once('init', async () => {
   window.OSRCB = window.OSRCB || {};
   OSRCB.moduleName = `osr-character-builder`;
   OSRCB.util = OSRCB.util || {};
-  OSRCB.data = OSRCB.data || {};
+  OSRCB.data = OSRCB.data || {
+    externalClasses: []
+  };
   OSRCB.spells = OSRCB.spells || { mergedList: {} };
   OSRCB.spells.mergedList = {};
   OSRCB.characterBuilder = osrCharacterBuilder;
@@ -26,6 +28,7 @@ Hooks.once('init', async () => {
   registerRetainerBuilder();
   initializeUtils();
   registerSettings();
+  Hooks.callAll('OSRCB initialized')
 });
 Hooks.once('ready', async () => {
   switch (game.i18n.lang) {
@@ -76,6 +79,7 @@ Hooks.once('ready', async () => {
     Hooks.callAll('OseCharacterClassAdded');
   }
   Hooks.callAll('OSRCB Registered');
+  await game.settings.set('osr-character-builder', 'externalClasses', OSRCB.data.externalClasses)
 });
 
 //on actor sheet load, add helper buttons to sheet
