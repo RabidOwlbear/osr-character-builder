@@ -28,7 +28,7 @@ Hooks.once('init', async () => {
   registerRetainerBuilder();
   initializeUtils();
   registerSettings();
-  Hooks.callAll('OSRCB initialized')
+  Hooks.callAll('OSRCB initialized');
 });
 Hooks.once('ready', async () => {
   switch (game.i18n.lang) {
@@ -48,10 +48,33 @@ Hooks.once('ready', async () => {
   //reset external classes
   if (game.user.isGM) await game.settings.set(`${OSRCB.moduleName}`, 'externalClasses', []);
   const oseModName = 'old-school-essentials';
+  const oseAFName = 'ose-advancedfantasytome';
+  const oseModActive = await game.modules.get(oseModName)?.active;
+  const oseAFActive = await game.modules.get(oseAFName)?.active;
+
   const srdObj = {};
-  if (game.user.role >= 4) {
-    let oseActive = await game.modules.get(oseModName)?.active;
-    if (oseActive) {
+  if (OSRCB.singleGM()) {
+    if (oseAFActive) {
+      await Hooks.call('OSE Initialized');
+      OSRCB.util.sleep(1000)
+      
+      const classData = [
+        {
+          name: 'classic',
+          menu: 'Classic',
+          classes: OSE.data.classes.classic
+        },
+        {
+          name: 'advanced',
+          menu: 'Advanced',
+          classes: OSE.data.classes.advanced
+        }
+      ];
+      OSRCB.util.addExternalClasses(classData, 'Advanced Fantasy', true);
+    }
+    // await game.settings.set('osr-character-builder', 'externalClasses', OSRCB.data.externalClasses);
+    //temp shim
+    if (oseModActive) {
       await game.settings.set('osr-character-builder', 'defaultClasses', [
         {
           name: 'basic',
@@ -77,9 +100,8 @@ Hooks.once('ready', async () => {
       ]);
     }
     Hooks.callAll('OseCharacterClassAdded');
+    Hooks.callAll('OSRCB Registered');
   }
-  Hooks.callAll('OSRCB Registered');
-  await game.settings.set('osr-character-builder', 'externalClasses', OSRCB.data.externalClasses)
 });
 
 //on actor sheet load, add helper buttons to sheet
@@ -97,7 +119,6 @@ Hooks.on('renderActorSheet', (actorObj, html) => {
     modBox.on('click', '.osr-choose-class', async (event) => {
       const dataObj = OSRCB.util.mergeClassOptions();
       OSRCB.util.renderCharacterBuilder(actor, dataObj);
-
     });
   }
 });

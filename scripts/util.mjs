@@ -630,12 +630,16 @@ export function initializeUtils() {
     }
     
   };
-  OSRCB.util.addExternalClasses= async function(classData, modName = 'external'){
+  OSRCB.util.addExternalClasses= async function(classData, modName = 'external', set = false){
     if(OSRCB.singleGM){
       for(let option of classData){
         OSRCB.data.externalClasses.push(option)
       }
       console.log(`---- OSRCB: ${modName} classes added. ----`);
+      if(set){
+        await game.settings.set('osr-character-builder', 'externalClasses', []);
+        await game.settings.set('osr-character-builder', 'externalClasses', OSRCB.data.externalClasses);
+      }
     }
   }
   OSRCB.util.sleep = (ms) => new Promise((res) => setTimeout(res, ms));
