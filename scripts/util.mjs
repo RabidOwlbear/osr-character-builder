@@ -644,7 +644,7 @@ export function initializeUtils() {
   }
   OSRCB.util.sleep = (ms) => new Promise((res) => setTimeout(res, ms));
   OSRCB.singleGM =  function () {
-    return game.users.filter((u) => u.active && u.isGM)[0].id === game.user.id;
+    return game.users.filter((u) => u.active && u.isGM)[0]?.id === game.user.id;
   };
 }
 export const intializePackFolders = async () => {

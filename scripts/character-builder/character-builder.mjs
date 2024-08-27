@@ -139,7 +139,7 @@ export class osrCharacterBuilder extends FormApplication {
     });
 
     if (selectedClass) {
-      const ose = game.modules.get('old-school-essentials').active;
+      const ose = game.modules.get('old-school-essentials')?.active;
       if (ose && selectedClass.source == 'SRD') selectedClass.source = 'OSE-basic';
       this._renderClassOptions(classSelect, selectedClass.source);
       this._renderClassInfo(html, selectedClass.source, selectedClass.class);
