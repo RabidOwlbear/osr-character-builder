@@ -239,7 +239,7 @@ export function initializeUtils() {
       }
 
       updateData = {
-        name: dataObj.name,
+        name: dataObj.name || `${className} - ${level}`,
         system: {
           hp: {
             hd: level ? `${level}d6` : '1d4',
@@ -275,7 +275,7 @@ export function initializeUtils() {
       const xpValue =
         level === classObj.maxLvl ? game.i18n.localize('osr-character-builder.maxLvl') : classObj.xp[level - 1];
       updateData = {
-        name: dataObj.name,
+        name: dataObj.name || `${className} - ${level}`,
         system: {
           details: {
             class: classObj.menu,
@@ -347,6 +347,7 @@ export function initializeUtils() {
       updateData.system.spells = classObj.spellSlot[level];
       updateData.system.spells.enabled = true;
     }
+    console.log('data',updateData);
     await actor.update(updateData);
     //if no gold item exists create one then update, else update gold amount
     // check for currency items
@@ -688,24 +689,30 @@ export const hideForeignPacks = () => {
   });
   Hooks.on('renderSidebarTab', async (tab) => {
     await sleep(250);
+    console.log('hfp', tab);
     if (await game.settings.get(`osr-character-builder`, 'hideForeignPacks')) {
       hfp(tab);
     }
   });
 };
 function hfp(tab) {
+  console.log('hfp', tab.element);
   const language = OSRCB.util.langCheck();
-  if (tab?._element[0]?.id === 'compendium') {
+  const el = tab.element || tab._element;
+  if (el[0]?.id === 'compendium' || el.id === 'compendium') {
     const lis = document.querySelectorAll('li.compendium');
     const osrcbPacks = [...lis].filter((li) => {
-      const send = li.dataset.entryId.includes('osr-character-builder');
+      const send = li.dataset?.entryId?.includes('osr-character-builder') ||li.dataset?.pack?.includes('osr-character-builder');
       return send ? send : false;
     });
+    console.log(osrcbPacks);
     if (osrcbPacks.length) {
       if (OSRCB.lang.includes(language)) {
         const langstring = `(${language})`;
         osrcbPacks.forEach((p) => {
-          const title = p.querySelector('h3.compendium-name').innerText;
+          console.log(p);
+          const title = p.querySelector('h3.compendium-name')?.innerText || p.querySelector('.compendium-name strong')?.innerText;
+          console.log(title);
           if (title.includes('(') && !title.includes(langstring)) {
             p.style.display = 'none';
           }
@@ -713,7 +720,7 @@ function hfp(tab) {
       } else {
         const langs = OSRCB.lang.filter((i) => i != `en`);
         osrcbPacks.forEach((p) => {
-          const title = p.querySelector('h3.compendium-name').innerText;
+          const title = p.querySelector('h3.compendium-name')?.innerText || p.querySelector('.compendium-name strong')?.innerText;
           for (let lang of langs) {
             if (title.includes(`(${lang})`)) {
               p.style.display = 'none';
