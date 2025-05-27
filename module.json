@@ -141,7 +141,7 @@
     "requires": []
   },
   "url": "https://github.com/RabidOwlbear/osr-character-builder",
-  "manifest": "https://raw.githubusercontent.com/RabidOwlbear/osr-character-builder/main/module.json",
-  "download": "https://github.com/RabidOwlbear/osr-character-builder/archive/refs/heads/main.zip",
+  "manifest": "https://raw.githubusercontent.com/RabidOwlbear/osr-character-builder/refs/heads/v0.4.0/module.json",
+  "download": "https://github.com/RabidOwlbear/osr-character-builder/archive/refs/heads/v0.4.0.zip",
   "readme": "README.md"
 }
