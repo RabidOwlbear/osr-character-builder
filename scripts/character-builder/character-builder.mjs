@@ -5,7 +5,7 @@ export class osrCharacterBuilder extends FormApplication {
     this.dataObj = dataObj;
   }
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       id: 'character-builder',
       classes: ['osrcb'],
       popOut: true,
@@ -325,20 +325,20 @@ export class osrCharacterBuilder extends FormApplication {
     return biography;
   };
   _generateBioAbilities(element, items) {
-    if(!items)return
+    if (!items) return;
     const container = element.querySelector('.bio-abilities');
-    for(let item of items){
+    for (let item of items) {
       const el = document.createElement('a');
       const img = document.createElement('img');
       img.src = item.img;
       el.appendChild(img);
       el.classList.add('ability-btn');
       el.title = item.name;
-      el.addEventListener('click', e=>{
+      el.addEventListener('click', (e) => {
         e.preventDefault();
-        item.sheet.render(true)
-      })
-      container.appendChild(el)
+        item.sheet.render(true);
+      });
+      container.appendChild(el);
     }
   }
 }

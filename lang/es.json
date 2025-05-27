@@ -137,5 +137,25 @@
   "osr-character-builder.classFeatures": "Características de la clase",
   "osr-character-builder.newCharName":"'s nuevo carácter",
   "osr-character-builder.allowCharacterMacro":"Permitir el uso de la macro Crear personaje",
-  "osr-character-builder.allowCharacterMacroDesc":"Cuando está activa, los usuarios conectados pueden crear actores y hojas de personaje utilizando la macro proporcionada Nuevo Personaje de Jugador."
+  "osr-character-builder.allowCharacterMacroDesc":"Cuando está activa, los usuarios conectados pueden crear actores y hojas de personaje utilizando la macro proporcionada Nuevo Personaje de Jugador.",
+
+  "osr-character-builder.util.dialog.pickNameType":"Seleccionar tipo de nombre",
+  "osr-character-builder.util.dialog.type":"tipo",
+  "osr-character-builder.util.dialog.gender":"género",
+  "osr-character-builder.util.dialog.male":"masculino",
+  "osr-character-builder.util.dialog.female":"femenino",
+  "osr-character-builder.util.dialog.all":"todos",
+  "osr-character-builder.util.dialog.whisper":"Susurrar?",
+  "osr-character-builder.util.dialog.randomName": "Nombre aleatorio",
+  "osr-character-builder.util.dialog.pick": "Seleccionar",
+
+  "osr-character-builder.util.prefix.a": "Conoce a",
+  "osr-character-builder.util.prefix.b": "Presentando a",
+  "osr-character-builder.util.prefix.c": "Este viejo y así es que es",
+  "osr-character-builder.util.prefix.d": "Mira quién está, es",
+  "osr-character-builder.util.prefix.e": "Oye, es",
+  "osr-character-builder.util.prefix.f": "Como vivo y respiro, es",
+  "osr-character-builder.util.prefix.g": "Bueno, me desangro, es",
+  "osr-character-builder.util.prefix.h": "Mira qué gato trajo, es",
+  "osr-character-builder.util.prefix.i": "Presentando a"
 }

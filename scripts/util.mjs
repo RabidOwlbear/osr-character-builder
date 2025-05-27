@@ -98,7 +98,7 @@ export function initializeUtils() {
         return false;
       }
     }
-    new OSRCB.characterBuilder(actor, dataObj).render(true);
+    new OSRCB.characterBuilderV2({actor, dataObj}).render(true);
   };
   OSRCB.util.statsToMsg = async function (data, single = false) {
     let { stats, actor, type } = data;
@@ -168,6 +168,7 @@ export function initializeUtils() {
   };
 
   OSRCB.util.osrUpdateSheet = async function (dataObj, actor) {
+    
     let untranslatedMod = false;
     const aftActive = await game.modules.get('ose-advancedfantasytome')?.active;
     const oseActive = await game.modules.get('old-school-essentials')?.active;
@@ -347,7 +348,6 @@ export function initializeUtils() {
       updateData.system.spells = classObj.spellSlot[level];
       updateData.system.spells.enabled = true;
     }
-    console.log('data',updateData);
     await actor.update(updateData);
     //if no gold item exists create one then update, else update gold amount
     // check for currency items
@@ -432,7 +432,9 @@ export function initializeUtils() {
   OSRCB.util.randomSpells = async function (data, actor) {
     const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
     let { source, classOption, level } = data;
-
+    if(classOption == 'none'){
+      return;
+    } 
     if (source == 'SRD') {
       source = OSRCB.util.oseActive() ? 'basic' : 'SRD';
     }
@@ -474,6 +476,9 @@ export function initializeUtils() {
   OSRCB.util.randomItems = async function (data, actor) {
     const oseActive = OSRCB.util.oseActive();
     const { classOption } = data;
+    if(classOption == 'none'){
+      return;
+    } 
     const isZero = data.level === 0;
     const compendium = await game.packs.get(`${OSRCB.moduleName}.osr-srd-items-${game.i18n.lang}`);
     const gearList = [
@@ -623,6 +628,24 @@ export function initializeUtils() {
         }
       }
     }).render(true);
+    // new foundry.applications.api.DialogV2({
+    //   window: {title: 'New Player Character Sheet'},
+    //   content: `  
+    // <span>Character Name</span>
+    // <input type="text id="charName">
+    // `,
+    // buttons: [
+    //   {
+    //     action: 'create',
+    //     icon: '<i class="fas fa-check"></i>',
+    //     label: 'Option One',
+    //     callback: (ev, btn, dialog) => {
+    //       const name = dialog.querySelector('#charName').value;
+    //       OSRCB.util.newPlayerCharacterDialog();
+    //     }
+    //   }
+    // ]
+    // }).render({force:true})
   };
   OSRCB.util.newPlayerCharacter = async function () {
     const hasPermission = await game.settings.get(OSRCB.moduleName, 'allowUserCharacterMacro');
@@ -689,14 +712,12 @@ export const hideForeignPacks = () => {
   });
   Hooks.on('renderSidebarTab', async (tab) => {
     await sleep(250);
-    console.log('hfp', tab);
     if (await game.settings.get(`osr-character-builder`, 'hideForeignPacks')) {
       hfp(tab);
     }
   });
 };
 function hfp(tab) {
-  console.log('hfp', tab.element);
   const language = OSRCB.util.langCheck();
   const el = tab.element || tab._element;
   if (el[0]?.id === 'compendium' || el.id === 'compendium') {
@@ -705,14 +726,11 @@ function hfp(tab) {
       const send = li.dataset?.entryId?.includes('osr-character-builder') ||li.dataset?.pack?.includes('osr-character-builder');
       return send ? send : false;
     });
-    console.log(osrcbPacks);
     if (osrcbPacks.length) {
       if (OSRCB.lang.includes(language)) {
         const langstring = `(${language})`;
         osrcbPacks.forEach((p) => {
-          console.log(p);
           const title = p.querySelector('h3.compendium-name')?.innerText || p.querySelector('.compendium-name strong')?.innerText;
-          console.log(title);
           if (title.includes('(') && !title.includes(langstring)) {
             p.style.display = 'none';
           }

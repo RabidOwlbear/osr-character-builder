@@ -2,6 +2,11 @@
   <section class='top'>
     <div class='name-cont'>
       <input id='name-inp' type='text' placeholder='Name' name='name' value='{{actor.name}}' />
+      <div class="random-name-btn" title="{{localize "osr-character-builder.util.dialog.randomName"}}">
+        <a class='roll-name-btn' data-action="rollName">
+          <i class='fa-solid fa-dice-six'></i>
+        </a>
+      </div>  
       <div class="lvl-row">
         <div class='lvl-cont'>
           <label for='level-inp'>{{localize "osr-character-builder.lvl"}}</label>
@@ -30,7 +35,7 @@
           data-stat='str'
           data-dtype='Number'
         />
-        <a class='single-stat-roll-btn'>
+        <a class='single-stat-roll-btn' data-action="rollSingleStat">
           <i class='fa-solid fa-dice-six'></i>
         </a>
       </div>
@@ -45,7 +50,7 @@
           data-stat='int'
           data-dtype='Number'
         />
-        <a class='single-stat-roll-btn'>
+        <a class='single-stat-roll-btn' data-action="rollSingleStat">
           <i class='fa-solid fa-dice-six'></i>
         </a>
       </div>
@@ -60,7 +65,7 @@
           data-stat='wis'
           data-dtype='Number'
         />
-        <a class='single-stat-roll-btn'>
+        <a class='single-stat-roll-btn' data-action="rollSingleStat">
           <i class='fa-solid fa-dice-six'></i>
         </a>
       </div>
@@ -75,7 +80,7 @@
           data-stat='dex'
           data-dtype='Number'
         />
-        <a class='single-stat-roll-btn'>
+        <a class='single-stat-roll-btn' data-action="rollSingleStat">
           <i class='fa-solid fa-dice-six'></i>
         </a>
       </div>
@@ -90,7 +95,7 @@
           data-stat='con'
           data-dtype='Number'
         />
-        <a class='single-stat-roll-btn'>
+        <a class='single-stat-roll-btn' data-action="rollSingleStat">
           <i class='fa-solid fa-dice-six'></i>
         </a>
       </div>
@@ -105,12 +110,12 @@
           data-stat='cha'
           data-dtype='Number'
         />
-        <a class='single-stat-roll-btn'>
+        <a class='single-stat-roll-btn' data-action="rollSingleStat">
           <i class='fa-solid fa-dice-six'></i>
         </a>
       </div>
       <div class='stat-roll-cont'>
-        <a class='roll-stats-btn'>
+        <a class='roll-stats-btn' data-action="rollAbilScores">
           <i class='fa-solid fa-dice-six'></i>
         </a>
       </div>
@@ -140,7 +145,7 @@
     <div class='gp-cont'>
       <label for='gold-inp'>{{localize "osr-character-builder.gp"}}:</label>
       <input type='number' id='gold-inp' value='{{gp}}' name='goldAmount' />
-      <a class='roll-gp-btn'>
+      <a class='roll-gp-btn' data-action="rollGold">
         <i class='fa-solid fa-dice-six'></i>
       </a>
     </div>
@@ -155,8 +160,8 @@
     <input type='checkbox' id='spellp-check-inp' name='spellCheck' />
   </section>
   <section class='footer'>
-    <button type='button' id='close-btn'>{{localize "osr-character-builder.formBtnClose"}}</button>
-    <button type='button' id='choose-btn'>{{localize "osr-character-builder.formBtnChoose"}}</button>
+    <button type='button' id='close-btn' data-action="close">{{localize "osr-character-builder.formBtnClose"}}</button>
+    <button type='button' id='choose-btn' data-action="selectClass">{{localize "osr-character-builder.formBtnChoose"}}</button>
   </section>
 
 </form>

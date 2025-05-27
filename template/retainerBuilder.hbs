@@ -1,6 +1,6 @@
-<form>
+<form class="main">
   <div id="retainer-generator" class="formApp">
-    <h2>Retainer Generator</h2>
+    <h3>Retainer Generator</h3>
     <div class="fxsb padh10">
       <div>
         <label for="class-select">Class:</label>
@@ -10,7 +10,7 @@
           {{/each}}
         </select>
       </div>
-      <div>
+      <div class="level-select">
         <label for="level">Level:</label>
         <input id="level" type="number" max="14" placeholder="1" value="1">
       </div>
@@ -30,7 +30,7 @@
       </div>
     </div>
     <div class="fxjcc mt10">
-      <button id="submit">Generate</button>
+      <button id="generate" data-action="generate">Generate</button>
     </div>
   </div>
 </form>

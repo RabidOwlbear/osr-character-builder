@@ -1,14 +1,17 @@
 :root {
   --border-bar: rgba(53, 14, 14, .2);
-  --glow-a: #55ff55,
-  --glow-b: #1b4e1b ;
+  --glow-a: #55ff55;
+  --glow-b: #1b4e1b;
 }
 
 .osrcb {
   --cb-form-glow: rgb(66, 170, 189);
-  --cb-button: rgb(12, 74, 99);
+  --cb-button: rgb(9, 93, 126);
   --cb-header: rgba(8, 59, 80, 0.836);
   --cb-bg: #d1e4e0;
+  --cb-trans-bg: rgba(16, 160, 185, 0.13);
+  --cb-dark-text: #121213;
+  --cb-light-text: #eee8da;
 }
 
 @keyframes flash {
@@ -29,14 +32,21 @@
   padding: 0 3px;
 }
 
+#osr-character-builder.osrcb input {
+  padding: 0;
+  text-align: center;
+}
+#osr-character-builder.osrcb input[type=checkbox]::before {
+  color: var(--cb-button);
+  font-weight: initial;
+}
 #osr-character-builder.osrcb header {
   background-color: var(--cb-header);
   overflow: hidden;
-  border-radius: 10px;
 }
 #osr-character-builder.osrcb .window-content {
   padding: 0;
-  background: var(--cb-bg);
+  background: var(--cb-trans-bg);
 }
 #osr-character-builder.osrcb #char-builder-form {
   height: 100%;
@@ -49,7 +59,7 @@
   color: var(--cb-button);
 }
 #osr-character-builder.osrcb #char-builder-form a:hover {
-  text-shadow: 0 0 8px var(--cb-form-glow);
+  text-shadow: 0 0 8px var(--glow-a);
 }
 #osr-character-builder.osrcb .stat-input-col {
   display: flex;
@@ -63,12 +73,31 @@
   font-size: 12px;
 }
 #osr-character-builder.osrcb .stat-input-col .stat-inp {
-  text-align: center;
+  overflow: hidden;
 }
 #osr-character-builder.osrcb .stat-roll-cont {
   font-size: 2rem;
   display: flex;
   align-items: center;
+}
+#osr-character-builder.osrcb .random-name-btn {
+  position: absolute;
+  top: 0.5rem;
+  left: 0;
+  display: grid;
+  place-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid rgb(39, 39, 39);
+  overflow: hidden;
+}
+#osr-character-builder.osrcb .random-name-btn a {
+  width: 100%;
+  height: 100%;
+  color: var(--cb-button);
+}
+#osr-character-builder.osrcb .random-name-btn i {
+  font-size: 1rem;
 }
 #osr-character-builder.osrcb .top {
   display: flex;
@@ -99,10 +128,10 @@
 #osr-character-builder.osrcb .top .name-cont .lvl-cont {
   display: flex;
   padding: 0 0.3;
-  width: 50%;
 }
 #osr-character-builder.osrcb .top .name-cont .lvl-cont input {
-  width: 2em;
+  width: 1.5em;
+  margin-right: 0.2em;
 }
 #osr-character-builder.osrcb .top .name-cont .alignment-cont {
   display: flex;
@@ -164,7 +193,7 @@
 }
 #osr-character-builder.osrcb .footer button {
   width: 45%;
-  background-color: rgb(12, 74, 99);
+  background-color: var(--cb-button);
   color: beige;
   border: none;
   border-radius: 10px;
@@ -189,7 +218,33 @@
   overflow: hidden;
 }
 
-#retainer-generator .formApp h2 {
+#osrcb-random-name header {
+  background-color: var(--cb-header);
+}
+#osrcb-random-name .window-content {
+  background-color: var(--cb-trans-bg);
+}
+
+#retainer-builder .window-content {
+  padding: 0;
+  background: var(--cb-trans-bg);
+}
+#retainer-builder .main {
+  height: 100%;
+}
+#retainer-builder header {
+  background-color: var(--cb-header);
+}
+
+#retainer-generator {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 0.5rem;
+}
+#retainer-generator h3 {
+  font-size: 1.5rem;
   text-align: center;
   margin-bottom: 10px;
 }
@@ -206,6 +261,11 @@
 }
 #retainer-generator .mt10 {
   margin-top: 10px;
+}
+#retainer-generator .level-select {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 #retainer-generator input[type=number] {
   width: 25px;

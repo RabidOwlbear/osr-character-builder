@@ -1,0 +1,23 @@
+ <h1> {{localize 'OSRH.util.dialog.pickNameType'}}</h1>
+  <div style="display:flex; margin-bottom: 5px;">
+    <div  style="flex:1">
+      <select id="nameType">
+        <option value="none">-{{localize 'osr-character-builder.util.dialog.type'}}-</option>
+        {{#each options}}
+          <option value="{{this}}">{{this}}</option>
+        {{/each}}
+      </select>
+    </div>
+    <div  style="flex:1">
+      <select id="gender">
+        <option value="all">-{{localize 'osr-character-builder.util.dialog.gender'}}-</option>
+        <option value="male">{{localize 'osr-character-builder.util.dialog.male'}}</option>
+        <option value="female">{{localize 'osr-character-builder.util.dialog.female'}}</option>
+        <option value="all">{{localize 'osr-character-builder.util.dialog.all'}}</option>
+      </select>
+    </div>
+    <div>
+      <label for="whisperCheck">{{localize 'osr-character-builder.util.dialog.whisper'}}</label>
+      <input type ="checkbox" id="whisperCheck" checked />
+    </div>
+  </div>

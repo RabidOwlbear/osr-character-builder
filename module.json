@@ -9,10 +9,10 @@
       "flags": {}
     }
   ],
-  "version": "0.3.35",
+  "version": "0.4.0",
   "compatibility": {
-    "minimum": "10",
-    "verified": "11.315",
+    "minimum": "13",
+    "verified": "13",
     "maximum": "13"
   },
   "styles": [

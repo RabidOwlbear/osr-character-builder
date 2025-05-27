@@ -6,7 +6,8 @@ import { registerSrdDataEs } from './data/srd-data-es.mjs';
 import { hideForeignPacks, intializePackFolders } from './util.mjs';
 import { registerSettings } from './settings.mjs';
 import { socket } from './cb-socket.mjs';
-
+import { OSRCharacterBuilderV2 } from './character-builder/character-buillder-v2.mjs';
+import { randomName } from './random-name.mjs';
 Hooks.once('init', async () => {
   //register namespace
   window.OSRCB = window.OSRCB || {};
@@ -20,7 +21,9 @@ Hooks.once('init', async () => {
   OSRCB.characterBuilder = osrCharacterBuilder;
   OSRCB.lang = ['en', 'es'];
   OSRCB.socket = socket;
+  OSRCB.characterBuilderV2 = OSRCharacterBuilderV2;
   socket.registerSocket();
+  OSRCB.randomName = randomName;
 
   // import modules
   //registerCharacterBuilder();

@@ -717,5 +717,5 @@ export async function registerSrdDataEn() {
     }
   };
   await sleep(50);
-  OSRCB.spells.mergedList = mergeObject(OSRCB.spells.spellList, OSRCB.spells.mergedList);
+  OSRCB.spells.mergedList = foundry.utils.mergeObject(OSRCB.spells.spellList, OSRCB.spells.mergedList);
 }

@@ -137,5 +137,25 @@
   "osr-character-builder.classFeatures":"Class Features",
   "osr-character-builder.newCharName":"'s new character",
   "osr-character-builder.allowCharacterMacro":"Allow Use of Create Character Macro",
-  "osr-character-builder.allowCharacterMacroDesc":"When active connected users may create character actors and sheets using the provided New Player Character macro."
+  "osr-character-builder.allowCharacterMacroDesc":"When active connected users may create character actors and sheets using the provided New Player Character macro.",
+
+  "osr-character-builder.util.dialog.pickNameType":"Pick Name Type",
+  "osr-character-builder.util.dialog.type":"type",
+  "osr-character-builder.util.dialog.gender":"gender",
+  "osr-character-builder.util.dialog.male":"male",
+  "osr-character-builder.util.dialog.female":"female",
+  "osr-character-builder.util.dialog.all":"all",
+  "osr-character-builder.util.dialog.whisper":"Whisper?",
+  "osr-character-builder.util.dialog.randomName": "Random Name",
+  "osr-character-builder.util.dialog.pick": "Pick",
+
+  "osr-character-builder.util.prefix.a":"Meet",
+  "osr-character-builder.util.prefix.b":"Presenting",
+  "osr-character-builder.util.prefix.c":"This old so and so right here is",
+  "osr-character-builder.util.prefix.d":"Look who it is, it's",
+  "osr-character-builder.util.prefix.e":"Hey, it's",
+  "osr-character-builder.util.prefix.f":"As I live and breath, it's",
+  "osr-character-builder.util.prefix.g":"Well I'll be damned, it's",
+  "osr-character-builder.util.prefix.h":"Look what the cat dragged in. This here is",
+  "osr-character-builder.util.prefix.i":"Introducing"
 }
