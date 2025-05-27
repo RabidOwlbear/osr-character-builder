@@ -9,7 +9,7 @@
       "flags": {}
     }
   ],
-  "version": "0.4.0",
+  "version": "0.4.1",
   "compatibility": {
     "minimum": "13",
     "verified": "13",
@@ -141,7 +141,7 @@
     "requires": []
   },
   "url": "https://github.com/RabidOwlbear/osr-character-builder",
-  "manifest": "https://raw.githubusercontent.com/RabidOwlbear/osr-character-builder/main/module.json",
-  "download": "https://github.com/RabidOwlbear/osr-character-builder/archive/refs/heads/main.zip",
+  "manifest": "https://raw.githubusercontent.com/RabidOwlbear/osr-character-builder/refs/heads/v0.4.1/module.json",
+  "download": "https://github.com/RabidOwlbear/osr-character-builder/archive/refs/heads/v0.4.1.zip",
   "readme": "README.md"
 }

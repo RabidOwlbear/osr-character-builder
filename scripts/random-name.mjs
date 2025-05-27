@@ -1,34 +1,33 @@
 import { nameData } from './data/name-data.mjs';
 
 export const randomName = async function ({ type = null, gender = null, creator = false } = {}) {
-  console.log('randomName', type, gender, creator);
   if (!type) {
     let options = ``;
-    for (let key of Object.keys(OSRH.data.nameData)) {
+    for (let key of Object.keys(nameData)) {
       options += `
       <option value="${key}">${key}</option>
       `;
     }
 
     let diagTemplate = `
-  <h1> ${game.i18n.localize('OSRH.util.dialog.pickNameType')}</h1>
+  <h1> ${game.i18n.localize('osr-character-builder.util.dialog.pickNameType')}</h1>
   <div style="display:flex; margin-bottom: 5px;">
     <div  style="flex:1">
       <select id="nameType">
-        <option value="none">-${game.i18n.localize('OSRH.util.dialog.type')}-</option>
+        <option value="none">-${game.i18n.localize('osr-character-builder.util.dialog.type')}-</option>
         ${options}
       </select>
     </div>
     <div  style="flex:1">
       <select id="gender">
-        <option value="all">-${game.i18n.localize('OSRH.util.dialog.gender')}-</option>
-        <option value="male">${game.i18n.localize('OSRH.util.dialog.male')}</option>
-        <option value="female">${game.i18n.localize('OSRH.util.dialog.female')}</option>
-        <option value="all">${game.i18n.localize('OSRH.util.dialog.all')}</option>
+        <option value="all">-${game.i18n.localize('osr-character-builder.util.dialog.gender')}-</option>
+        <option value="male">${game.i18n.localize('osr-character-builder.util.dialog.male')}</option>
+        <option value="female">${game.i18n.localize('osr-character-builder.util.dialog.female')}</option>
+        <option value="all">${game.i18n.localize('osr-character-builder.util.dialog.all')}</option>
       </select>
     </div>
     <div>
-      <label for="whisperCheck">${game.i18n.localize('OSRH.util.dialog.whislper')}</label>
+      <label for="whisperCheck">${game.i18n.localize('osr-character-builder.util.dialog.whisper')}</label>
       <input type ="checkbox" id="whisperCheck" checked />
     </div>
   </div>
@@ -44,116 +43,7 @@ export const randomName = async function ({ type = null, gender = null, creator 
       game.i18n.localize('osr-character-builder.util.prefix.h'),
       game.i18n.localize('osr-character-builder.util.prefix.i')
     ];
-    // let picker = new Dialog({
-    //   title: game.i18n.localize('osr-character-builder.util.dialog.randomName'),
-    //   content: 'modules/osr-helper/templates/random-name.html',
-    //   buttons: {
-    //     pick: {
-    //       label: game.i18n.localize('osr-character-builder.util.dialog.pick'),
-    //       callback: async function (html) {
-    //         const nameType = html.find('#nameType')[0].value;
-    //         const gender = html.find('#gender')[0].value;
-    //         const whisper = html.find('#whisperCheck')[0].checked;
-    //         let openSheets = document.querySelectorAll('.ose.sheet.actor.character');
-    //         let focusedSheet = openSheets ? openSheets[0] : null;
-    //         for (let sheet of openSheets) {
-    //           if (parseInt(focusedSheet.style.zIndex) < parseInt(sheet.style.zIndex)) {
-    //             focusedSheet = sheet;
-    //           }
-    //         }
-    //         const tokens = canvas.tokens.controlled;
-    //         if (nameType == 'none' || gender == 'none') {
-    //           ui.notifications.warn(game.i18n.localize('OSRH.util.notification.selectOption'));
-    //           picker.render();
-    //           return;
-    //         }
-    //         if (tokens.length && tokens.length == 1) {
-    //           let token = canvas.tokens.controlled[0];
-    //           let actor = token.actor;
-    //           let fullName = getName(nameType, gender);
-    //           // chat message
-    //           let cData = {
-    //             type: 1,
-    //             user: game.user.id,
-    //             content: `${getRandomItem(prefix)} ${fullName}`
-    //           };
-    //           if (whisper) {
-    //             cData.whisper = [game.user];
-    //           }
-    //           ChatMessage.create(cData);
-    //           await actor.update({
-    //             name: fullName,
-    //             prototypeToken: {
-    //               name: fullName
-    //             }
-    //           });
-    //           await token.document.update({ name: fullName });
-    //           ui.notifications.info(game.i18n.localize('OSRH.util.notification.tokenActorNameUpdated'));
-    //           return;
-    //         }
-    //         if (tokens.length > 1) {
-    //           tokens.forEach(async (t) => {
-    //             let token = t;
-    //             let actor = t.actor;
-    //             let newName = await getName(nameType, gender);
 
-    //             if (actor.type == 'character') {
-    //               await actor.update({
-    //                 name: newName,
-    //                 prototypeToken: {
-    //                   name: newName
-    //                 }
-    //               });
-    //             }
-
-    //             await token.document.update({ name: newName });
-    //             let cData = {
-    //               type: 1,
-    //               user: game.user.id,
-    //               content: `${getRandomItem(prefix)} ${newName}`
-    //             };
-    //             if (whisper) {
-    //               cData.whisper = [game.user];
-    //             }
-    //             ChatMessage.create(cData);
-    //             await actor.update({
-    //               name: newName,
-    //               prototypeToken: {
-    //                 name: newName
-    //               }
-    //             });
-    //             await token.document.update({ name: newName });
-    //             ui.notifications.info(game.i18n.localize('OSRH.util.notification.tokenActorNameUpdated'));
-    //           });
-    //           return;
-    //         }
-    //         if (!canvas.tokens.controlled.length && focusedSheet) {
-    //           const charSheet = focusedSheet; //document.querySelector('.ose.sheet.actor.character');
-    //           const name = charSheet ? charSheet.querySelector('.ose.sheet.actor .window-title').innerText : 'none';
-    //           const actor = game.actors.getName(name);
-    //           let fullName = getName(nameType, gender);
-    //           await actor.update({
-    //             name: fullName,
-    //             token: {
-    //               name: fullName
-    //             }
-    //           });
-    //           return;
-    //         }
-    //         let fullName = getName(nameType, gender);
-    //         let cData = {
-    //           type: 1,
-    //           user: game.user.id,
-    //           content: `${getRandomItem(prefix)} ${fullName}`
-    //         };
-    //         if (whisper) {
-    //           cData.whisper = [game.user];
-    //         }
-    //         ChatMessage.create(cData);
-    //       }
-    //     }
-    //   }
-    // });
 
     let picker = await new foundry.applications.api.DialogV2({
       window: {
@@ -169,16 +59,12 @@ export const randomName = async function ({ type = null, gender = null, creator 
 
           // default: true,
           callback: async function (event, button, dialog) {
-            console.log(this);
-            console.log('callback', type);
             const html = dialog.element;
-            console.log(event, button, dialog, html);
             const nameType = html.querySelector('#nameType').value;
             const gender = html.querySelector('#gender').value;
             const whisper = html.querySelector('#whisperCheck').checked;
             let openSheets = document.querySelectorAll('.ose.sheet.actor.character');
             let focusedSheet = openSheets ? openSheets[0] : null;
-            console.log(nameType, gender, whisper, openSheets, focusedSheet);
             for (let sheet of openSheets) {
               if (parseInt(focusedSheet.style.zIndex) < parseInt(sheet.style.zIndex)) {
                 focusedSheet = sheet;
@@ -186,8 +72,7 @@ export const randomName = async function ({ type = null, gender = null, creator 
             }
             const tokens = canvas.tokens.controlled;
             if (nameType == 'none' || gender == 'none') {
-              ui.notifications.warn(game.i18n.localize('OSRH.util.notification.selectOption'));
-              console.log('selectOption', picker, dialog);
+              ui.notifications.warn(game.i18n.localize('osr-character-builder.notification.selectOption'));
               picker.render();
               return;
             }
@@ -205,7 +90,6 @@ export const randomName = async function ({ type = null, gender = null, creator 
               if (whisper) {
                 cData.whisper = [game.user.id];
               }
-              console.log(cData);
               ChatMessage.create(cData);
               await actor.update({
                 name: fullName,
@@ -214,7 +98,7 @@ export const randomName = async function ({ type = null, gender = null, creator 
                 }
               });
               await token.document.update({ name: fullName });
-              ui.notifications.info(game.i18n.localize('OSRH.util.notification.tokenActorNameUpdated'));
+              ui.notifications.info(game.i18n.localize('osr-character-builder.notification.tokenActorNameUpdated'));
               return;
             }
             // rename multiple tokens/actors
@@ -250,7 +134,7 @@ export const randomName = async function ({ type = null, gender = null, creator 
                   }
                 });
                 await token.document.update({ name: newName });
-                ui.notifications.info(game.i18n.localize('OSRH.util.notification.tokenActorNameUpdated'));
+                ui.notifications.info(game.i18n.localize('osr-character-builder.notification.tokenActorNameUpdated'));
               });
               return;
             }

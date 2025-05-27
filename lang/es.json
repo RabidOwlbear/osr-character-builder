@@ -26,6 +26,8 @@
   "osr-character-builder.notification.windowOpen": "Ventana ya abierta.",
   "osr-character-builder.notification.selectClass": "Por favor, selecciona una clase",
   "osr-character-builder.notification.itemsNotFound": "No se han encontrado opciones de habilidad de clase.",
+  "osr-character-builder.notification.selectOption": "Por favor, selecciona una opción.",
+  "osr-character-builder.notification.tokenActorNameUpdated": "Nombre del token/actor actualizado.",
 
   "osr-character-builder.maxLvl": "Nivel máximo",
   "osr-character-builder.formAttrib": "Características del personaje",
