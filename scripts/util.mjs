@@ -396,15 +396,16 @@ export function initializeUtils() {
   OSRCB.util.getClassAbilities = async (className, pack) => {
     if(pack === 'osr-character-builder.osr-srd-class-options'){ 
       pack = `osr-character-builder.osr-srd-class-options-${game.i18n.lang}`}
-    const compendium = await game.packs.get(pack);
+    let compendium = await game.packs.get(pack);
     if(!compendium){
-      console.error(`
+      console.warn(`
       OSR CHARACTER BUILDER ERROR
       ------------------------------
         compendium pack: "${pack}" not found.
       ------------------------------
       `)
-      return
+      // return
+      compendium = await game.packs.get(`osr-character-builder.osr-srd-class-options-en`)
     }
     const contents = await compendium.getDocuments();
     let items = contents.filter((i) => i?.system?.requirements?.toLowerCase() === className?.toLowerCase());
@@ -445,14 +446,17 @@ export function initializeUtils() {
     if (!classData.spellCaster) {
       return;
     }
-
     const spellPackName =
       OSRCB.util.oseAfActive() && classData.spellPackName.includes('old-school-essentials.')
         ? 'ose-advancedfantasytome.spells'
         : classData.spellPackName;
     const magicType = classData?.spellType;
     const slotData = classData?.spellSlot[level];
-    const spells = await game.packs.get(spellPackName)?.getDocuments();
+    let spellPack =  await game.packs.get(spellPackName)
+    // temp lang fallback
+    if (!spellPack) spellPack = await  game.packs.get(`osr-character-builder.osr-srd-class-options-en`)
+    const spells = await spellPack.getDocuments();
+   
     const classSpells = spells.filter((sp) => sp?.system?.class?.toLowerCase() === magicType.toLowerCase());
     const pickedSpells = [];
     for (let key in slotData) {
@@ -470,7 +474,6 @@ export function initializeUtils() {
         }
       }
     }
-
     await actor.createEmbeddedDocuments('Item', pickedSpells);
   };
   OSRCB.util.randomItems = async function (data, actor) {
@@ -669,6 +672,9 @@ export function initializeUtils() {
   OSRCB.util.sleep = (ms) => new Promise((res) => setTimeout(res, ms));
   OSRCB.singleGM =  function () {
     return game.users.filter((u) => u.active && u.isGM)[0]?.id === game.user.id;
+  };
+  OSRCB.util.renderCharacterBuilder = function (actor, dataObj) {
+    new OSRCB.characterBuilderV2({actor, dataObj}).render(true);
   };
 }
 export const intializePackFolders = async () => {

@@ -42,14 +42,14 @@ export async function registerSettings(){
     default: false,
     config: true
   });
-  await game.settings.register(`${OSRCB.moduleName}`, 'hideForeignPacks', {
-    name: 'osr-character-builder.settings.hideForeignPackName',
-    hint: 'osr-character-builder.settings.hideForeignPackHint',
-    scope: 'client',
-    type: Boolean,
-    default: true,
-    config: true
-  });
+  // await game.settings.register(`${OSRCB.moduleName}`, 'hideForeignPacks', {
+  //   name: 'osr-character-builder.settings.hideForeignPackName',
+  //   hint: 'osr-character-builder.settings.hideForeignPackHint',
+  //   scope: 'client',
+  //   type: Boolean,
+  //   default: true,
+  //   config: true
+  // });
   await game.settings.register(`${OSRCB.moduleName}`, 'allowUserCharacterMacro', {
     name: "osr-character-builder.allowCharacterMacro",
     hint: "osr-character-builder.allowCharacterMacroDesc",

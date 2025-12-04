@@ -45,8 +45,8 @@ Hooks.once('ready', async () => {
       registerSrdDataEn();
   }
   // set hook to hide display of foreign language packs
-  await intializePackFolders();
-  hideForeignPacks();
+  // await intializePackFolders();
+  // hideForeignPacks();
 
   //reset external classes
   if (game.user.isGM) await game.settings.set(`${OSRCB.moduleName}`, 'externalClasses', []);
