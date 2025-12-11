@@ -2,6 +2,7 @@ import { registerRetainerBuilder } from './retainer-builder.js';
 import { initializeUtils } from './util.mjs';
 import { osrCharacterBuilder } from './character-builder/character-builder.mjs';
 import { registerSrdDataEn } from './data/srd-data-en.mjs';
+import { registerSrdDataCn } from './data/srd-data-cn.mjs';
 import { registerSrdDataEs } from './data/srd-data-es.mjs';
 import { hideForeignPacks, intializePackFolders } from './util.mjs';
 import { registerSettings } from './settings.mjs';
