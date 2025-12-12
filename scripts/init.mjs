@@ -39,6 +39,9 @@ Hooks.once('ready', async () => {
     case 'en':
       registerSrdDataEn();
       break;
+    case 'cn':
+      registerSrdDataCn();
+      break;
     case 'es':
       registerSrdDataEs();
       break;
