@@ -42,6 +42,9 @@ Hooks.once('ready', async () => {
     case 'es':
       registerSrdDataEs();
       break;
+    case 'cn':
+      registerSrdDataCn();
+      break;
     default:
       registerSrdDataEn();
   }
