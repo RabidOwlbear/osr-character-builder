@@ -70,9 +70,9 @@ export async function registerSrdDataCn() {
       <b>Weapons</b>: 任意钝器<br>
       <b>Languages</b>: 阵营语, 通用语<br>`,
       description: `牧师是立誓要服侍神明的冒险者。他们受过战斗训练，还能够引导其神祇的力量。
-          <br><br><b>日志条目</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-cn.JournalEntry.JmFSur5cdmf9lHxh]{牧师}<br>`,
+          <br><br><b>日志条目</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-cn.JournalEntry.MxTAGtazZxJfvF7M]{牧师}<br>`,
       languages: ['阵营语', '通用语'],
-      journal: `<br><br><b>Journal Entry</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-cn.JournalEntry.JmFSur5cdmf9lHxh]{牧师}<br>`,
+      journal: `<br><br><b>Journal Entry</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-cn.JournalEntry.MxTAGtazZxJfvF7M]{牧师}<br>`,
       maxLvl: 14,
       classTables: '',
       nameType: 'human'
@@ -122,9 +122,9 @@ export async function registerSrdDataCn() {
       <b>Languages</b>: Alignment, Common,<br>
       Dwarvish, Gnomish, Goblin, Kobold<br>`,
       description: `矮人这些健壮长须的亚人身高约 4'，体重 150 磅左右。矮人通常深居地底，衷情于工艺、黄金、美食与烈酒。他们的皮肤、须发与瞳孔都有着大地的色彩。矮人以顽固与务实闻名。这些坚韧的族裔有着对魔法的强力抗性，其豁免也体现了这一点。
-          <br><br><b>日志条目</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-cn.JournalEntry.SyJMz80CgR0q4qCV]{矮人}<br>`,
+          <br><br><b>日志条目</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-cn.JournalEntry.8FaYQ5BwGMxlWJA7]{矮人}<br>`,
       languages: ['阵营语', '通用语', '矮人语', '侏儒语', '地精语', '狗头人语'],
-      journal: `<br><br><b>Journal Entry</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-cn.JournalEntry.SyJMz80CgR0q4qCV]{Dwarf}<br>`,
+      journal: `<br><br><b>Journal Entry</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-cn.JournalEntry.8FaYQ5BwGMxlWJA7]{Dwarf}<br>`,
       maxLvl: 12,
       classTables: '',
       nameType: 'dwarf'
@@ -188,9 +188,9 @@ export async function registerSrdDataCn() {
       <b>Languages</b>: Alignment, Common, Elvish, Gnoll, Hobgoblin, Orcish<br>`,
       description: `精灵是长着尖耳，身材纤细的妖精亚人。他们重约 120 磅，身高通常在 5 到 5.5 英尺之间。精灵在人类聚居点中相对少见，他们更喜欢在林间举办盛宴、寻欢作乐。如果爆发冲突，同样擅长刀剑与法术的精灵会成为危险的敌人。法术与精美的魔法物品都是精灵的心头之好，其热衷于收集这两样东西。<br>
       <b>主要属性</b>: 拥有至少 13 点智力与力量的精灵会获得 5% 的经验奖励。拥有至少 16 点智力与至少 13 点力量的精灵会获得 10% 的经验奖励。
-      <br><br><b>日志条目</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-cn.JournalEntry.rTwGxLzN0rvZiPlI]{精灵}<br>`,
+      <br><br><b>日志条目</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-cn.JournalEntry.iH341o9KMs0jx96z]{精灵}<br>`,
       languages: ['阵营语', '通用语', '精灵语', '鬣狗人语', '大地精语', '兽人语'],
-      journal: `<br><br><b>Journal Entry</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-cn.JournalEntry.rTwGxLzN0rvZiPlI]{Elf}<br>`,
+      journal: `<br><br><b>Journal Entry</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-cn.JournalEntry.iH341o9KMs0jx96z]{Elf}<br>`,
       maxLvl: 10,
       classTables: '',
       nameType: 'elf'
@@ -256,9 +256,9 @@ export async function registerSrdDataCn() {
       <b>Weapons</b>: Any<br>
       <b>Languages</b>: 阵营语, 通用语<br>`,
       description: `战士是专精格斗与战争技艺的冒险者。在冒险团队之中，战士负责与怪物搏斗并保护其他角色。
-          <br><br><b>日志条目</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-cn.JournalEntry.q3DpdraizRb6lIRQ]{战士}<br>`,
+          <br><br><b>日志条目</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-cn.JournalEntry.tuxYnX5oQOhSkHrp]{战士}<br>`,
       languages: ['阵营语', '通用语'],
-      journal: `<br><br><b>Journal Entry</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-cn.JournalEntry.q3DpdraizRb6lIRQ]{Fighter}<br>`,
+      journal: `<br><br><b>Journal Entry</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-cn.JournalEntry.tuxYnX5oQOhSkHrp]{Fighter}<br>`,
       maxLvl: 14,
       classTables: '',
       nameType: 'human'
@@ -305,9 +305,9 @@ export async function registerSrdDataCn() {
       <b>Languages</b>: Alignment, Common, Halfling<br>`,
       description: `半身人是个子矮小，身材圆胖的亚人种族，脚上长毛，头顶卷发，体重约 60 磅，通常有 3' 高。半身人天性友好热情。最重要的是，他们热爱家宅的舒适惬意，并且不以勇敢著称。在冒险中获得财宝的半身人通常会用这笔财富来追求平静而安逸的生活。 <br>
         <b>主要属性</b>: 一项主要属性到达 13 的半身人会获得 5% 的经验奖励。如果半身人的敏捷与力量都到达 13 或以上，则会获得 10% 的经验奖励。
-        <br><br><b>日志条目</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-cn.JournalEntry.6XOXusawNQA4QnfJ]{半身人}<br>`,
+        <br><br><b>日志条目</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-cn.JournalEntry.56pppv5spL3hnIbc]{半身人}<br>`,
       languages: ['阵营语', '通用语', '半身人语'],
-      journal: `<br><br><b>Journal Entry</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-cn.JournalEntry.6XOXusawNQA4QnfJ]{Halfling}<br>`,
+      journal: `<br><br><b>Journal Entry</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-cn.JournalEntry.56pppv5spL3hnIbc]{Halfling}<br>`,
       maxLvl: 8,
       classTables: '',
       nameType: 'halfling'
@@ -387,9 +387,9 @@ export async function registerSrdDataCn() {
       <b>Weapons</b>: Dagger, staff (optional)<br>
       <b>Languages</b>: Alignment, Common<br>`,
       description: `作为冒险者，魔法师对奥法秘密的研究使其学会了施放法术的方法。随着等级提升，魔法师能够施放数量更多、威力更强的法术。
-          <br><br><b>日志条目</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-cn.JournalEntry.1v23MW5ozxMcATSB]{魔法师}<br>`,
+          <br><br><b>日志条目</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-cn.JournalEntry.8xWQ2MGa2LPMA43Z]{魔法师}<br>`,
       languages: ['阵营语', '通用语'],
-      journal: `<br><br><b>Journal Entry</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-cn.JournalEntry.1v23MW5ozxMcATSB]{Magic-User}<br>`,
+      journal: `<br><br><b>Journal Entry</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-cn.JournalEntry.8xWQ2MGa2LPMA43Z]{Magic-User}<br>`,
       maxLvl: 14,
       classTables: '',
       nameType: 'human'
@@ -444,9 +444,9 @@ export async function registerSrdDataCn() {
       <b>Languages</b>: Alignment, Common<br>`,
       description: `盗贼是以欺诈与潜行技艺为生的冒险者。在冒险中，盗贼所掌握的诸般独门技能使之成为了优秀的搭档。然而，盗贼并不总是那么可靠。
       调整属性值: 在创建角色的第 3 步时，盗贼不能降低力量。
-      <br><br><b>日志条目</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-cn.JournalEntry.93e4CJ6gqsbN2AX3]{盗贼}<br>`,
+      <br><br><b>日志条目</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-cn.JournalEntry.aTfwtSoLj0EYkOR7]{盗贼}<br>`,
       languages: ['阵营语', '通用语'],
-      journal: `<br><br><b>日志条目</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-cn.JournalEntry.93e4CJ6gqsbN2AX3]{盗贼}<br>`,
+      journal: `<br><br><b>日志条目</b>: @UUID[Compendium.osr-character-builder.osr-srd-classes-cn.JournalEntry.aTfwtSoLj0EYkOR7]{盗贼}<br>`,
       maxLvl: 14,
       classTables: '',
       nameType: 'human'
