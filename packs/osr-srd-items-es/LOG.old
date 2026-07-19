@@ -1,3 +1,8 @@
-2026/04/02-21:37:06.951 c40 Recovering log #2395
-2026/04/02-21:37:06.954 c40 Delete type=0 #2395
-2026/04/02-21:37:06.954 c40 Delete type=3 #2393
+2026/07/18-17:05:36.036 44fc Recovering log #2814
+2026/07/18-17:05:36.040 44fc Delete type=0 #2814
+2026/07/18-17:05:36.040 44fc Delete type=3 #2813
+2026/07/18-17:10:12.049 500c Level-0 table #2818: started
+2026/07/18-17:10:12.049 500c Level-0 table #2818: 0 bytes OK
+2026/07/18-17:10:12.050 500c Delete type=0 #2816
+2026/07/18-17:10:12.050 500c Manual compaction at level-0 from '!folders!2iI6tN3tGZXwf6wB' @ 72057594037927935 : 1 .. '!items!ylw3PB7lk39ZwLub' @ 0 : 0; will stop at (end)
+2026/07/18-17:10:12.050 500c Manual compaction at level-1 from '!folders!2iI6tN3tGZXwf6wB' @ 72057594037927935 : 1 .. '!items!ylw3PB7lk39ZwLub' @ 0 : 0; will stop at (end)

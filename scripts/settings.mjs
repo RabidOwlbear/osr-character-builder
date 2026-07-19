@@ -1,17 +1,16 @@
 export async function registerSettings(){
+  // LEGACY COMPAT ONLY — not a storage location. Third-party modules
+  // (ose-advancedfantasytome) write their class groups to this setting;
+  // a createSetting/updateSetting bridge in init.mjs mirrors its contents
+  // into OSRCB.data.externalClasses on every client. The GM resets it each
+  // ready so stock AF's push doesn't accumulate across sessions.
   await game.settings.register(`${OSRCB.moduleName}`, 'externalClasses', {
     name: 'externalClasses',
     type: Array,
     default: [],
-    scope: 'world'
+    scope: 'world',
+    config: false
   });
-  await game.settings.register(`${OSRCB.moduleName}`, 'defaultClasses', {
-    name: 'defaultClasses',
-    type: Array,
-    default: [],
-    scope: 'world'
-  });
-
   await game.settings.register(`${OSRCB.moduleName}`, 'spellList', {
     name: 'spellList',
     type: Object,

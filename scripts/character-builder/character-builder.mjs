@@ -140,7 +140,7 @@ export class osrCharacterBuilder extends FormApplication {
 
     if (selectedClass) {
       const ose = game.modules.get('old-school-essentials')?.active;
-      if (ose && selectedClass.source == 'SRD') selectedClass.source = 'OSE-basic';
+      if (ose && selectedClass.source == 'SRD') selectedClass.source = 'basic';
       this._renderClassOptions(classSelect, selectedClass.source);
       this._renderClassInfo(html, selectedClass.source, selectedClass.class);
       sourceSelect.value = selectedClass.source;
@@ -275,11 +275,11 @@ export class osrCharacterBuilder extends FormApplication {
       descripEl.innerHTML = '';
     } else {
       const classData = this.dataObj.find((s) => s.name === sourceName)?.classes?.[className];
-      const abilities = await OSRCB.util.getClassAbilities(classData.menu, classData.pack);
       if (!classData) {
         ui.notifications.warn(game.i18n.localize('osr-character-builder.notification.classDataNotFound'));
         return;
       }
+      const abilities = await OSRCB.util.getClassAbilities(classData.menu, classData.pack, classData.abilities);
       bioEl.innerHTML = await TextEditor.enrichHTML(this._generateBio(classData));
       this._generateBioAbilities(bioEl, abilities);
       descripEl.innerHTML = await TextEditor.enrichHTML(classData.description, abilities);
@@ -336,7 +336,28 @@ export class osrCharacterBuilder extends FormApplication {
       el.title = item.name;
       el.addEventListener('click', (e) => {
         e.preventDefault();
-        item.sheet.render(true);
+        if (item.sheet) {
+          item.sheet.render(true);
+        } else {
+          // stored ability data (plain object, no document) — wrap in an
+          // ephemeral Item so a sheet can render; nothing is saved to the world
+          const system = { ...item.system };
+          // stored data uses the BFS requirements shape ({classType, level});
+          // OSE ability sheets expect a plain string
+          if (typeof system.requirements === 'object' && system.requirements !== null) {
+            system.requirements = system.requirements.classType ?? '';
+          }
+          const doc = new CONFIG.Item.documentClass({
+            name: item.name,
+            type: item.type ?? 'ability',
+            img: item.img,
+            system,
+            // ephemeral doc is never saved — ownership only satisfies the
+            // sheet's view-permission check on player clients (3 = OWNER)
+            ownership: { default: 3 }
+          });
+          doc.sheet.render(true, { editable: false });
+        }
       });
       container.appendChild(el);
     }

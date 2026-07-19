@@ -32,6 +32,25 @@ Hooks.once('init', async () => {
   registerRetainerBuilder();
   initializeUtils();
   registerSettings();
+
+  // mirror legacy externalClasses setting writes (e.g. from stock
+  // ose-advancedfantasytome) into the in-memory list on every client
+  OSRCB.util.syncLegacyExternalClasses = () => {
+    const legacy = game.settings.get(OSRCB.moduleName, 'externalClasses') ?? [];
+    // drop previously-ingested legacy groups, then re-add current contents
+    OSRCB.data.externalClasses = OSRCB.data.externalClasses.filter((g) => !g._legacySetting);
+    for (const group of legacy) {
+      if (!OSRCB.data.externalClasses.find((g) => g.name === group.name)) {
+        OSRCB.data.externalClasses.push({ ...group, _legacySetting: true });
+      }
+    }
+  };
+  const onLegacySettingChange = (setting) => {
+    if (setting.key === `${OSRCB.moduleName}.externalClasses`) OSRCB.util.syncLegacyExternalClasses();
+  };
+  Hooks.on('createSetting', onLegacySettingChange); // the first-ever write creates the Setting document
+  Hooks.on('updateSetting', onLegacySettingChange); // subsequent writes update it
+
   Hooks.callAll('OSRCB initialized');
 });
 Hooks.once('ready', async () => {
@@ -52,63 +71,54 @@ Hooks.once('ready', async () => {
   // await intializePackFolders();
   // hideForeignPacks();
 
-  //reset external classes
-  if (game.user.isGM) await game.settings.set(`${OSRCB.moduleName}`, 'externalClasses', []);
+  // class lists are built in memory on EVERY client (OSRCB.data), never stored in settings
+  OSRCB.data.externalClasses = [];
+  // legacy compat: stock ose-advancedfantasytome pushes onto this setting's
+  // existing array — reset each session or it grows by two groups per load
+  if (game.user.isGM) await game.settings.set(OSRCB.moduleName, 'externalClasses', []);
   const oseModName = 'old-school-essentials';
   const oseAFName = 'ose-advancedfantasytome';
+  // NOTE: these awaits are load-bearing. OSE's classData.js populates
+  // OSE.data.classes inside an async ready hook that suspends before the
+  // assignment; awaiting here yields to the microtask queue so that hook
+  // finishes before we read OSE.data.classes below.
   const oseModActive = await game.modules.get(oseModName)?.active;
   const oseAFActive = await game.modules.get(oseAFName)?.active;
 
-  const srdObj = {};
-  if (OSRCB.singleGM()) {
-    if (oseAFActive) {
-      await Hooks.call('OSE Initialized');
-      OSRCB.util.sleep(1000)
-      
-      const classData = [
-        {
-          name: 'classic',
-          menu: 'Classic',
-          classes: OSE.data.classes.classic
-        },
-        {
-          name: 'advanced',
-          menu: 'Advanced',
-          classes: OSE.data.classes.advanced
-        }
-      ];
-      OSRCB.util.addExternalClasses(classData, 'Advanced Fantasy', true);
-    }
-    // await game.settings.set('osr-character-builder', 'externalClasses', OSRCB.data.externalClasses);
-    //temp shim
-    if (oseModActive) {
-      await game.settings.set('osr-character-builder', 'defaultClasses', [
-        {
-          name: 'basic',
-          menu: 'OSE Basic',
-          default: true,
-          classes: OSE.data.classes.basic
-        },
-        {
-          name: 'advanced',
-          menu: 'OSE Advanced',
-          default: false,
-          classes: OSE.data.classes.advanced
-        }
-      ]);
-    } else {
-      await game.settings.set('osr-character-builder', 'defaultClasses', [
-        {
-          name: 'SRD',
-          menu: 'SRD',
-          default: true,
-          classes: OSRCB.data.SRDClassData
-        }
-      ]);
-    }
-    Hooks.callAll('OseCharacterClassAdded');
-    Hooks.callAll('OSRCB Registered');
+  if (oseAFActive) {
+    await Hooks.call('OSE Initialized');
+    await OSRCB.util.sleep(1000);
   }
+  if (oseModActive) {
+    OSRCB.data.defaultClasses = [
+      {
+        name: 'basic',
+        menu: 'OSE Basic',
+        default: true,
+        classes: OSE.data.classes.basic
+      },
+      {
+        name: 'advanced',
+        menu: 'OSE Advanced',
+        default: false,
+        classes: OSE.data.classes.advanced
+      }
+    ];
+  } else {
+    OSRCB.data.defaultClasses = [
+      {
+        name: 'SRD',
+        menu: 'SRD',
+        default: true,
+        classes: OSRCB.data.SRDClassData
+      }
+    ];
+  }
+  Hooks.callAll('OseCharacterClassAdded');
+  Hooks.callAll('OSRCB Registered');
+  // late-join coverage: ingest whatever is already in the legacy setting
+  // (clients that connect after AF wrote it missed the hook broadcast)
+  OSRCB.util.syncLegacyExternalClasses();
 });
 
 //on actor sheet load, add helper buttons to sheet

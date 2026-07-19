@@ -1,23 +1,15 @@
 export function initializeUtils() {
-  OSRCB.util.getClassOptionObj = function (classSource) {
-    const optionObj = OSRCB.util.mergeClassOptions();
+  OSRCB.util.getClassOptionObj = function (classSource, classOptions) {
+    const optionObj = classOptions ?? OSRCB.util.mergeClassOptions();
 
     let sourceObj;
     sourceObj = optionObj.find((s) => s.name.toLowerCase() === classSource.toLowerCase());
     return sourceObj;
   };
   OSRCB.util.mergeClassOptions = function () {
-    let defaultClasses = game.settings.get('osr-character-builder', 'defaultClasses');
-    let externalClasses = game.settings.get('osr-character-builder', 'externalClasses');
-    let classOptions = defaultClasses.concat(externalClasses);
-    let osrCCBActive = game.modules.get('osr-ccb')?.active;
-    const mergeClasses = osrCCBActive ? game.settings.get('osr-ccb', 'displayCustomClasses') : [];
-    if (osrCCBActive && mergeClasses) {
-      let customClasses = game.settings.get('osr-ccb', 'customClasses');
-      return classOptions.concat(customClasses);
-    } else {
-      return classOptions;
-    }
+    const defaultClasses = OSRCB.data.defaultClasses ?? [];
+    const externalClasses = OSRCB.data.externalClasses ?? [];
+    return defaultClasses.concat(externalClasses);
   };
 
   OSRCB.util.multiLvlHp = async function (actor, level, classObj, con, msg = false, whisper) {
@@ -91,12 +83,11 @@ export function initializeUtils() {
     return hpTotal;
   };
   OSRCB.util.renderCharacterBuilder = function (actor, dataObj) {
-    for (let form in ui.windows) {
-      form = ui.windows[form];
-      if (form.options.id === 'osr-character-builder' && form?.actor?.id === actor.id) {
-        ui.notifications.warn(game.i18n.localize('osr-character-builder.notification.windowOpen'));
-        return false;
-      }
+    // ApplicationV2 windows register in foundry.applications.instances, not ui.windows
+    const existing = foundry.applications.instances.get('osr-character-builder');
+    if (existing && existing.actor?.id === actor.id) {
+      ui.notifications.warn(game.i18n.localize('osr-character-builder.notification.windowOpen'));
+      return false;
     }
     new OSRCB.characterBuilderV2({actor, dataObj}).render(true);
   };
@@ -167,8 +158,8 @@ export function initializeUtils() {
     return amt;
   };
 
-  OSRCB.util.osrUpdateSheet = async function (dataObj, actor) {
-    
+  OSRCB.util.osrUpdateSheet = async function (dataObj, actor, classOptions) {
+
     let untranslatedMod = false;
     const aftActive = await game.modules.get('ose-advancedfantasytome')?.active;
     const oseActive = await game.modules.get('old-school-essentials')?.active;
@@ -179,7 +170,7 @@ export function initializeUtils() {
     let updateData = {};
     const className = dataObj.classOption;
     const isNone = source === 'none';
-    const sourceData = !isNone ? OSRCB.util.getClassOptionObj(source) : null;
+    const sourceData = !isNone ? OSRCB.util.getClassOptionObj(source, classOptions) : null;
     const classObj = !isNone ? sourceData.classes[className] : { menu: 'None' };
     let packName = !isNone ? classObj.pack : null;
     if (packName === 'osr-character-builder.osr-srd-class-options') {
@@ -192,8 +183,14 @@ export function initializeUtils() {
     }
     const titles = !isNone ? classObj.title : null;
     let goldItem = actor.items.getName(game.i18n.localize('osr-character-builder.gp'));
-    let packExists = !isNone ? await game.packs.get(packName) : null;
-    if (!isNone && !packExists) {
+    // two class data models must both work here:
+    //  - old: class carries a compendium pack reference, abilities looked up live
+    //  - new: class carries serialized ability item data (pack is 'none')
+    // stored abilities take precedence; the pack-existence gate only applies
+    // to classes that depend on a live pack lookup
+    const hasStoredAbilities = !!classObj?.abilities?.length;
+    let packExists = !isNone && packName && packName !== 'none' ? await game.packs.get(packName) : null;
+    if (!isNone && !packExists && !hasStoredAbilities) {
       ui.notifications.warn(game.i18n.localize('osr-character-builder.notification.packNotFound'));
       return;
     }
@@ -386,15 +383,26 @@ export function initializeUtils() {
       await curCheck(type);
     }
     await goldItem.update({ system: { quantity: { value: dataObj.goldAmount } } });
-    if (source != 'none') await OSRCB.util.addClassAbilities(classObj.menu, actor, packName); //test menu instead of name fr ability item selection
+    if (source != 'none') await OSRCB.util.addClassAbilities(classObj.menu, actor, packName, classObj.abilities);
     await actor.setFlag(`${OSRCB.moduleName}`, 'classSelected', true);
     await actor.setFlag(`${OSRCB.moduleName}`, 'classInfo', { source: source, class: className });
     if (dataObj.shopCheck) {
       OSRIS.shop.RUIS(actor._id);
     }
   };
-  OSRCB.util.getClassAbilities = async (className, pack) => {
-    if(pack === 'osr-character-builder.osr-srd-class-options'){ 
+  OSRCB.util.getClassAbilities = async (className, pack, storedAbilities) => {
+    if (storedAbilities?.length) {
+      // stored data uses the BFS requirements shape ({classType, level});
+      // OSE item sheets and embedded actor items expect a plain string
+      return storedAbilities.map((a) => {
+        const req = a.system?.requirements;
+        if (typeof req === 'object' && req !== null) {
+          return { ...a, system: { ...a.system, requirements: req.classType ?? '' } };
+        }
+        return a;
+      });
+    }
+    if(pack === 'osr-character-builder.osr-srd-class-options'){
       pack = `osr-character-builder.osr-srd-class-options-${game.i18n.lang}`}
     let compendium = await game.packs.get(pack);
     if(!compendium){
@@ -416,8 +424,8 @@ export function initializeUtils() {
     }
     return items;
   };
-  OSRCB.util.addClassAbilities = async function (className, actor, pack) {
-    let items = await OSRCB.util.getClassAbilities(className, pack);
+  OSRCB.util.addClassAbilities = async function (className, actor, pack, storedAbilities) {
+    let items = await OSRCB.util.getClassAbilities(className, pack, storedAbilities);
     if (!items.length) {
       console.error(`
       ****OSRCB ERROR**** 
@@ -430,16 +438,16 @@ export function initializeUtils() {
 
     await actor.createEmbeddedDocuments('Item', items);
   };
-  OSRCB.util.randomSpells = async function (data, actor) {
+  OSRCB.util.randomSpells = async function (data, actor, classOptions) {
     const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
     let { source, classOption, level } = data;
     if(classOption == 'none'){
       return;
-    } 
+    }
     if (source == 'SRD') {
       source = OSRCB.util.oseActive() ? 'basic' : 'SRD';
     }
-    const typeData = await OSRCB.util.getClassOptionObj(source);
+    const typeData = await OSRCB.util.getClassOptionObj(source, classOptions);
 
     const classData = typeData.classes[classOption];
     //break out if not spellcaster
@@ -657,24 +665,16 @@ export function initializeUtils() {
     }
     
   };
-  OSRCB.util.addExternalClasses= async function(classData, modName = 'external', set = false){
-    if(OSRCB.singleGM){
-      for(let option of classData){
-        OSRCB.data.externalClasses.push(option)
-      }
-      console.log(`---- OSRCB: ${modName} classes added. ----`);
-      if(set){
-        await game.settings.set('osr-character-builder', 'externalClasses', []);
-        await game.settings.set('osr-character-builder', 'externalClasses', OSRCB.data.externalClasses);
-      }
+  OSRCB.util.addExternalClasses = function(classData, modName = 'external') {
+    // runs on every client — class lists live in memory (OSRCB.data), never in settings
+    for (let option of classData) {
+      OSRCB.data.externalClasses.push(option);
     }
+    console.log(`---- OSRCB: ${modName} classes added. ----`);
   }
   OSRCB.util.sleep = (ms) => new Promise((res) => setTimeout(res, ms));
   OSRCB.singleGM =  function () {
     return game.users.filter((u) => u.active && u.isGM)[0]?.id === game.user.id;
-  };
-  OSRCB.util.renderCharacterBuilder = function (actor, dataObj) {
-    new OSRCB.characterBuilderV2({actor, dataObj}).render(true);
   };
 }
 export const intializePackFolders = async () => {
