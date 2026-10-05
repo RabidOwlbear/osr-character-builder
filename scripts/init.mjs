@@ -122,20 +122,26 @@ Hooks.once('ready', async () => {
 });
 
 //on actor sheet load, add helper buttons to sheet
-Hooks.on('renderActorSheet', (actorObj, html) => {
+Hooks.on('renderActorSheetV2', (actorObj, html) => {
   const actor = actorObj.actor;
-  const modBox = html.find(`[class="modifiers-btn"]`);
-  const defCharBtn = html.find(`.profile .blinking`)[0];
+  const modBox = html.querySelector(`[class="modifiers-btn"]`);
+  if(!modBox){return}
+  const defCharBtn = html.querySelector(`.profile .blinking`);
   if (defCharBtn) defCharBtn.style.display = 'none';
   const classSelected = actor.getFlag(`${OSRCB.moduleName}`, 'classSelected');
-
+  
   if (actor.system?.scores?.str?.value == 0) {
-    modBox.append(
-      `<a class="osr-icon osr-choose-class" title="Character Builder"><i class="fas fa-user-shield"></i></a>`
-    );
-    modBox.on('click', '.osr-choose-class', async (event) => {
+    const cbBtn = document.createElement('a');
+    cbBtn.classList.add('osr-icon', 'osr-choose-class')
+    const cbI  = document.createElement('i')
+    cbI.classList.add("fas", "fa-user-shield")
+    cbBtn.title = "Character Builder"
+    cbBtn.appendChild(cbI)
+    cbBtn.addEventListener('click', async (event) => {
       const dataObj = OSRCB.util.mergeClassOptions();
       OSRCB.util.renderCharacterBuilder(actor, dataObj);
-    });
+    })
+    modBox.appendChild(cbBtn)
+    
   }
 });
